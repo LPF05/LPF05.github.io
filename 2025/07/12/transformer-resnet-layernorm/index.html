@@ -5,29 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="My Blog">
-    <title>Transformer架构中的ResNet+LayerNorm设计解析 - My Blog</title>
-    <meta name="author" content="GOD">
+    <meta name="generator" content="LPF05&#39; s Blog">
+    <title>Transformer架构中的ResNet+LayerNorm设计解析 - LPF05&#39; s Blog</title>
+    <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
     
+    
+        <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
     
     
         
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg"},"articleBody":"Transformer 架构中的 ResNet + LayerNorm 设计解析整体详解一、Transformer 的核心结构：残差连接与归一化的奠基Transformer 的成功离不开两大关键组件的协同 ——残差连接（Residual Connection） 与层归一化（LayerNorm），二者共同构成了 “Add &amp; Norm” 核心单元，支撑起深层网络的可训练性。\n1.1 Transformer 的基础框架Transformer 架构采用Encoder-Decoder结构，由编码器（Encoder）和解码器（Decoder）堆叠而成，其核心设计目的是解决序列处理任务中长距离依赖和并行计算的问题，广泛应用于自然语言处理、计算机视觉等领域。\n1.1.1 编码器（Encoder）结构编码器由多个相同的编码层堆叠而成，每个编码层包含两个核心子层：多头注意力机制（Multi-Head Attention）和前馈神经网络（Feed Forward Network，FFN），并通过 残差连接（Residual Connection）&#x548C;层归一化（Layer Normalization）&#x8FDB;行优化。\n具体结构如下：\n123456Input→ Multi-Head Attention→ Add &amp; Norm（Residual Connection &amp; Layer Norm）→ FFN→ Add &amp; Norm（Residual Connection &amp; Layer Norm）→ Output\n\n\n多头注意力机制（Multi-Head Attention）：模拟人类对文本不同语义片段的并行处理能力，通过多个 “头” 并行计算注意力权重，捕捉输入序列中不同位置的依赖关系。\n前馈神经网络（FFN）：对注意力机制输出的特征进行非线性变换，进一步提取高层语义信息。每个神经元独立计算，确保不同位置的特征能够被充分学习。\n残差连接（Residual Connection）：提取特征，并解决深层网络训练时的梯度消失问题，通过直接将输入添加到子层输出，为梯度提供 “短路” 路径，加速模型收敛。\n层归一化（Layer Normalization）：对每个样本的隐藏层进行归一化，稳定输入分布，减少内部协变量偏移（Internal Covariate Shift），提高训练稳定性。\n\n1.1.2 解码器（Decoder）结构解码器同样由多个解码层堆叠而成，除了包含编码器中的多头注意力机制和前馈神经网络外，还引入了掩码多头注意力机制（Masked Multi-Head Attention）和交叉注意力机制（Cross Attention）：\n12345678Input→ Masked Multi-Head Attention→ Add &amp; Norm→ Cross Attention→ Add &amp; Norm→ FFN→ Add &amp; Norm → Output\n\n\n掩码多头注意力机制（Masked Multi-Head Attention）：在自回归任务（如文本生成）中，防止模型在生成当前位置时 “偷看” 未来的信息，通过掩码矩阵屏蔽后续位置的输入。\n交叉注意力机制（Cross Attention）：利用编码器的输出作为上下文信息，指导解码器生成目标序列，实现源语言和目标语言之间的语义对齐。\n\n1.2 归一化的两种经典范式Transformer 发展出两种主流归一化位置，直接影响模型性能：\n\n\n\n范式\n结构顺序\n优势\n劣势\n代表模型\n\n\n\nPost-Norm\n子层→Add→Norm\n特征表达能力强\n深层易梯度消失，训练不稳定\n原始 Transformer\n\n\nPre-Norm\nNorm→子层→Add\n梯度路径清晰，训练稳定\n需额外适配特征尺度\nGPT-2&#x2F;3&#x2F;4、BERT 优化版\n\n\n二、ResNet 与 LayerNorm 的核心原理：为何能 “强强联合”要理解 “ResNet 后加 LayerNorm” 的设计，需先拆解二者的本质价值 —— 它们分别解决了深层网络的两大核心痛点。\n2.1 ResNet：残差连接的 “梯度救赎”ResNet的核心创新是残差模块，通过 “跳跃连接” 让输入信息直接跨越多层网络，公式表达为：\n$$H(x) &#x3D; F(x) + x$$\n\n$F(x)$：网络层的非线性变换（如卷积、全连接、attn...）\n$x$：原始输入的恒等映射（shortcut 连接）\n\n核心作用：\n\n缓解梯度消失：反向传播时梯度 $\\frac{\\partial H}{\\partial x} &#x3D; \\frac{\\partial F}{\\partial x} + 1$，即使$\\frac{\\partial F}{\\partial x}$趋近于 0，梯度仍能通过常数项 “1” 保持有效传递；\n避免网络退化：当深层网络已达最优性能时，新增层可学习 “恒等变换”（$F(x)&#x3D;0$），不影响模型效果；\n保留原始特征：融合基础输入与深层变换特征，避免信息丢失。\n\n2.2 LayerNorm：归一化的 “分布稳定器”LayerNorm 是针对 “内部协变量偏移” 的解决方案，其核心是对单个样本的所有特征维度做归一化，公式如下：$$\\text{LayerNorm}(x) &#x3D; \\gamma \\cdot \\frac{x - \\mu}{\\sqrt{\\sigma^2 + \\epsilon}} + \\beta$$\n\n$\\mu$、$\\sigma^2$：样本特征的均值和方差（逐样本计算）\n$\\gamma$、$\\beta$：可学习的缩放和平移参数（保留特征表达能力）\n\n与 CNN 常用的 BatchNorm 相比，LayerNorm 的关键优势是不受 batch size 影响，更适合 Transformer 处理的序列数据（NLP&#x2F;视觉序列），避免小批量训练时统计量不稳定的问题：\n\n\n\n特性\nLayerNorm\nBatchNorm\n\n\n\n归一化维度\n单个样本的特征维度\n单个特征的Batch样本\n\n\nbatch size 依赖\n无\n强依赖（batch 越小效果越差）\n\n\n适用场景\nTransformer、RNN\nCNN、MLP\n\n\n三、核心感悟：“ResNet 后加 LayerNorm” 的设计逻辑将 ResNet 的残差模块与 LayerNorm 结合，并将 LayerNorm 置于 ResNet 之后，是对深层 Transformer 训练稳定性与特征表达能力的双重优化，其核心逻辑可总结为 “残差铺路，归一化收口”。\n3.1 设计动机：解决传统架构的三大痛点\nPost-Norm 的梯度困境：在深层 Transformer 中，Post-Norm 结构（Add 后归一化）会让梯度在反向传播时经过 LayerNorm 的标准化操作，梯度可能被缩放，从而导致浅层参数更新缓慢，即使残差连接存在，也无法完全消除梯度衰减；\nPre-Norm 的特征稀释：Pre-Norm（归一化后子层）虽训练更稳定，梯度衰减风险低，但归一化提前可能会“压缩”原始输入特征的数值差异，稀释原始特征的语义信息，影响模型上限；\nResNet 的分布波动：直接将 ResNet 模块嵌入 Transformer 时，残差输出特征可能经过多层非线性变换后产生剧烈分布波动。这样的分布不稳定会让后续的注意力层难以适配，导致训练不稳或收敛缓慢。\n\n1. Pre-Norm（Norm→子层→Add）：Norm 在前，导数更稳定Pre-Norm 中，Norm 的输入是“前层的 Add 结果”（比如第 L 层的 Add 结果直接作为第 L+1 层的 Input，先 Norm 再进子层）——此时 Norm 的输入分布更平缓（因为 Add 已经融合了原始输入，减少了极端值），$\\sigma^2$波动小，Norm 层的导数更接近 1，几乎不衰减梯度。  \n梯度传递路径变成：$\\frac{\\partial Loss}{\\partial Add_{L+1}} \\rightarrow \\frac{\\partial Loss}{\\partial 子层_{L+1}} \\rightarrow \\frac{\\partial Loss}{\\partial Norm_{L+1}} \\rightarrow \\frac{\\partial Loss}{\\partial Add_L}$——Norm 层的梯度衰减风险被大幅削弱。\n2. ResNet 后加 LayerNorm：调整 Norm 位置，避开“Add 后衰减”“ResNet 后加 LayerNorm”的结构是：Input→ResNet→Norm→Transformer子层→Add。这里的 Norm 位置有两个关键作用：    - Norm 位于 ResNet 之后、Transformer 子层之前——ResNet 的残差连接已经先稳定了特征（减少极端值），Norm 的输入分布更稳定，导数不易衰减；    - 避开了 Post-Norm 中“Add 后 Norm”的路径，梯度回传时不需要先经过“Add 后的 Norm 衰减”，而是直接从 Transformer 子层回传到 Norm，再到 ResNet，梯度衰减链路更短（原始信息不需要经过LN梯度变换）。\n总结：归一化位置决定了“梯度是否多走一段衰减路”Post-Norm 的梯度困境，本质是“Add 后 Norm”的位置，让梯度在反向传播中必须多经过一层“Norm 对梯度的缩放效应”，且这层衰减与子层矩阵乘法的衰减叠加，导致深层梯度越传越小。  \n而解决思路的核心，都是通过调整归一化位置（比如 Pre-Norm 的“Norm 在前”、ResNet 后 Norm 的“Norm 在 ResNet 与 Transformer 子层之间”），要么让 Norm 层的输入分布更稳定（导数不衰减），要么让梯度传递避开“Norm 衰减+矩阵衰减”的叠加——这也印证了“架构设计要先解决‘能不能训深’，再解决‘训深后稳不稳’”的底层思维。\n3.2 优化逻辑：1+1&gt;2 的协同效应“ResNet 后加 LayerNorm” 的结构顺序为：\n$$\\text{Input} \\rightarrow \\text{ResNet} \\rightarrow \\text{LayerNorm} \\rightarrow \\text{Transformer子层（Attention&#x2F;FFN）} \\rightarrow \\text{Add}$$\n其协同价值体现在三点：\n\n梯度传递更顺畅：ResNet 的残差连接提供 “梯度捷径”，LayerNorm 通过稳定特征分布进一步降低梯度传播的阻力，即使网络堆叠至 100 层以上，仍能保持梯度有效更新；\n\n特征表达更精准：ResNet 的残差为 Transformer 子层提供快捷通道，使原始特征信息不被子层变换完全扭曲；LayerNorm 对残差输出进行归一化处理，稳定特征分布，使后续注意力、FFN 能更专注于语义关联而非数值幅度差异；\n\n训练鲁棒性更强：LayerNorm 的逐样本归一化特性，与 ResNet 的残差容错性结合，使模型对学习率、 batch size 的敏感度降低，训练过程不易发散。\n\n\n四、架构设计的底层思维\n问题导向而非形式导向：ResNet 后加 LayerNorm 的核心不是 “堆叠技术”，而是针对 “梯度消失 + 分布波动” 的精准解决方案 —— 残差连接解决 “能不能训深”，LayerNorm 解决 “训深后能不能稳定”；\n\n组件协同大于单个最优：ResNet 的优势在梯度传递，LayerNorm 的优势在分布稳定，二者的顺序（ResNet 后）是关键：先通过残差保留信息，再通过归一化校准分布，避免归一化提前稀释特征；\n\n工程实践先稳后优：深层模型设计的优先级应是 “训练稳定→特征有效→性能提升”，这一设计完美契合该逻辑，也解释了为何 Pre-Norm 能取代 Post-Norm 成为主流。\n\n\nPost-Norm 的梯度困境与归一化位置的核心关联及其引申一、Post-Norm 的梯度传递路径在原始 Transformer 的 Post-Norm 架构中（子层→Add→Norm→下一层），我们以“两层编码层”为例，先梳理正向流程和对应的反向梯度传递路径，就能直观看到归一化位置的影响：\n1. 正向流程（以第 L 层和 L+1 层为例）下面以第 L 层和第 L+1 层为例展示 Post-Norm 的完整数据流。之所以强调每一步，是因为反向传播会沿着完全相反的路径回溯，每一个节点都会成为梯度的“瓶颈点”。\n123456789101112131415# 第 L 层正向Input_L→ 子层_L（Attention 或 FFN）→ 得到子层输出 S_L→ Add（Res_L = Input_L + S_L）→ LayerNorm→ 作为第 L+1 层的输入 Input_&#123;L+1&#125;# 第 L+1 层正向Input_&#123;L+1&#125;（来自上一层的 Norm_L）→ 子层_&#123;L+1&#125;→ 得到输出 S_&#123;L+1&#125;→ Add（Res_&#123;L+1&#125; = Input_&#123;L+1&#125; + S_&#123;L+1&#125;）→ LayerNorm→ 下一层\n\n2. 反向梯度传递路径（核心：梯度要先“拆穿”Norm层，才能到Add和前层）Post-Norm 让梯度必须“先过 LN、再到 Add、再到 SubLayer”才能计算损失对第 (L) 层的输入 (Input_L) 的梯度，路径如下：$$\\frac{\\partial Loss}{\\partial Input_L}$$\n梯度必须沿着与正向完全相反的路径回溯。路径顺序如下（高层 → 低层）：\n$$\\frac{\\partial Loss}{\\partial LN_{L+1}}\\rightarrow\\frac{\\partial Loss}{\\partial Res_{L+1}}\\rightarrow\\frac{\\partial Loss}{\\partial Input_{L+1}}\\rightarrow\\frac{\\partial Loss}{\\partial LN_L}\\rightarrow\\frac{\\partial Loss}{\\partial Res_L}\\rightarrow\\frac{\\partial Loss}{\\partial Input_L}$$\n拆解如下：\n\n梯度先从第 $L+1$ 层的输出进入 $\\text{LN}_{L+1}$必须先乘上 $\\text{LayerNorm}_{L+1}$ 的雅可比矩阵 → 这一步可能造成梯度缩放（减小）。\n\n从 $\\text{LN}{L+1}$ 才能到达 $\\text{Res}{L+1}$LN 之后梯度才被分配到 Add 的两个分支（主分支与残差）。\n\n接着梯度才会继续回传到第 $L$ 层的输入 $\\text{Input}_{L+1}$而 $\\text{Input}{L+1}$ 就是 $\\text{LN}{L}$。\n\n因此梯度又必须进入 $\\text{LN}_{L}$再次被 LN 的导数缩放。\n\n最终才能回到 $\\text{Res}{L}$、Add、以及 $\\text{Input}{L}$\n\n\n核心关键点：在 Post-Norm 中，梯度从下一层回传时，必定要连续穿过两层 LayerNorm 的导数（$\\text{LayerNorm}{L+1}$ 和 $\\text{LayerNorm}{L}$）。每一个 LayerNorm 的反向传播都会：\n\n根据输入的方差 $\\sigma^2$ 对梯度进行缩放\n并以一种较复杂的方式重新分配梯度（包括均值项、归一化项）\n\n因此 每一层 LN 都有可能让梯度幅值变小或更不稳定。\n而 Post-Norm 的结构又让 LN 处于反向路径上不可绕过的位置：梯度无法利用残差支路直接跳过 LN，而是必须要经过 LN 的梯度缩放。\n二、核心问题：Norm 层在 “Add 之后” 的位置，会放大梯度衰减与梯度波动LayerNorm 的正向定义为：\n$$\\mathrm{LN}(x)&#x3D;\\gamma \\cdot \\frac{x-\\mu}{\\sqrt{\\sigma^2+\\epsilon}}+\\beta$$\n反向传播时，其对输入的梯度（Jacobian）中的主导缩放项来自：\n$$\\frac{\\partial \\mathrm{LN}(x)}{\\partial x}\\propto\\frac{1}{\\sqrt{\\sigma^2+\\epsilon}}$$\n这意味着：\nLN 的导数大小直接受输入方差 $\\sigma^2$ 的影响，只要 $\\sigma^2$ 大或不稳定，梯度就会随之变小或波动。而在 Post-Norm 架构中，LayerNorm 的输入是：\n$$\\mathrm{Res} &#x3D; x + \\mathrm{SubLayer}(x)$$\n其中 $\\mathrm{SubLayer}(x)$（多头注意力、FFN）在网络加深时分布会越来越不稳定，从而使得 $\\mathrm{Res}$ 的方差和均值不断变化。这就直接影响 LN 的导数，使其成为梯度传递的瓶颈。\n下面分两类情况说明这种问题如何体现。\n1. 场景 1：输入方差 $\\sigma^2$ 增大 → 梯度被持续缩小（梯度衰减）随着层数增加，$\\mathrm{SubLayer}(x)$ 的输出振幅会增大或具有更强的层间差异，而残差相加：\n$$\\mathrm{Res} &#x3D; x + \\mathrm{SubLayer}(x)$$\n的方差往往会越来越大。\n由于 LN 的导数满足：\n$$\\left|\\frac{\\partial \\mathrm{LN}(x)}{\\partial x}\\right|\\propto\\frac{1}{\\sqrt{\\sigma^2+\\epsilon}}$$\n当 $\\sigma^2$ 较大时，这个缩放系数变得很小，导致：\nLN 反向传播会把梯度整体压缩。而 Post-Norm 的结构是：\n1... → Add → LN → 下一层\n\n所以：\n\n每一层梯度都必须穿过 LN 的梯度缩放\n每一层都可能缩小一次\n越往前，梯度可能呈指数衰减\n\n最终导致：\n浅层几乎收不到梯度，训练初期尤其严重。2. 场景 2：输入方差 $\\sigma^2$ 不稳定 → 梯度也随之不稳定（梯度波动）残差输入：\n$$Res &#x3D; x + \\mathrm{SubLayer}(x)$$\n中，$\\mathrm{SubLayer}(x)$ 的分布会随着训练不断变化，例如其输出可能忽大忽小、均值偏移、Batch 内不同 token 差异加剧等。因此：\n\n$y$ 的均值 ($\\mu$) 在变\n$y$ 的方差 ($\\sigma^2$) 在变\nLN 的归一化分母 $\\sqrt{\\sigma^2+\\epsilon}$ 也在变\n\n而 LN 的梯度包含项：\n$$\\frac{1}{\\sqrt{\\sigma^2+\\epsilon}}$$\n意味着：\n$\\sigma^2$ 一变，梯度也被随之放大或缩小。这种“梯度时大时小”的不稳定会引发：\n\n某一步更新后子层输出波动 → LN 梯度变小 → 梯度传不过去\n下一步权重又改变 → 子层输出变小 → LN 梯度突然变大\n训练过程出现震荡、不稳定甚至崩掉\n\n特别是在深层 Transformer 中，每一层都有这种 LN，层层叠加形成链式反应，使得：\n越浅的层梯度越随机、越不稳定，导致训练初期更难收敛。小结Post-Norm 的问题来源不是 LayerNorm 本身，而是 LN 处在 Add 之后、残差路径之上 的关键位置，使其：\n\n遇到大方差 → 连续缩小梯度（梯度衰减）\n遇到不稳定方差 → 放大梯度波动（梯度震荡）\n\n这两个问题都直接来自 LN 输入的分布特性，而 LN 的输入在深层 Transformer 里本身就不稳定，因此 Post-Norm 容易训练困难。\n有关 SubLayer 经过 LayerNorm 的分析1. 为什么 SubLayer 的输出会让分布变得不稳定？SubLayer包含线性变换、缩放（例如 Attention 的 $1&#x2F;\\sqrt{d_k}$）、非线性激活等操作，这些都会改变输入的统计分布。随着网络加深，这些操作会引入以下现象：\n\n权重矩阵与激活的累积效应会逐层放大或缩小信号；\n注意力机制可能对部分 token 给出极高权重，导致某些通道的输出激增；\n非线性（如 GELU）和偏置项改变输出的均值&#x2F;方差；\n训练过程的参数更新可能进一步推高这些波动。\n\n所以 SubLayer(x) 在不同样本&#x2F;位置上的幅值可能差别很大。一旦将其与主支路的 x 相加（即残差连接），会造成：\n→ 残差相加结果的方差明显增大（即 LN 输入的方差 $\\sigma^2$ 会变大）。\n2. 数学视角：残差相加如何放大方差？设主支路输入为 (x)，子层输出为 (s &#x3D; f(x))，残差输出为：\n$$Res &#x3D; x + s$$\n其方差（略去均值项）为：\n$$\\mathrm{Var}(Res) &#x3D; \\mathrm{Var}(x) + \\mathrm{Var}(s) + 2\\operatorname{Cov}(x, s)$$\n重点分析：\n\n若 $x$ 和 $s$ 弱相关（实际中常常如此），则$$\\mathrm{Var}(Res) \\approx \\mathrm{Var}(x) + \\mathrm{Var}(s)$$→ 方差被叠加。\n\n若 $s$ 的幅度在深层不断增大，则$$\\mathrm{Var}(s) \\uparrow \\quad \\Rightarrow \\quad \\mathrm{Var}(Res) \\uparrow$$\n\n\n因此，残差连接会将 SubLayer 的“幅度波动”直接带入下一层的 LayerNorm 输入中。\n3. Pre-Norm vs Post-Norm 的根本差别Post-Norm（原始 Transformer）$$Res &#x3D; \\mathrm{LN}(x + s)$$LN 看到的是已经方差增大的结果 $x + s$。→ 方差越大，LN 的反向梯度越小（因为梯度 $\\propto 1&#x2F;\\sqrt{\\sigma^2+\\epsilon}$(主导缩放项)）。\nPre-Norm（常见）$$Res &#x3D; x + \\mathrm{SubLayer}(\\mathrm{LN}(x))$$SubLayer 的输入始终经过 LN 标准化，因此其输出方差更可控。同时，残差路径：\n$$\\text{梯度可以从 } y \\to x \\text{ 直接流动，不经过 LN 的缩放}$$\n→ 根本原因：梯度主路径避开了 LayerNorm 的梯度缩放项，梯度更稳定、更不衰减。\n4. 梯度流动：为什么 Pre-Norm 更稳？考虑 loss 对第 (l) 层输入 (x^{(l)}) 的梯度。\nPre-Norm：梯度主路径绕过 LN$$x^{(l)} \\xrightarrow[]{+} {Res}^{(l)} \\xrightarrow[]{\\text{直接}} \\frac{\\partial L}{\\partial x^{(l)}}$$\n梯度在主路径上不经过 LN，因此也不会被$\\frac{1}{\\sqrt{\\sigma^2 + \\epsilon}}$反复缩小或放大。\nPost-Norm：每层梯度必须经过 LN 缩放$$\\frac{\\partial L}{\\partial y^{(l)}}\\xrightarrow[]{\\text{LN 反向}}\\frac{1}{\\sqrt{\\sigma^2 + \\epsilon}}\\Rightarrow \\frac{\\partial L}{\\partial x^{(l)}}$$\n若网络有 n 层，那么梯度相当于要乘以 LN 的缩放系数 n 次：→ 梯度很容易“层层衰减”，传不到深层，容易导致崩溃。\n5. 方差放大问题的来源\n参数初始化不理想：每层的线性变换都会改变幅度。\n注意力权重尖峰：局部 token 被极度放大，使得 SubLayer 输出方差增大。\n激活函数非线性：GELU 等会引入不对称、偏移。\n权重更新方向性放大：训练中某些通道被放大。\n深度累积效应：即便每层微小放大，100 层之后就是灾难。\n\n6. 工程中用于稳定方差&#x2F;梯度的技巧\nResidual Scaling：在残差支路乘以小系数 $\\alpha$（如 0.1）。\nLayerScale：在残差处乘以可学习的每通道缩放 $\\lambda$（初始极小）。\nStochastic Depth（DropPath）：随机丢弃部分残差，缓解深层过拟合&#x2F;不稳。\nFixUp Init：专门设计的残差网络初始化方法。\n输出缩放：对 FFN、Attention 的输出再乘小系数提高稳定性。\nGrad-Clip、合适的学习率策略。\n（最有效）改用 Pre-Norm。\n\n7. 小结\n残差连接：$$Res &#x3D; x + s\\Rightarrow \\sigma^2_{Res} &#x3D; \\sigma^2_x + \\sigma^2_s + 2\\operatorname{Cov}(x,s)$$→ 方差容易变大。\n\nLayerNorm 的梯度：$$\\frac{\\partial \\text{LN}}{\\partial x} \\propto \\frac{1}{\\sqrt{\\sigma^2_{Res}}}$$→ 方差越大，梯度越小（衰减）。\n\nPost-Norm：每层都要经历这个缩放，深层梯度将迅速衰减。\n\nPre-Norm：把 LN 提前到 SubLayer 之前 →\n\n方差被限制在 SubLayer 输入端；\n主梯度路径绕过 LN，不受 $\\sigma^2_{Res}$ 缩放影响；→ 深层训练稳定。\n\n\n\n核心总结⭐  Pre-LN 的本质优势：让梯度主路径绕过 LN，不再受 LN 缩放项影响，使深层梯度不会逐层衰减。三、叠加效应：Norm 的梯度衰减 × 多层矩阵乘法的梯度衰减Post-Norm 的训练不稳定，本质上不是某一个因素造成的，而是：\n\nNorm 造成的梯度缩放（尤其是衰减）×子层矩阵乘法固有的梯度衰减特性\n这两个效应在深层网络中呈指数叠加。\n\n而 LayerNorm 的位置（Pre-LN vs Post-LN）决定了这两个效应是串联放大还是有效解耦。\n1. 子层矩阵乘法的“固有梯度衰减”Transformer 子层（Attention、FFN）都包含大量矩阵乘法，例如：\n\nAttention 的 $QW_Q,; KW_K,; VW_V$\nFFN 的 $W_1x + b_1,; W_2h + b_2$\nAttention 的 softmax 前后还带缩放因子 $1&#x2F;\\sqrt{d_k}$\n\n在反向传播时，梯度会被权重矩阵的奇异值控制：\n$$\\frac{\\partial L}{\\partial x} &#x3D; W^T \\frac{\\partial L}{\\partial y}$$\n因此梯度的大小大约满足：\n$$|\\delta_x| \\approx \\sigma_{\\max}(W) \\cdot |\\delta_y|$$\n当矩阵的奇异值 $\\sigma_{\\max}(W) &lt; 1$（常见于初始化和训练早期）：\n→ 每经过一次矩阵乘法，就会有一次梯度缩小。\n举例：\n\n若奇异值平均 ~0.9\n经过 10 层残差结构：$$0.9^{10} &#x3D; 0.35$$\n经过 20 层：$$0.9^{20} &#x3D; 0.12$$\n\n这是深层网络的固有风险：矩阵乘法会自然导致梯度衰减。\n2. Post-Norm：Norm 衰减 + 矩阵衰减 “串联生效”在 Post-Norm 中，每一层叠加了两次衰减：\n\nNorm 衰减一次\n子层矩阵衰减一次\n\n跨两层传递的梯度可以写成：\n$$\\delta_{x_L}\\approx\\delta_{x_{L+2}}\\times\\underbrace{G_{\\text{LN}}^{(L+1)}}{\\text{LN 衰减 1}}\\times\\underbrace{G{\\text{Mat}}^{(L+1)}}{\\text{矩阵衰减 1}}\\times\\underbrace{G{\\text{LN}}^{(L)}}{\\text{LN 衰减 2}}\\times\\underbrace{G{\\text{Mat}}^{(L)}}_{\\text{矩阵衰减 2}}$$\n完整路径是如下所示：\n1234567(L+2) 层梯度    ↓ LN（衰减）    ↓ 子层矩阵（衰减）(L+1) 层梯度    ↓ LN（衰减）    ↓ 子层矩阵（衰减）L 层梯度\n\n对于深层网络：\n梯度要经过几十次 LN 缩放 × 几十次矩阵衰减→ 指数级衰减，导致梯度几乎传不到浅层→ 训练直接崩掉（原始 Transformer 很难 100 层以上）\n这也是原始 Post-Norm 基本无法训练 48 层以上的 Transformer 原因，不是经验问题，而是数学上的衰减累积问题。\n3. Pre-Norm：梯度主路径绕过 LN，使矩阵衰减不再“叠加 LN 衰减”上文已述\n4. 结论⭐ 在 Post-Norm 中：\n梯度 &#x3D; LN 衰减 × 矩阵衰减 × LN 衰减 × 矩阵衰减 × ……（层数次）\n深层网络会遭遇指数级梯度衰减，训练极不稳定\n\n⭐ 在 Pre-Norm 中：\n主梯度路径直接通过 residual，不经过 LN\n子层输入始终经过 LN → 阻止矩阵乘法进一步放大&#x2F;缩小方差\nLN 处于稳定位置 → 它的梯度缩放项接近常数\n不再有“Norm 衰减 × 矩阵衰减”的串联灾难\n\n总结：Post-Norm：梯度必须穿 LN → 缩放被累积 → 不稳定&#x2F;无法训练深层Pre-Norm：梯度主路径绕开 LN → 缩放项不累积 → 可训练百层以上核心：归一化的位置决定了梯度能否直接沿残差通道流动\n致谢：感谢MIHRI同学的提问与启发附图：\n1234567891011121314151617181920212223242526272829303132flowchart TD    title[&quot;Post-Norm 梯度主路径无法绕过 LN&quot;]    subgraph Layer_Lplus1[&quot;Layer L+1&quot;]        LN2[&quot;LayerNorm (L+1)&quot;]        Add2[&quot;Add (x + SubLayer)&quot;]        Sub2[&quot;SubLayer (Attn/FFN)&quot;]    end    subgraph Layer_L[&quot;Layer L&quot;]        LN1[&quot;LayerNorm (L)&quot;]        Add1[&quot;Add (x + SubLayer)&quot;]        Sub1[&quot;SubLayer (Attn/FFN)&quot;]    end    Loss[&quot;Loss&quot;]    %% Backward arrows    Loss --&gt; LN2    LN2 --&gt; Add2    Add2 --&gt; Sub2    Add2 --&gt; LN1    LN1 --&gt; Add1    Add1 --&gt; Sub1    Add1 --&gt; xL[&quot;x(L)&quot;]    %% Notes    note1[&quot;梯度必须穿过 LN(L+1) → 缩小/波动&quot;]    note2[&quot;梯度必须再穿过 LN(L) → 再次缩小/波动&quot;]    LN2 -.-&gt; note1    LN1 -.-&gt; note2\n\n1234567891011121314151617181920212223242526272829303132333435flowchart TD    title[&quot;Pre-Norm 梯度主路径绕过 LN&quot;]    subgraph Layer_Lplus1[&quot;Layer L+1&quot;]        Add2[&quot;Add (x + SubLayer(LN(x)))&quot;]        Sub2[&quot;SubLayer&quot;]        LN2[&quot;LayerNorm&quot;]    end    subgraph Layer_L[&quot;Layer L&quot;]        Add1[&quot;Add (x + SubLayer(LN(x)))&quot;]        Sub1[&quot;SubLayer&quot;]        LN1[&quot;LayerNorm&quot;]    end    Loss[&quot;Loss&quot;]    %% Backward arrows    Loss --&gt; Add2    Add2 --&gt; x_Lplus1[&quot;x(L+1) (Residual Path)&quot;]    x_Lplus1 --&gt; Add1    Add1 --&gt; xL[&quot;x(L)&quot;]    %% SubLayer gradients    Add2 --&gt; Sub2    Sub2 --&gt; LN2    Add1 --&gt; Sub1    Sub1 --&gt; LN1    note1[&quot;主梯度路径不经过 LN → 梯度几乎不衰减&quot;]    note2[&quot;LN 仅作用于 SubLayer 输入，不影响残差梯度&quot;]    Add2 -.-&gt; note1    LN1 -.-&gt; note2","dateCreated":"2025-07-12T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-07-12T00:00:00+08:00","description":"","headline":"Transformer架构中的ResNet+LayerNorm设计解析","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"},"publisher":{"@type":"Organization","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg","logo":{"@type":"ImageObject","url":"please-run.jpg"}},"url":"https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/","keywords":"深度学习, Transformer, 残差连接, LayerNorm"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"Transformer 架构中的 ResNet + LayerNorm 设计解析整体详解一、Transformer 的核心结构：残差连接与归一化的奠基Transformer 的成功离不开两大关键组件的协同 ——残差连接（Residual Connection） 与层归一化（LayerNorm），二者共同构成了 “Add &amp; Norm” 核心单元，支撑起深层网络的可训练性。\n1.1 Transformer 的基础框架Transformer 架构采用Encoder-Decoder结构，由编码器（Encoder）和解码器（Decoder）堆叠而成，其核心设计目的是解决序列处理任务中长距离依赖和并行计算的问题，广泛应用于自然语言处理、计算机视觉等领域。\n1.1.1 编码器（Encoder）结构编码器由多个相同的编码层堆叠而成，每个编码层包含两个核心子层：多头注意力机制（Multi-Head Attention）和前馈神经网络（Feed Forward Network，FFN），并通过 残差连接（Residual Connection）&#x548C;层归一化（Layer Normalization）&#x8FDB;行优化。\n具体结构如下：\n123456Input→ Multi-Head Attention→ Add &amp; Norm（Residual Connection &amp; Layer Norm）→ FFN→ Add &amp; Norm（Residual Connection &amp; Layer Norm）→ Output\n\n\n多头注意力机制（Multi-Head Attention）：模拟人类对文本不同语义片段的并行处理能力，通过多个 “头” 并行计算注意力权重，捕捉输入序列中不同位置的依赖关系。\n前馈神经网络（FFN）：对注意力机制输出的特征进行非线性变换，进一步提取高层语义信息。每个神经元独立计算，确保不同位置的特征能够被充分学习。\n残差连接（Residual Connection）：提取特征，并解决深层网络训练时的梯度消失问题，通过直接将输入添加到子层输出，为梯度提供 “短路” 路径，加速模型收敛。\n层归一化（Layer Normalization）：对每个样本的隐藏层进行归一化，稳定输入分布，减少内部协变量偏移（Internal Covariate Shift），提高训练稳定性。\n\n1.1.2 解码器（Decoder）结构解码器同样由多个解码层堆叠而成，除了包含编码器中的多头注意力机制和前馈神经网络外，还引入了掩码多头注意力机制（Masked Multi-Head Attention）和交叉注意力机制（Cross Attention）：\n12345678Input→ Masked Multi-Head Attention→ Add &amp; Norm→ Cross Attention→ Add &amp; Norm→ FFN→ Add &amp; Norm → Output\n\n\n掩码多头注意力机制（Masked Multi-Head Attention）：在自回归任务（如文本生成）中，防止模型在生成当前位置时 “偷看” 未来的信息，通过掩码矩阵屏蔽后续位置的输入。\n交叉注意力机制（Cross Attention）：利用编码器的输出作为上下文信息，指导解码器生成目标序列，实现源语言和目标语言之间的语义对齐。\n\n1.2 归一化的两种经典范式Transformer 发展出两种主流归一化位置，直接影响模型性能：\n\n\n\n范式\n结构顺序\n优势\n劣势\n代表模型\n\n\n\nPost-Norm\n子层→Add→Norm\n特征表达能力强\n深层易梯度消失，训练不稳定\n原始 Transformer\n\n\nPre-Norm\nNorm→子层→Add\n梯度路径清晰，训练稳定\n需额外适配特征尺度\nGPT-2&#x2F;3&#x2F;4、BERT 优化版\n\n\n二、ResNet 与 LayerNorm 的核心原理：为何能 “强强联合”要理解 “ResNet 后加 LayerNorm” 的设计，需先拆解二者的本质价值 —— 它们分别解决了深层网络的两大核心痛点。\n2.1 ResNet：残差连接的 “梯度救赎”ResNet的核心创新是残差模块，通过 “跳跃连接” 让输入信息直接跨越多层网络，公式表达为：\n$$H(x) &#x3D; F(x) + x$$\n\n$F(x)$：网络层的非线性变换（如卷积、全连接、attn...）\n$x$：原始输入的恒等映射（shortcut 连接）\n\n核心作用：\n\n缓解梯度消失：反向传播时梯度 $\\frac{\\partial H}{\\partial x} &#x3D; \\frac{\\partial F}{\\partial x} + 1$，即使$\\frac{\\partial F}{\\partial x}$趋近于 0，梯度仍能通过常数项 “1” 保持有效传递；\n避免网络退化：当深层网络已达最优性能时，新增层可学习 “恒等变换”（$F(x)&#x3D;0$），不影响模型效果；\n保留原始特征：融合基础输入与深层变换特征，避免信息丢失。\n\n2.2 LayerNorm：归一化的 “分布稳定器”LayerNorm 是针对 “内部协变量偏移” 的解决方案，其核心是对单个样本的所有特征维度做归一化，公式如下：$$\\text{LayerNorm}(x) &#x3D; \\gamma \\cdot \\frac{x - \\mu}{\\sqrt{\\sigma^2 + \\epsilon}} + \\beta$$\n\n$\\mu$、$\\sigma^2$：样本特征的均值和方差（逐样本计算）\n$\\gamma$、$\\beta$：可学习的缩放和平移参数（保留特征表达能力）\n\n与 CNN 常用的 BatchNorm 相比，LayerNorm 的关键优势是不受 batch size 影响，更适合 Transformer 处理的序列数据（NLP&#x2F;视觉序列），避免小批量训练时统计量不稳定的问题：\n\n\n\n特性\nLayerNorm\nBatchNorm\n\n\n\n归一化维度\n单个样本的特征维度\n单个特征的Batch样本\n\n\nbatch size 依赖\n无\n强依赖（batch 越小效果越差）\n\n\n适用场景\nTransformer、RNN\nCNN、MLP\n\n\n三、核心感悟：“ResNet 后加 LayerNorm” 的设计逻辑将 ResNet 的残差模块与 LayerNorm 结合，并将 LayerNorm 置于 ResNet 之后，是对深层 Transformer 训练稳定性与特征表达能力的双重优化，其核心逻辑可总结为 “残差铺路，归一化收口”。\n3.1 设计动机：解决传统架构的三大痛点\nPost-Norm 的梯度困境：在深层 Transformer 中，Post-Norm 结构（Add 后归一化）会让梯度在反向传播时经过 LayerNorm 的标准化操作，梯度可能被缩放，从而导致浅层参数更新缓慢，即使残差连接存在，也无法完全消除梯度衰减；\nPre-Norm 的特征稀释：Pre-Norm（归一化后子层）虽训练更稳定，梯度衰减风险低，但归一化提前可能会“压缩”原始输入特征的数值差异，稀释原始特征的语义信息，影响模型上限；\nResNet 的分布波动：直接将 ResNet 模块嵌入 Transformer 时，残差输出特征可能经过多层非线性变换后产生剧烈分布波动。这样的分布不稳定会让后续的注意力层难以适配，导致训练不稳或收敛缓慢。\n\n1. Pre-Norm（Norm→子层→Add）：Norm 在前，导数更稳定Pre-Norm 中，Norm 的输入是“前层的 Add 结果”（比如第 L 层的 Add 结果直接作为第 L+1 层的 Input，先 Norm 再进子层）——此时 Norm 的输入分布更平缓（因为 Add 已经融合了原始输入，减少了极端值），$\\sigma^2$波动小，Norm 层的导数更接近 1，几乎不衰减梯度。  \n梯度传递路径变成：$\\frac{\\partial Loss}{\\partial Add_{L+1}} \\rightarrow \\frac{\\partial Loss}{\\partial 子层_{L+1}} \\rightarrow \\frac{\\partial Loss}{\\partial Norm_{L+1}} \\rightarrow \\frac{\\partial Loss}{\\partial Add_L}$——Norm 层的梯度衰减风险被大幅削弱。\n2. ResNet 后加 LayerNorm：调整 Norm 位置，避开“Add 后衰减”“ResNet 后加 LayerNorm”的结构是：Input→ResNet→Norm→Transformer子层→Add。这里的 Norm 位置有两个关键作用：    - Norm 位于 ResNet 之后、Transformer 子层之前——ResNet 的残差连接已经先稳定了特征（减少极端值），Norm 的输入分布更稳定，导数不易衰减；    - 避开了 Post-Norm 中“Add 后 Norm”的路径，梯度回传时不需要先经过“Add 后的 Norm 衰减”，而是直接从 Transformer 子层回传到 Norm，再到 ResNet，梯度衰减链路更短（原始信息不需要经过LN梯度变换）。\n总结：归一化位置决定了“梯度是否多走一段衰减路”Post-Norm 的梯度困境，本质是“Add 后 Norm”的位置，让梯度在反向传播中必须多经过一层“Norm 对梯度的缩放效应”，且这层衰减与子层矩阵乘法的衰减叠加，导致深层梯度越传越小。  \n而解决思路的核心，都是通过调整归一化位置（比如 Pre-Norm 的“Norm 在前”、ResNet 后 Norm 的“Norm 在 ResNet 与 Transformer 子层之间”），要么让 Norm 层的输入分布更稳定（导数不衰减），要么让梯度传递避开“Norm 衰减+矩阵衰减”的叠加——这也印证了“架构设计要先解决‘能不能训深’，再解决‘训深后稳不稳’”的底层思维。\n3.2 优化逻辑：1+1&gt;2 的协同效应“ResNet 后加 LayerNorm” 的结构顺序为：\n$$\\text{Input} \\rightarrow \\text{ResNet} \\rightarrow \\text{LayerNorm} \\rightarrow \\text{Transformer子层（Attention&#x2F;FFN）} \\rightarrow \\text{Add}$$\n其协同价值体现在三点：\n\n梯度传递更顺畅：ResNet 的残差连接提供 “梯度捷径”，LayerNorm 通过稳定特征分布进一步降低梯度传播的阻力，即使网络堆叠至 100 层以上，仍能保持梯度有效更新；\n\n特征表达更精准：ResNet 的残差为 Transformer 子层提供快捷通道，使原始特征信息不被子层变换完全扭曲；LayerNorm 对残差输出进行归一化处理，稳定特征分布，使后续注意力、FFN 能更专注于语义关联而非数值幅度差异；\n\n训练鲁棒性更强：LayerNorm 的逐样本归一化特性，与 ResNet 的残差容错性结合，使模型对学习率、 batch size 的敏感度降低，训练过程不易发散。\n\n\n四、架构设计的底层思维\n问题导向而非形式导向：ResNet 后加 LayerNorm 的核心不是 “堆叠技术”，而是针对 “梯度消失 + 分布波动” 的精准解决方案 —— 残差连接解决 “能不能训深”，LayerNorm 解决 “训深后能不能稳定”；\n\n组件协同大于单个最优：ResNet 的优势在梯度传递，LayerNorm 的优势在分布稳定，二者的顺序（ResNet 后）是关键：先通过残差保留信息，再通过归一化校准分布，避免归一化提前稀释特征；\n\n工程实践先稳后优：深层模型设计的优先级应是 “训练稳定→特征有效→性能提升”，这一设计完美契合该逻辑，也解释了为何 Pre-Norm 能取代 Post-Norm 成为主流。\n\n\nPost-Norm 的梯度困境与归一化位置的核心关联及其引申一、Post-Norm 的梯度传递路径在原始 Transformer 的 Post-Norm 架构中（子层→Add→Norm→下一层），我们以“两层编码层”为例，先梳理正向流程和对应的反向梯度传递路径，就能直观看到归一化位置的影响：\n1. 正向流程（以第 L 层和 L+1 层为例）下面以第 L 层和第 L+1 层为例展示 Post-Norm 的完整数据流。之所以强调每一步，是因为反向传播会沿着完全相反的路径回溯，每一个节点都会成为梯度的“瓶颈点”。\n123456789101112131415# 第 L 层正向Input_L→ 子层_L（Attention 或 FFN）→ 得到子层输出 S_L→ Add（Res_L = Input_L + S_L）→ LayerNorm→ 作为第 L+1 层的输入 Input_&#123;L+1&#125;# 第 L+1 层正向Input_&#123;L+1&#125;（来自上一层的 Norm_L）→ 子层_&#123;L+1&#125;→ 得到输出 S_&#123;L+1&#125;→ Add（Res_&#123;L+1&#125; = Input_&#123;L+1&#125; + S_&#123;L+1&#125;）→ LayerNorm→ 下一层\n\n2. 反向梯度传递路径（核心：梯度要先“拆穿”Norm层，才能到Add和前层）Post-Norm 让梯度必须“先过 LN、再到 Add、再到 SubLayer”才能计算损失对第 (L) 层的输入 (Input_L) 的梯度，路径如下：$$\\frac{\\partial Loss}{\\partial Input_L}$$\n梯度必须沿着与正向完全相反的路径回溯。路径顺序如下（高层 → 低层）：\n$$\\frac{\\partial Loss}{\\partial LN_{L+1}}\\rightarrow\\frac{\\partial Loss}{\\partial Res_{L+1}}\\rightarrow\\frac{\\partial Loss}{\\partial Input_{L+1}}\\rightarrow\\frac{\\partial Loss}{\\partial LN_L}\\rightarrow\\frac{\\partial Loss}{\\partial Res_L}\\rightarrow\\frac{\\partial Loss}{\\partial Input_L}$$\n拆解如下：\n\n梯度先从第 $L+1$ 层的输出进入 $\\text{LN}_{L+1}$必须先乘上 $\\text{LayerNorm}_{L+1}$ 的雅可比矩阵 → 这一步可能造成梯度缩放（减小）。\n\n从 $\\text{LN}{L+1}$ 才能到达 $\\text{Res}{L+1}$LN 之后梯度才被分配到 Add 的两个分支（主分支与残差）。\n\n接着梯度才会继续回传到第 $L$ 层的输入 $\\text{Input}_{L+1}$而 $\\text{Input}{L+1}$ 就是 $\\text{LN}{L}$。\n\n因此梯度又必须进入 $\\text{LN}_{L}$再次被 LN 的导数缩放。\n\n最终才能回到 $\\text{Res}{L}$、Add、以及 $\\text{Input}{L}$\n\n\n核心关键点：在 Post-Norm 中，梯度从下一层回传时，必定要连续穿过两层 LayerNorm 的导数（$\\text{LayerNorm}{L+1}$ 和 $\\text{LayerNorm}{L}$）。每一个 LayerNorm 的反向传播都会：\n\n根据输入的方差 $\\sigma^2$ 对梯度进行缩放\n并以一种较复杂的方式重新分配梯度（包括均值项、归一化项）\n\n因此 每一层 LN 都有可能让梯度幅值变小或更不稳定。\n而 Post-Norm 的结构又让 LN 处于反向路径上不可绕过的位置：梯度无法利用残差支路直接跳过 LN，而是必须要经过 LN 的梯度缩放。\n二、核心问题：Norm 层在 “Add 之后” 的位置，会放大梯度衰减与梯度波动LayerNorm 的正向定义为：\n$$\\mathrm{LN}(x)&#x3D;\\gamma \\cdot \\frac{x-\\mu}{\\sqrt{\\sigma^2+\\epsilon}}+\\beta$$\n反向传播时，其对输入的梯度（Jacobian）中的主导缩放项来自：\n$$\\frac{\\partial \\mathrm{LN}(x)}{\\partial x}\\propto\\frac{1}{\\sqrt{\\sigma^2+\\epsilon}}$$\n这意味着：\nLN 的导数大小直接受输入方差 $\\sigma^2$ 的影响，只要 $\\sigma^2$ 大或不稳定，梯度就会随之变小或波动。而在 Post-Norm 架构中，LayerNorm 的输入是：\n$$\\mathrm{Res} &#x3D; x + \\mathrm{SubLayer}(x)$$\n其中 $\\mathrm{SubLayer}(x)$（多头注意力、FFN）在网络加深时分布会越来越不稳定，从而使得 $\\mathrm{Res}$ 的方差和均值不断变化。这就直接影响 LN 的导数，使其成为梯度传递的瓶颈。\n下面分两类情况说明这种问题如何体现。\n1. 场景 1：输入方差 $\\sigma^2$ 增大 → 梯度被持续缩小（梯度衰减）随着层数增加，$\\mathrm{SubLayer}(x)$ 的输出振幅会增大或具有更强的层间差异，而残差相加：\n$$\\mathrm{Res} &#x3D; x + \\mathrm{SubLayer}(x)$$\n的方差往往会越来越大。\n由于 LN 的导数满足：\n$$\\left|\\frac{\\partial \\mathrm{LN}(x)}{\\partial x}\\right|\\propto\\frac{1}{\\sqrt{\\sigma^2+\\epsilon}}$$\n当 $\\sigma^2$ 较大时，这个缩放系数变得很小，导致：\nLN 反向传播会把梯度整体压缩。而 Post-Norm 的结构是：\n1... → Add → LN → 下一层\n\n所以：\n\n每一层梯度都必须穿过 LN 的梯度缩放\n每一层都可能缩小一次\n越往前，梯度可能呈指数衰减\n\n最终导致：\n浅层几乎收不到梯度，训练初期尤其严重。2. 场景 2：输入方差 $\\sigma^2$ 不稳定 → 梯度也随之不稳定（梯度波动）残差输入：\n$$Res &#x3D; x + \\mathrm{SubLayer}(x)$$\n中，$\\mathrm{SubLayer}(x)$ 的分布会随着训练不断变化，例如其输出可能忽大忽小、均值偏移、Batch 内不同 token 差异加剧等。因此：\n\n$y$ 的均值 ($\\mu$) 在变\n$y$ 的方差 ($\\sigma^2$) 在变\nLN 的归一化分母 $\\sqrt{\\sigma^2+\\epsilon}$ 也在变\n\n而 LN 的梯度包含项：\n$$\\frac{1}{\\sqrt{\\sigma^2+\\epsilon}}$$\n意味着：\n$\\sigma^2$ 一变，梯度也被随之放大或缩小。这种“梯度时大时小”的不稳定会引发：\n\n某一步更新后子层输出波动 → LN 梯度变小 → 梯度传不过去\n下一步权重又改变 → 子层输出变小 → LN 梯度突然变大\n训练过程出现震荡、不稳定甚至崩掉\n\n特别是在深层 Transformer 中，每一层都有这种 LN，层层叠加形成链式反应，使得：\n越浅的层梯度越随机、越不稳定，导致训练初期更难收敛。小结Post-Norm 的问题来源不是 LayerNorm 本身，而是 LN 处在 Add 之后、残差路径之上 的关键位置，使其：\n\n遇到大方差 → 连续缩小梯度（梯度衰减）\n遇到不稳定方差 → 放大梯度波动（梯度震荡）\n\n这两个问题都直接来自 LN 输入的分布特性，而 LN 的输入在深层 Transformer 里本身就不稳定，因此 Post-Norm 容易训练困难。\n有关 SubLayer 经过 LayerNorm 的分析1. 为什么 SubLayer 的输出会让分布变得不稳定？SubLayer包含线性变换、缩放（例如 Attention 的 $1&#x2F;\\sqrt{d_k}$）、非线性激活等操作，这些都会改变输入的统计分布。随着网络加深，这些操作会引入以下现象：\n\n权重矩阵与激活的累积效应会逐层放大或缩小信号；\n注意力机制可能对部分 token 给出极高权重，导致某些通道的输出激增；\n非线性（如 GELU）和偏置项改变输出的均值&#x2F;方差；\n训练过程的参数更新可能进一步推高这些波动。\n\n所以 SubLayer(x) 在不同样本&#x2F;位置上的幅值可能差别很大。一旦将其与主支路的 x 相加（即残差连接），会造成：\n→ 残差相加结果的方差明显增大（即 LN 输入的方差 $\\sigma^2$ 会变大）。\n2. 数学视角：残差相加如何放大方差？设主支路输入为 (x)，子层输出为 (s &#x3D; f(x))，残差输出为：\n$$Res &#x3D; x + s$$\n其方差（略去均值项）为：\n$$\\mathrm{Var}(Res) &#x3D; \\mathrm{Var}(x) + \\mathrm{Var}(s) + 2\\operatorname{Cov}(x, s)$$\n重点分析：\n\n若 $x$ 和 $s$ 弱相关（实际中常常如此），则$$\\mathrm{Var}(Res) \\approx \\mathrm{Var}(x) + \\mathrm{Var}(s)$$→ 方差被叠加。\n\n若 $s$ 的幅度在深层不断增大，则$$\\mathrm{Var}(s) \\uparrow \\quad \\Rightarrow \\quad \\mathrm{Var}(Res) \\uparrow$$\n\n\n因此，残差连接会将 SubLayer 的“幅度波动”直接带入下一层的 LayerNorm 输入中。\n3. Pre-Norm vs Post-Norm 的根本差别Post-Norm（原始 Transformer）$$Res &#x3D; \\mathrm{LN}(x + s)$$LN 看到的是已经方差增大的结果 $x + s$。→ 方差越大，LN 的反向梯度越小（因为梯度 $\\propto 1&#x2F;\\sqrt{\\sigma^2+\\epsilon}$(主导缩放项)）。\nPre-Norm（常见）$$Res &#x3D; x + \\mathrm{SubLayer}(\\mathrm{LN}(x))$$SubLayer 的输入始终经过 LN 标准化，因此其输出方差更可控。同时，残差路径：\n$$\\text{梯度可以从 } y \\to x \\text{ 直接流动，不经过 LN 的缩放}$$\n→ 根本原因：梯度主路径避开了 LayerNorm 的梯度缩放项，梯度更稳定、更不衰减。\n4. 梯度流动：为什么 Pre-Norm 更稳？考虑 loss 对第 (l) 层输入 (x^{(l)}) 的梯度。\nPre-Norm：梯度主路径绕过 LN$$x^{(l)} \\xrightarrow[]{+} {Res}^{(l)} \\xrightarrow[]{\\text{直接}} \\frac{\\partial L}{\\partial x^{(l)}}$$\n梯度在主路径上不经过 LN，因此也不会被$\\frac{1}{\\sqrt{\\sigma^2 + \\epsilon}}$反复缩小或放大。\nPost-Norm：每层梯度必须经过 LN 缩放$$\\frac{\\partial L}{\\partial y^{(l)}}\\xrightarrow[]{\\text{LN 反向}}\\frac{1}{\\sqrt{\\sigma^2 + \\epsilon}}\\Rightarrow \\frac{\\partial L}{\\partial x^{(l)}}$$\n若网络有 n 层，那么梯度相当于要乘以 LN 的缩放系数 n 次：→ 梯度很容易“层层衰减”，传不到深层，容易导致崩溃。\n5. 方差放大问题的来源\n参数初始化不理想：每层的线性变换都会改变幅度。\n注意力权重尖峰：局部 token 被极度放大，使得 SubLayer 输出方差增大。\n激活函数非线性：GELU 等会引入不对称、偏移。\n权重更新方向性放大：训练中某些通道被放大。\n深度累积效应：即便每层微小放大，100 层之后就是灾难。\n\n6. 工程中用于稳定方差&#x2F;梯度的技巧\nResidual Scaling：在残差支路乘以小系数 $\\alpha$（如 0.1）。\nLayerScale：在残差处乘以可学习的每通道缩放 $\\lambda$（初始极小）。\nStochastic Depth（DropPath）：随机丢弃部分残差，缓解深层过拟合&#x2F;不稳。\nFixUp Init：专门设计的残差网络初始化方法。\n输出缩放：对 FFN、Attention 的输出再乘小系数提高稳定性。\nGrad-Clip、合适的学习率策略。\n（最有效）改用 Pre-Norm。\n\n7. 小结\n残差连接：$$Res &#x3D; x + s\\Rightarrow \\sigma^2_{Res} &#x3D; \\sigma^2_x + \\sigma^2_s + 2\\operatorname{Cov}(x,s)$$→ 方差容易变大。\n\nLayerNorm 的梯度：$$\\frac{\\partial \\text{LN}}{\\partial x} \\propto \\frac{1}{\\sqrt{\\sigma^2_{Res}}}$$→ 方差越大，梯度越小（衰减）。\n\nPost-Norm：每层都要经历这个缩放，深层梯度将迅速衰减。\n\nPre-Norm：把 LN 提前到 SubLayer 之前 →\n\n方差被限制在 SubLayer 输入端；\n主梯度路径绕过 LN，不受 $\\sigma^2_{Res}$ 缩放影响；→ 深层训练稳定。\n\n\n\n核心总结⭐  Pre-LN 的本质优势：让梯度主路径绕过 LN，不再受 LN 缩放项影响，使深层梯度不会逐层衰减。三、叠加效应：Norm 的梯度衰减 × 多层矩阵乘法的梯度衰减Post-Norm 的训练不稳定，本质上不是某一个因素造成的，而是：\n\nNorm 造成的梯度缩放（尤其是衰减）×子层矩阵乘法固有的梯度衰减特性\n这两个效应在深层网络中呈指数叠加。\n\n而 LayerNorm 的位置（Pre-LN vs Post-LN）决定了这两个效应是串联放大还是有效解耦。\n1. 子层矩阵乘法的“固有梯度衰减”Transformer 子层（Attention、FFN）都包含大量矩阵乘法，例如：\n\nAttention 的 $QW_Q,; KW_K,; VW_V$\nFFN 的 $W_1x + b_1,; W_2h + b_2$\nAttention 的 softmax 前后还带缩放因子 $1&#x2F;\\sqrt{d_k}$\n\n在反向传播时，梯度会被权重矩阵的奇异值控制：\n$$\\frac{\\partial L}{\\partial x} &#x3D; W^T \\frac{\\partial L}{\\partial y}$$\n因此梯度的大小大约满足：\n$$|\\delta_x| \\approx \\sigma_{\\max}(W) \\cdot |\\delta_y|$$\n当矩阵的奇异值 $\\sigma_{\\max}(W) &lt; 1$（常见于初始化和训练早期）：\n→ 每经过一次矩阵乘法，就会有一次梯度缩小。\n举例：\n\n若奇异值平均 ~0.9\n经过 10 层残差结构：$$0.9^{10} &#x3D; 0.35$$\n经过 20 层：$$0.9^{20} &#x3D; 0.12$$\n\n这是深层网络的固有风险：矩阵乘法会自然导致梯度衰减。\n2. Post-Norm：Norm 衰减 + 矩阵衰减 “串联生效”在 Post-Norm 中，每一层叠加了两次衰减：\n\nNorm 衰减一次\n子层矩阵衰减一次\n\n跨两层传递的梯度可以写成：\n$$\\delta_{x_L}\\approx\\delta_{x_{L+2}}\\times\\underbrace{G_{\\text{LN}}^{(L+1)}}{\\text{LN 衰减 1}}\\times\\underbrace{G{\\text{Mat}}^{(L+1)}}{\\text{矩阵衰减 1}}\\times\\underbrace{G{\\text{LN}}^{(L)}}{\\text{LN 衰减 2}}\\times\\underbrace{G{\\text{Mat}}^{(L)}}_{\\text{矩阵衰减 2}}$$\n完整路径是如下所示：\n1234567(L+2) 层梯度    ↓ LN（衰减）    ↓ 子层矩阵（衰减）(L+1) 层梯度    ↓ LN（衰减）    ↓ 子层矩阵（衰减）L 层梯度\n\n对于深层网络：\n梯度要经过几十次 LN 缩放 × 几十次矩阵衰减→ 指数级衰减，导致梯度几乎传不到浅层→ 训练直接崩掉（原始 Transformer 很难 100 层以上）\n这也是原始 Post-Norm 基本无法训练 48 层以上的 Transformer 原因，不是经验问题，而是数学上的衰减累积问题。\n3. Pre-Norm：梯度主路径绕过 LN，使矩阵衰减不再“叠加 LN 衰减”上文已述\n4. 结论⭐ 在 Post-Norm 中：\n梯度 &#x3D; LN 衰减 × 矩阵衰减 × LN 衰减 × 矩阵衰减 × ……（层数次）\n深层网络会遭遇指数级梯度衰减，训练极不稳定\n\n⭐ 在 Pre-Norm 中：\n主梯度路径直接通过 residual，不经过 LN\n子层输入始终经过 LN → 阻止矩阵乘法进一步放大&#x2F;缩小方差\nLN 处于稳定位置 → 它的梯度缩放项接近常数\n不再有“Norm 衰减 × 矩阵衰减”的串联灾难\n\n总结：Post-Norm：梯度必须穿 LN → 缩放被累积 → 不稳定&#x2F;无法训练深层Pre-Norm：梯度主路径绕开 LN → 缩放项不累积 → 可训练百层以上核心：归一化的位置决定了梯度能否直接沿残差通道流动\n致谢：感谢MIHRI同学的提问与启发附图：\n1234567891011121314151617181920212223242526272829303132flowchart TD    title[&quot;Post-Norm 梯度主路径无法绕过 LN&quot;]    subgraph Layer_Lplus1[&quot;Layer L+1&quot;]        LN2[&quot;LayerNorm (L+1)&quot;]        Add2[&quot;Add (x + SubLayer)&quot;]        Sub2[&quot;SubLayer (Attn/FFN)&quot;]    end    subgraph Layer_L[&quot;Layer L&quot;]        LN1[&quot;LayerNorm (L)&quot;]        Add1[&quot;Add (x + SubLayer)&quot;]        Sub1[&quot;SubLayer (Attn/FFN)&quot;]    end    Loss[&quot;Loss&quot;]    %% Backward arrows    Loss --&gt; LN2    LN2 --&gt; Add2    Add2 --&gt; Sub2    Add2 --&gt; LN1    LN1 --&gt; Add1    Add1 --&gt; Sub1    Add1 --&gt; xL[&quot;x(L)&quot;]    %% Notes    note1[&quot;梯度必须穿过 LN(L+1) → 缩小/波动&quot;]    note2[&quot;梯度必须再穿过 LN(L) → 再次缩小/波动&quot;]    LN2 -.-&gt; note1    LN1 -.-&gt; note2\n\n1234567891011121314151617181920212223242526272829303132333435flowchart TD    title[&quot;Pre-Norm 梯度主路径绕过 LN&quot;]    subgraph Layer_Lplus1[&quot;Layer L+1&quot;]        Add2[&quot;Add (x + SubLayer(LN(x)))&quot;]        Sub2[&quot;SubLayer&quot;]        LN2[&quot;LayerNorm&quot;]    end    subgraph Layer_L[&quot;Layer L&quot;]        Add1[&quot;Add (x + SubLayer(LN(x)))&quot;]        Sub1[&quot;SubLayer&quot;]        LN1[&quot;LayerNorm&quot;]    end    Loss[&quot;Loss&quot;]    %% Backward arrows    Loss --&gt; Add2    Add2 --&gt; x_Lplus1[&quot;x(L+1) (Residual Path)&quot;]    x_Lplus1 --&gt; Add1    Add1 --&gt; xL[&quot;x(L)&quot;]    %% SubLayer gradients    Add2 --&gt; Sub2    Sub2 --&gt; LN2    Add1 --&gt; Sub1    Sub1 --&gt; LN1    note1[&quot;主梯度路径不经过 LN → 梯度几乎不衰减&quot;]    note2[&quot;LN 仅作用于 SubLayer 输入，不影响残差梯度&quot;]    Add2 -.-&gt; note1    LN1 -.-&gt; note2","dateCreated":"2025-07-12T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-07-12T00:00:00+08:00","description":"","headline":"Transformer架构中的ResNet+LayerNorm设计解析","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/","keywords":"深度学习, Transformer, 残差连接, LayerNorm"}</script>
     <meta name="description" content="Transformer 架构中的 ResNet + LayerNorm 设计解析整体详解一、Transformer 的核心结构：残差连接与归一化的奠基Transformer 的成功离不开两大关键组件的协同 ——残差连接（Residual Connection） 与层归一化（LayerNorm），二者共同构成了 “Add &amp; Norm” 核心单元，支撑起深层网络的可训练性。 1.1 Tran">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Transformer架构中的ResNet+LayerNorm设计解析">
 <meta property="og:url" content="https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/index.html">
-<meta property="og:site_name" content="My Blog">
+<meta property="og:site_name" content="LPF05&#39; s Blog">
 <meta property="og:description" content="Transformer 架构中的 ResNet + LayerNorm 设计解析整体详解一、Transformer 的核心结构：残差连接与归一化的奠基Transformer 的成功离不开两大关键组件的协同 ——残差连接（Residual Connection） 与层归一化（LayerNorm），二者共同构成了 “Add &amp; Norm” 核心单元，支撑起深层网络的可训练性。 1.1 Tran">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-11T16:00:00.000Z">
 <meta property="article:modified_time" content="2026-06-09T16:17:03.618Z">
-<meta property="article:author" content="GOD">
+<meta property="article:author" content="LPF05">
 <meta property="article:tag" content="LayerNorm">
 <meta property="article:tag" content="Transformer">
 <meta property="article:tag" content="残差连接">
@@ -38,7 +40,7 @@
         
     
     
-        <meta property="og:image" content="https://LPF05.github.io/assets/images/please-run.jpg"/>
+        <meta property="og:image" content="https://LPF05.github.io/assets/images/the_night_of_dream.jpg"/>
     
     
     
@@ -76,7 +78,7 @@
             href="/"
             aria-label=""
         >
-            My Blog
+            LPF05&#39; s Blog
         </a>
     </div>
     
@@ -84,11 +86,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Ouvrir le lien: /#about"
+                aria-label="Open the link: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -107,11 +109,11 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="En savoir plus sur l&#39;auteur"
+                    aria-label="Read more about the author"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
                 </a>
-                <h4 class="sidebar-profile-name">GOD</h4>
+                <h4 class="sidebar-profile-name">LPF05</h4>
                 
                     <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
@@ -128,10 +130,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Accueil"
+                            title="Home"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Accueil</span>
+                        <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
             
@@ -170,10 +172,24 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archive"
+                            title="Archives"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archive</span>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -184,10 +200,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Rechercher"
+                            title="Search"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Rechercher</span>
+                        <span class="sidebar-button-desc">Search</span>
                     </a>
             </li>
             
@@ -253,11 +269,11 @@
         <div class="post-meta">
     <time datetime="2025-07-12T00:00:00+08:00">
 	
-		    12 7月 2025
+		    7月 12, 2025
     	
     </time>
     
-        <span>dans </span>
+        <span>in </span>
         
     <a class="category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
 
@@ -587,7 +603,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGÉ DANS</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/LayerNorm/" rel="tag">LayerNorm</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Transformer/" rel="tag">Transformer</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%AE%8B%E5%B7%AE%E8%BF%9E%E6%8E%A5/" rel="tag">残差连接</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a>
 
@@ -604,11 +620,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/15/cs336-scaling-laws/"
                     data-tooltip="CS336 Scaling Laws"
-                    aria-label="PRÉCÉDENT: CS336 Scaling Laws"
+                    aria-label="PREVIOUS: CS336 Scaling Laws"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -618,10 +634,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/11/attention-transformer/"
                     data-tooltip="Attention与Transformer"
-                    aria-label="SUIVANT: Attention与Transformer"
+                    aria-label="NEXT: Attention与Transformer"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -632,7 +648,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -644,8 +660,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -657,8 +673,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -670,8 +686,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -682,7 +698,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -702,7 +718,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2026 GOD. All Rights Reserved.
+        Copyrights &copy; 2026 LPF05. All Rights Reserved.
     </span>
 </footer>
 
@@ -719,11 +735,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/15/cs336-scaling-laws/"
                     data-tooltip="CS336 Scaling Laws"
-                    aria-label="PRÉCÉDENT: CS336 Scaling Laws"
+                    aria-label="PREVIOUS: CS336 Scaling Laws"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -733,10 +749,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/11/attention-transformer/"
                     data-tooltip="Attention与Transformer"
-                    aria-label="SUIVANT: Attention与Transformer"
+                    aria-label="NEXT: Attention与Transformer"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -747,7 +763,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -759,8 +775,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -772,8 +788,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -785,8 +801,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -797,7 +813,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -819,9 +835,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                        aria-label="Partager sur Facebook"
+                        aria-label="Share on Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Partager sur Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                     </a>
                 </li>
             
@@ -832,9 +848,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                        aria-label="Partager sur Twitter"
+                        aria-label="Share on Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Partager sur Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                     </a>
                 </li>
             
@@ -845,9 +861,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/07/12/transformer-resnet-layernorm/"
-                        aria-label="Partager sur Weibo"
+                        aria-label="Share on Weibo"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Partager sur Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
                     </a>
                 </li>
             
@@ -870,9 +886,9 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
-            <h4 id="about-card-name">GOD</h4>
+            <h4 id="about-card-name">LPF05</h4>
         
             <div id="about-card-bio"><p>author.bio</p>
 </div>

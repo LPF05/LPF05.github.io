@@ -5,29 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="My Blog">
-    <title>RNN、LSTM与GRU - My Blog</title>
-    <meta name="author" content="GOD">
+    <meta name="generator" content="LPF05&#39; s Blog">
+    <title>RNN、LSTM与GRU - LPF05&#39; s Blog</title>
+    <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
     
+    
+        <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
     
     
         
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg"},"articleBody":"RNN&amp;LSTM&amp;GRURNN1. \nLSTMGRU","dateCreated":"2025-07-08T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-07-08T00:00:00+08:00","description":"","headline":"RNN、LSTM与GRU","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"},"publisher":{"@type":"Organization","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg","logo":{"@type":"ImageObject","url":"please-run.jpg"}},"url":"https://lpf05.github.io/2025/07/08/rnn-lstm-gru/","keywords":"深度学习, RNN, LSTM, GRU, 序列模型"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"RNN&amp;LSTM&amp;GRURNN1. \nLSTMGRU","dateCreated":"2025-07-08T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-07-08T00:00:00+08:00","description":"","headline":"RNN、LSTM与GRU","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/07/08/rnn-lstm-gru/","keywords":"深度学习, RNN, LSTM, GRU, 序列模型"}</script>
     <meta name="description" content="RNN&amp;LSTM&amp;GRURNN1.  LSTMGRU">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="RNN、LSTM与GRU">
 <meta property="og:url" content="https://lpf05.github.io/2025/07/08/rnn-lstm-gru/index.html">
-<meta property="og:site_name" content="My Blog">
+<meta property="og:site_name" content="LPF05&#39; s Blog">
 <meta property="og:description" content="RNN&amp;LSTM&amp;GRURNN1.  LSTMGRU">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-07-07T16:00:00.000Z">
 <meta property="article:modified_time" content="2026-06-09T16:17:03.616Z">
-<meta property="article:author" content="GOD">
+<meta property="article:author" content="LPF05">
 <meta property="article:tag" content="GRU">
 <meta property="article:tag" content="LSTM">
 <meta property="article:tag" content="RNN">
@@ -39,7 +41,7 @@
         
     
     
-        <meta property="og:image" content="https://LPF05.github.io/assets/images/please-run.jpg"/>
+        <meta property="og:image" content="https://LPF05.github.io/assets/images/the_night_of_dream.jpg"/>
     
     
     
@@ -77,7 +79,7 @@
             href="/"
             aria-label=""
         >
-            My Blog
+            LPF05&#39; s Blog
         </a>
     </div>
     
@@ -85,11 +87,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Ouvrir le lien: /#about"
+                aria-label="Open the link: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -108,11 +110,11 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="En savoir plus sur l&#39;auteur"
+                    aria-label="Read more about the author"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
                 </a>
-                <h4 class="sidebar-profile-name">GOD</h4>
+                <h4 class="sidebar-profile-name">LPF05</h4>
                 
                     <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
@@ -129,10 +131,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Accueil"
+                            title="Home"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Accueil</span>
+                        <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
             
@@ -171,10 +173,24 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archive"
+                            title="Archives"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archive</span>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -185,10 +201,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Rechercher"
+                            title="Search"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Rechercher</span>
+                        <span class="sidebar-button-desc">Search</span>
                     </a>
             </li>
             
@@ -254,11 +270,11 @@
         <div class="post-meta">
     <time datetime="2025-07-08T00:00:00+08:00">
 	
-		    08 7月 2025
+		    7月 08, 2025
     	
     </time>
     
-        <span>dans </span>
+        <span>in </span>
         
     <a class="category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
 
@@ -282,7 +298,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGÉ DANS</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/GRU/" rel="tag">GRU</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/LSTM/" rel="tag">LSTM</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/RNN/" rel="tag">RNN</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%BA%8F%E5%88%97%E6%A8%A1%E5%9E%8B/" rel="tag">序列模型</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a>
 
@@ -299,11 +315,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/10/deep-reinforcement-learning/"
                     data-tooltip="Deep Reinforcement Learning"
-                    aria-label="PRÉCÉDENT: Deep Reinforcement Learning"
+                    aria-label="PREVIOUS: Deep Reinforcement Learning"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -313,10 +329,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/01/datawhale-nlp-camp/"
                     data-tooltip="Datawhale NLP夏令营"
-                    aria-label="SUIVANT: Datawhale NLP夏令营"
+                    aria-label="NEXT: Datawhale NLP夏令营"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -327,7 +343,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -339,8 +355,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -352,8 +368,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -365,8 +381,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -377,7 +393,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -397,7 +413,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2026 GOD. All Rights Reserved.
+        Copyrights &copy; 2026 LPF05. All Rights Reserved.
     </span>
 </footer>
 
@@ -414,11 +430,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/10/deep-reinforcement-learning/"
                     data-tooltip="Deep Reinforcement Learning"
-                    aria-label="PRÉCÉDENT: Deep Reinforcement Learning"
+                    aria-label="PREVIOUS: Deep Reinforcement Learning"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -428,10 +444,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/07/01/datawhale-nlp-camp/"
                     data-tooltip="Datawhale NLP夏令营"
-                    aria-label="SUIVANT: Datawhale NLP夏令营"
+                    aria-label="NEXT: Datawhale NLP夏令营"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -442,7 +458,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -454,8 +470,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -467,8 +483,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -480,8 +496,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -492,7 +508,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -514,9 +530,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                        aria-label="Partager sur Facebook"
+                        aria-label="Share on Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Partager sur Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                     </a>
                 </li>
             
@@ -527,9 +543,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                        aria-label="Partager sur Twitter"
+                        aria-label="Share on Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Partager sur Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                     </a>
                 </li>
             
@@ -540,9 +556,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/07/08/rnn-lstm-gru/"
-                        aria-label="Partager sur Weibo"
+                        aria-label="Share on Weibo"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Partager sur Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
                     </a>
                 </li>
             
@@ -565,9 +581,9 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
-            <h4 id="about-card-name">GOD</h4>
+            <h4 id="about-card-name">LPF05</h4>
         
             <div id="about-card-bio"><p>author.bio</p>
 </div>

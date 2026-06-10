@@ -1,0 +1,1481 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="LPF05&#39; s Blog">
+    <title>Archives - LPF05&#39; s Blog</title>
+    <meta name="author" content="LPF05">
+    
+        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
+    
+    
+        <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{}</script>
+    <meta name="description" content="个人技术博客，记录深度学习、编程等领域的学习笔记与思考">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="LPF05&#39; s Blog">
+<meta property="og:url" content="https://lpf05.github.io/archives/page/4/index.html">
+<meta property="og:site_name" content="LPF05&#39; s Blog">
+<meta property="og:description" content="个人技术博客，记录深度学习、编程等领域的学习笔记与思考">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="LPF05">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="LPF05">
+<meta property="article:tag" content="Machine Learning">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Reinforcement Learning">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="lpf05">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://LPF05.github.io/assets/images/the_night_of_dream.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            LPF05&#39; s Blog
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">LPF05</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Home"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archives"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Search"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/LPF05"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+    <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2025/05/01/frontend/"
+                            aria-label=": 前端学习笔记"
+                        >
+                            前端学习笔记
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2025-05-01T00:00:00+08:00">
+	
+		    5月 01, 2025
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>##HTML</p>
+<p>###HTML基本框架</p>
+<ol>
+<li>&lt;标签名&#x2F;&gt;单标签</li>
+<li>&lt;标签名&gt; &lt;&#x2F; 标签名&gt; 双标签</li>
+</ol>
+<p>1标题标签<h1> - <h6><br>2段落标签<p><br>3换行标签&lt;&gt;</p>
+<p>self跳转blank新建跳转</p>
+<p>标签属性</p>
+<p>锚点定位 类似标签跳转</p>
+<p>表格合并类似放大，并非真合并</p>
+<p>选生日标签是下拉标签</p>
+<p>总结：HTML类似markdown</p>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2025/05/01/frontend/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2025/04/30/p2s-learning-notes-4/"
+                            aria-label=": p2s学习笔记（四）：chapter 5与chapter 6"
+                        >
+                            p2s学习笔记（四）：chapter 5与chapter 6
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2025-04-30T00:00:00+08:00">
+	
+		    4月 30, 2025
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="datawhale-p2s-学习chapter-5与chapter-6"><a href="#datawhale-p2s-学习chapter-5与chapter-6" class="headerlink" title="datawhale p2s 学习chapter_5与chapter_6"></a>datawhale p2s 学习chapter_5与chapter_6</h1><h2 id="chapter-5：循环"><a href="#chapter-5：循环" class="headerlink" title="chapter_5：循环"></a>chapter_5：循环</h2><h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><h4 id="for循环和循环范围"><a href="#for循环和循环范围" class="headerlink" title="for循环和循环范围"></a>for循环和循环范围</h4><ol>
+<li><p>特点</p>
+<p> 基于提供的范围，重复执行特定次数的操作</p>
+</li>
+<li><p>range默认参数</p>
+<blockquote>
+<p>range(a,b,c)</p>
+</blockquote>
+<ul>
+<li>a为起始值，b为终值+1，c为步长</li>
+<li>a如果不写，默认为0</li>
+<li>c不写默认为1</li>
+</ul>
+</li>
+</ol>
+<h4 id="for循环嵌套"><a href="#for循环嵌套" class="headerlink" title="for循环嵌套"></a>for循环嵌套</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">5</span></span><br><span class="line">b = <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(a):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(b):</span><br><span class="line">        <span class="built_in">print</span>(a,b)</span><br></pre></td></tr></table></figure>
+
+<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><ol>
+<li><p>特点</p>
+<p> 未知执行次数，依靠条件判断是否继续执行</p>
+</li>
+<li><p>在范围已知与未知时都可用while循环</p>
+</li>
+</ol>
+<h3 id="break-与-continue-语句"><a href="#break-与-continue-语句" class="headerlink" title="break 与 continue 语句"></a>break 与 continue 语句</h3><h4 id="假死循环"><a href="#假死循环" class="headerlink" title="假死循环"></a>假死循环</h4><ol>
+<li><p>特点</p>
+<p> 与环境交互后，在特定条件下终止的循环</p>
+</li>
+<li><p>简单示例</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">readUntilDone</span>():</span><br><span class="line">linesEntered = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    response = <span class="built_in">input</span>(<span class="string">&quot;输入一个字符串（输入 done 则退出）: &quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> response == <span class="string">&quot;done&quot;</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;你输入了: &quot;</span>, response)</span><br><span class="line">    linesEntered += <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Bye!&quot;</span>)</span><br><span class="line"><span class="keyword">return</span> linesEntered</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="chapter-6：字符串"><a href="#chapter-6：字符串" class="headerlink" title="chapter_6：字符串"></a>chapter_6：字符串</h2><h3 id="字符串文字"><a href="#字符串文字" class="headerlink" title="字符串文字"></a>字符串文字</h3><ol>
+<li><p>引号</p>
+<ul>
+<li>单引号</li>
+<li>双引号</li>
+<li>三引号</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot; &quot;</span></span><br><span class="line"><span class="string">&#x27; &#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27; &#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot; &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>转义序列</p>
+<ul>
+<li>\n    换行符</li>
+<li>\t    制表符</li>
+<li>&quot;    双引号</li>
+<li>\\   反斜线</li>
+</ul>
+</li>
+<li><p>在多行文本中可用<code>\</code>来排除换行</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&quot;&quot;你可以在字符串后面使用 反斜杠 `\`  来排除后面的换行。\</span></span><br><span class="line"><span class="string">比如这里是第二行文字，但是你会看到它会紧跟在上一行句号后面。\</span></span><br><span class="line"><span class="string">这种做法在 CIL 里面经常使用（多个 Flag 并排保持美观），\</span></span><br><span class="line"><span class="string">但是在编程中的应用比较少。\</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多行字符串作为注释</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Python 本身是没有多行注释的，</span></span><br><span class="line"><span class="string">但是你可以用多行字符串实现同样的操作，</span></span><br><span class="line"><span class="string">还记得我们之前学过的“表达式“吗？</span></span><br><span class="line"><span class="string">它的原理就是 Python 会运行它，</span></span><br><span class="line"><span class="string">但是马上扔掉！（垃圾回收机制）</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>repr()函数</p>
+<blockquote>
+<p>转义字符显示</p>
+</blockquote>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">str</span> = data\nwhale</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(<span class="built_in">str</span>))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">有repr()显示</span></span><br><span class="line"><span class="string">data\nwhale</span></span><br><span class="line"><span class="string">#无repr()显示</span></span><br><span class="line"><span class="string">data</span></span><br><span class="line"><span class="string">whale</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="字符串常量"><a href="#字符串常量" class="headerlink" title="字符串常量"></a>字符串常量</h3><ol>
+<li><p>字母</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="built_in">print</span>(string.ascii_letters)</span><br><span class="line"><span class="comment">#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小写字母</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.ascii_lowercase)</span><br><span class="line"><span class="comment">#abcdefghijklmnopqrstuvwxyz</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>大写字母</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.ascii_uppercase) </span><br><span class="line"><span class="comment">#ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数字</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.digits)</span><br><span class="line"><span class="comment">#0123456789</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>特殊字符</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.punctuation)</span><br><span class="line"><span class="comment">#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\]^_`&#123;|&#125;~</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可打印字符</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.printable)</span><br><span class="line"><span class="comment">#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br><span class="line"><span class="comment">#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\]^_`&#123;|&#125;~ </span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>空白字符</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.whitespace)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>空白字符不转义</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(string.whitespace))</span><br><span class="line"><span class="comment">#\t\n\r\x0b\x0c</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="字符串运算"><a href="#字符串运算" class="headerlink" title="字符串运算"></a>字符串运算</h3><ol>
+<li><p>简单运算</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;abc&quot;</span> + <span class="string">&quot;def&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;abc&quot;</span> * <span class="number">3</span>)</span><br><span class="line"><span class="comment">#abcdef</span></span><br><span class="line"><span class="comment">#abcabcabc</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>in运算</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;ring&quot;</span> <span class="keyword">in</span> <span class="string">&quot;strings&quot;</span>) <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;wow&quot;</span> <span class="keyword">in</span> <span class="string">&quot;amazing!&quot;</span>) <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Yes&quot;</span> <span class="keyword">in</span> <span class="string">&quot;yes!&quot;</span>) <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&quot;</span> <span class="keyword">in</span> <span class="string">&quot;No way!&quot;</span>) <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;聪明&quot;</span> <span class="keyword">in</span> <span class="string">&quot;聪明办法学 Python&quot;</span>) <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字符串索引和切片</p>
+<blockquote>
+<p>字符串可作为迭代对象</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="字符串循环"><a href="#字符串循环" class="headerlink" title="字符串循环"></a>字符串循环</h3><ol>
+<li><p>in循环</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line"><span class="built_in">print</span>(c)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>enumerate函数</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> idx, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(s):</span><br><span class="line"><span class="built_in">print</span>(idx, c)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0 D</span></span><br><span class="line"><span class="string">1 a</span></span><br><span class="line"><span class="string">2 t</span></span><br><span class="line"><span class="string">3 a</span></span><br><span class="line"><span class="string">4 w</span></span><br><span class="line"><span class="string">5 h</span></span><br><span class="line"><span class="string">6 a</span></span><br><span class="line"><span class="string">7 l</span></span><br><span class="line"><span class="string">8 e</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>zip函数</p>
+<p> zip(a,b)可以在一次循环中，分别从 a 和 b 里同时取出一个元素</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>(s, reverseString(s)):</span><br><span class="line"><span class="built_in">print</span>(a, b)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">D e</span></span><br><span class="line"><span class="string">a l</span></span><br><span class="line"><span class="string">t a</span></span><br><span class="line"><span class="string">a h</span></span><br><span class="line"><span class="string">w w</span></span><br><span class="line"><span class="string">h a</span></span><br><span class="line"><span class="string">a t</span></span><br><span class="line"><span class="string">l a</span></span><br><span class="line"><span class="string">e D</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>split函数来循环</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class_name.split() 本身会产生一个新的叫做“列表”的东西，但是它不存储任何内容</span></span><br><span class="line"></span><br><span class="line">class_name = <span class="string">&quot;learn python the smart way 2nd edition&quot;</span></span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> class_name.split():</span><br><span class="line">    <span class="built_in">print</span>(word)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">learn</span></span><br><span class="line"><span class="string">python</span></span><br><span class="line"><span class="string">the</span></span><br><span class="line"><span class="string">smart</span></span><br><span class="line"><span class="string">way</span></span><br><span class="line"><span class="string">2nd</span></span><br><span class="line"><span class="string">edition</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>splitlines函数来循环</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class_info.splitlines() 也会产生一个列表，但不存储任何内容</span></span><br><span class="line"></span><br><span class="line">class_info = <span class="string">&quot;&quot;&quot;\</span></span><br><span class="line"><span class="string">聪明办法学 Python 第二版是 Datawhale 基于第一版教程的一次大幅更新。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">我们的课程简称为 P2S，有两个含义：</span></span><br><span class="line"><span class="string">Learn Python The Smart Way V2.</span></span><br><span class="line"><span class="string">Prepare To Be Smart. 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> class_info.splitlines():</span><br><span class="line">    <span class="keyword">if</span> (line.startswith(<span class="string">&quot;Prepare To Be Smart&quot;</span>)):</span><br><span class="line">        <span class="built_in">print</span>(line)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Prepare To Be Smart， 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="字符串内置函数与方法"><a href="#字符串内置函数与方法" class="headerlink" title="字符串内置函数与方法"></a>字符串内置函数与方法</h3><h4 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h4><ol>
+<li><p>str() 和 len()</p>
+<blockquote>
+<p>str 函数将其他类型转化为字符串</p>
+</blockquote>
+<blockquote>
+<p>len 函数获得迭代对象长度</p>
+</blockquote>
+</li>
+<li><p>chr() 和 ord()</p>
+<blockquote>
+<p>chr 函数将ascii码转化为对应字符</p>
+</blockquote>
+<blockquote>
+<p>ord 函数将字符转化为对应ascii码</p>
+</blockquote>
+</li>
+<li><p>ast.literal_eval()</p>
+<blockquote>
+<p>安全地执行字符串中的Python表达式，而不会执行任何可能存在的恶意代码。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="字符串方法"><a href="#字符串方法" class="headerlink" title="字符串方法"></a>字符串方法</h4><ol>
+<li><p>isalnum()</p>
+</li>
+<li><p>isalpha()</p>
+</li>
+<li><p>isdigit()</p>
+</li>
+<li><p>islower()</p>
+</li>
+<li><p>isspace()</p>
+</li>
+<li><p>isupper()</p>
+</li>
+<li><p>strip()</p>
+<blockquote>
+<p>可以将字符串首尾的空格删除</p>
+</blockquote>
+</li>
+<li><p>count()</p>
+</li>
+<li><p>startwith()</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.startswith(<span class="string">&quot;Do&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.startswith(<span class="string">&quot;Don&#x27;t&quot;</span>))</span><br><span class="line"><span class="comment">#True False</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>endwith()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;!&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;rats!&quot;</span>))</span><br><span class="line"><span class="comment">#True False</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>find()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;!&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;rats!&quot;</span>))</span><br><span class="line"><span class="comment"># 5 -1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>index()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.index(<span class="string">&quot;and&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.index(<span class="string">&quot;or&quot;</span>))</span><br><span class="line"><span class="comment"># 5</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>with语句</p>
+</li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2025/04/30/p2s-learning-notes-4/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2025/04/20/p2s-learning-notes-3/"
+                            aria-label=": p2s学习笔记（三）：chapter 4与选学01"
+                        >
+                            p2s学习笔记（三）：chapter 4与选学01
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2025-04-20T00:00:00+08:00">
+	
+		    4月 20, 2025
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="datawhale-p2s-学习chapter-4与选学01"><a href="#datawhale-p2s-学习chapter-4与选学01" class="headerlink" title="datawhale p2s 学习chapter_4与选学01"></a>datawhale p2s 学习chapter_4与选学01</h1><h2 id="chapter-4：条件"><a href="#chapter-4：条件" class="headerlink" title="chapter_4：条件"></a>chapter_4：条件</h2><h3 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h3><ol>
+<li><p>if语句</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>if-else 语句</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> x == <span class="number">0</span>: </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;B&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;D&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>abs转换示例</p>
+</blockquote>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">abs</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &gt;= <span class="number">0</span>:</span><br><span class="line">        sign = +<span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sign = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> sign * n</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>if-elif-else 语句</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;A&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;B&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> x == <span class="number">1</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;D&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;E&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一元二次方程示例</p>
+<blockquote>
+<p>求一元二次方程实数根数</p>
+</blockquote>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">numberOfRoots</span>(<span class="params">a, b, c</span>):</span><br><span class="line"><span class="comment"># 返回 y 的实数根（零点）数量： y = a*x**2 + b*x + c</span></span><br><span class="line">d = b**<span class="number">2</span> - <span class="number">4</span>*a*c</span><br><span class="line"><span class="keyword">if</span> d &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">elif</span> d == <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>if-else 推导式</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(n <span class="keyword">if</span> (n &gt;= <span class="number">0</span>) <span class="keyword">else</span> -n)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="match-case语句"><a href="#match-case语句" class="headerlink" title="match-case语句"></a>match-case语句</h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status">Http响应状态码</a></p>
+<ol>
+<li><p>Http响应码示例</p>
+<blockquote>
+<p>match 后的对象会依次与 case 后的内容进行匹配，如果匹配成功，则执行匹配到的表达式，否则直接跳过，_ 可以匹配一切。</p>
+</blockquote>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">http_error</span>(<span class="params">status</span>):</span><br><span class="line">    <span class="keyword">match</span> status:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">400</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Bad request&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">404</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Not found&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">418</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;I&#x27;m a teapot&quot;</span></span><br><span class="line">        <span class="keyword">case</span> _:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Something&#x27;s wrong with the internet&quot;</span></span><br><span class="line"></span><br><span class="line">mystatus=<span class="number">400</span></span><br><span class="line"><span class="built_in">print</span>(http_error(mystatus))</span><br><span class="line"><span class="comment">#输出 Bad request</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>一个 case 也可以设置多个匹配条件，条件使用 ｜ 隔开</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">case</span> <span class="number">401</span>|<span class="number">403</span>|<span class="number">404</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Not allowed&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="选学01：代码style"><a href="#选学01：代码style" class="headerlink" title="选学01：代码style"></a>选学01：代码style</h2><h3 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h3><p>   修饰的前提时能跑通</p>
+<h3 id="代码布局"><a href="#代码布局" class="headerlink" title="代码布局"></a>代码布局</h3><ol>
+<li><p>缩进</p>
+<ul>
+<li>如果开局有定界符，其余缩进需与开始定界符(例如括号)对齐</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = function(accd,</span><br><span class="line">             eeef)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>需要一个4个空格(长度等于1个制表符)，以区分传入参数和其他内容</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">function</span>(<span class="params"></span></span><br><span class="line"><span class="params">        accd,eeef,</span></span><br><span class="line"><span class="params">        hijk</span>)</span><br><span class="line">    <span class="built_in">print</span>(accd)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (function(accd,eeef,hijk)</span><br><span class="line">        <span class="keyword">and</span> a==<span class="number">0</span>):</span><br><span class="line">    <span class="built_in">print</span>(accd)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>空格一般用于添加以上缩进，tab键一般保持行与行间的一致。</li>
+<li>多行if语句衔接，需要一个额外的缩进区分。</li>
+</ul>
+</li>
+<li><p>换行</p>
+<ul>
+<li>所有行限制最多79个字</li>
+<li>一般语句接受&quot;隐式&quot;显示，with语句不支持，需要用 \ 来衔接</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(                          ) <span class="keyword">as</span> file_1, \</span><br><span class="line"><span class="built_in">open</span>(                          ) <span class="keyword">as</span> file_2: </span><br><span class="line">    file_2.write(file_1.read())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果一项参数需要单独成行时，符号跟在参数前</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">income = (gross_wages</span><br><span class="line">          + taxable_interest</span><br><span class="line">          +(dividends - qualified_dividends)</span><br><span class="line">          - ira_deduction</span><br><span class="line">          - student_loan_interest)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="导入规范"><a href="#导入规范" class="headerlink" title="导入规范"></a>导入规范</h3><ol>
+<li><p>导入本地同目录下封装好的模块或者文件，直接导入即可</p>
+</li>
+<li><p>导入子目录下封装好的模块或者文件，需声明子目录名</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">form branch <span class="keyword">import</span> m3</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="空格"><a href="#空格" class="headerlink" title="空格"></a>空格</h3><ol>
+<li>紧接在括号内，不需要多余空格</li>
+<li>在逗号，分号或冒号之前，尾随逗号之后均不需要多余空格</li>
+<li>在切片中，两个冒号必须应用相同的间距</li>
+<li>紧接在开始函数调用的参数列表在左括号之前，不需要多余空格</li>
+<li>赋值或其他运算符周围需要多个空格以使其与另一个运算符对齐，在同时拥有不同级别运算符时，在优先级较低的符号加空格</li>
+</ol>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ol>
+<li>在有处理逻辑代码中，源程序有效注释量必须在20%以上。</li>
+<li>写注释文档时用&#96;&#96;&#96;</li>
+</ol>
+<h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><ol>
+<li>不要将关键字和函数名用作变量名。</li>
+<li>变量名和函数名应既简短又具有描述性</li>
+<li>分号可以做隔断，换行自动添加分号</li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2025/04/20/p2s-learning-notes-3/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2025/04/15/web-crawler/"
+                            aria-label=": 爬虫学习笔记"
+                        >
+                            爬虫学习笔记
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2025-04-15T00:00:00+08:00">
+	
+		    4月 15, 2025
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h1><h2 id="初识爬虫"><a href="#初识爬虫" class="headerlink" title="初识爬虫"></a>初识爬虫</h2><h4 id="爬虫基础"><a href="#爬虫基础" class="headerlink" title="爬虫基础"></a>爬虫基础</h4><ol>
+<li><p>定义</p>
+<p> 通过编写程序来获取互联网上的资源。</p>
+</li>
+<li><p>需求</p>
+<p> 用程序模拟浏览器，输入一个网址，从该网址获取资源或内容</p>
+</li>
+</ol>
+<h3 id="简单爬虫"><a href="#简单爬虫" class="headerlink" title="简单爬虫"></a>简单爬虫</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> urlopen  </span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;http://www.baidu.com&quot;</span></span><br><span class="line">resp = urlopen(url)</span><br><span class="line">  </span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;mybaidu.html&quot;</span>, mode = <span class="string">&#x27;w&#x27;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(resp.read().decode(<span class="string">&quot;utf-8&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;over!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="web请求过程剖析"><a href="#web请求过程剖析" class="headerlink" title="web请求过程剖析"></a>web请求过程剖析</h3><ul>
+<li><p>参数+网址 获取目标网站参数相关信息，返回带有检索信息的html内容。</p>
+</li>
+<li><p>请求网页骨架，返回网页骨架，请求数据填充，返回请求数据。最终整合。</p>
+</li>
+</ul>
+<ol>
+<li><p>服务器渲染：</p>
+<blockquote>
+<p>在服务器那方直接把数据和html整合在一起统一返回给浏览器。在页面源代码中可看到数据。</p>
+</blockquote>
+</li>
+<li><p>客户端渲染：</p>
+<blockquote>
+<p>第一次请求只要一个html骨架，叠词请求拿到数据，进行数据展示。在页面源代码中看不到数据。</p>
+</blockquote>
+</li>
+</ol>
+<p><font size=4> <strong>需熟练使用浏览器抓包工具（F12中network）</strong></p>
+<h3 id="HTTP协议（超文本传输协议）"><a href="#HTTP协议（超文本传输协议）" class="headerlink" title="HTTP协议（超文本传输协议）"></a>HTTP协议（超文本传输协议）</h3><p>常见协议：TCP&#x2F;IP SOAP HTTP SMTP</p>
+<ol>
+<li><p>请求(request)：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">请求行-&gt;请求方式 请求url地址 协议</span><br><span class="line">请求头-&gt;放一些服务器要使用的附加信息</span><br><span class="line"></span><br><span class="line">请求体-&gt;一般放一些请求参数</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>响应(response):</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">状态行-&gt;协议 状态码（<span class="number">404</span> <span class="number">302</span> <span class="number">200</span>）</span><br><span class="line">响应头-&gt;放一些客户端要使用的附加信息</span><br><span class="line"></span><br><span class="line">响应体-&gt;服务器返回给真正服务端的内容（HTML，json）等</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="请求头和响应头"><a href="#请求头和响应头" class="headerlink" title="请求头和响应头"></a>请求头和响应头</h4><ol>
+<li><p>请求头中重要内容</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">User-Agent ：请求载体的身份标识</span><br><span class="line">Referer ：防盗链（请求来源页，反爬会用）</span><br><span class="line">cookie ：本地字符串数据信息（用户登录信息，反爬token）</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>响应头中重要内容</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cookie ：本地字符串数据信息（用户登录信息，反爬token）</span><br><span class="line">各种字符串，一般是token字样，防止攻击和反爬</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="请求方式"><a href="#请求方式" class="headerlink" title="请求方式"></a>请求方式</h4><ol>
+<li><p>GET：显示提交</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">地址栏请求的都是GET方式</span><br><span class="line">?分割URL和数据，&amp;连接多个参数</span><br><span class="line">只支持ASCII编码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>POST：隐示提交</p>
+<p> <font size=4> <strong>会在浏览器抓包工具中显示，问题大多聚集在请求头和响应头</strong> </font></p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST请求数据在请求包body中</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Requests入门"><a href="#Requests入门" class="headerlink" title="Requests入门"></a>Requests入门</h3><h4 id="安装request"><a href="#安装request" class="headerlink" title="安装request"></a>安装request</h4><p><code>pip install requests</code></p>
+<h4 id="requests示例"><a href="#requests示例" class="headerlink" title="requests示例"></a>requests示例</h4><ol>
+<li><p>服务器渲染</p>
+<ul>
+<li>get示例</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;https://www.sogou.com/web?query=周杰伦&#x27;</span></span><br><span class="line">resp = requests.get(url)        <span class="comment">#get方式</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(resp)</span><br><span class="line"><span class="built_in">print</span>(resp.text)    <span class="comment">#页面源代码</span></span><br><span class="line">resp.close()</span><br><span class="line"><span class="comment">#会被拦截，需要修改</span></span><br></pre></td></tr></table></figure>
+
+<p> 改进，伪装像人，浏览器利用开发者工具，抓取User-Agent，放入header中</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">query = <span class="built_in">input</span>(<span class="string">&quot;Enter something:&quot;</span>)       <span class="comment">#增加搜索输入</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">f&quot;https://www.sogou.com/web?query=<span class="subst">&#123;query&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resp = requests.get(url,headers = headers)  <span class="comment">#处理小小反爬，模拟成浏览器</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(resp)</span><br><span class="line"><span class="built_in">print</span>(resp.text)    <span class="comment">#页面源代码</span></span><br><span class="line">resp.close()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>post示例</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://fanyi.baidu.com/sug&quot;</span></span><br><span class="line"></span><br><span class="line">s = <span class="built_in">input</span>(<span class="string">&quot;Please enter a word:&quot;</span>)</span><br><span class="line">dat = &#123;</span><br><span class="line">    <span class="string">&quot;kw&quot;</span>: s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#发送post请求，发送的数据必须放在字典中，通过data参数进行传递</span></span><br><span class="line">resp = requests.post(url, data=dat)</span><br><span class="line"><span class="built_in">print</span>(resp.json())  <span class="comment">#将服务器返回的内容直接处理成json() =&gt; dict</span></span><br><span class="line">resp.close()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>客户端渲染</p>
+<p> XHR 一般为第二次请求获取的数据。</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://movie.douban.com/j/chart/top_list&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#重新封装参数</span></span><br><span class="line">param = &#123;</span><br><span class="line">    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;24&quot;</span>,</span><br><span class="line">    <span class="string">&quot;interval_id&quot;</span>: <span class="string">&quot;100:90&quot;</span>,</span><br><span class="line">    <span class="string">&quot;action&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">    <span class="string">&quot;start&quot;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">&quot;limit&quot;</span>: <span class="number">20</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#反反爬</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resp = requests.get(url=url, params=param, headers = headers)</span><br><span class="line"><span class="comment">#params类post中的dat</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(resp.json())  <span class="comment">#json格式读取</span></span><br><span class="line">resp.close()</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="resp补充"><a href="#resp补充" class="headerlink" title=" resp补充 "></a><font color="red"> resp补充 </font></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">文件也需关闭</span><br><span class="line"></span><br><span class="line">## 数据解析与提取</span><br><span class="line"></span><br><span class="line">### 三种解析方式</span><br><span class="line"></span><br><span class="line">1. re解析(速度快)</span><br><span class="line"></span><br><span class="line">2. bs4解析(简单)</span><br><span class="line"></span><br><span class="line">3. xpath解析(流行)</span><br><span class="line"></span><br><span class="line">### 解析前置知识：正则表达式</span><br><span class="line"></span><br><span class="line">Regular Expression 正则表达式：一种使用表达式的方式对字符串进行匹配的语法规则。</span><br><span class="line"></span><br><span class="line">- 优点：速度快，效率快，准确性高。</span><br><span class="line">- 缺点：难度较高。</span><br><span class="line"></span><br><span class="line">#### 语法</span><br><span class="line"></span><br><span class="line">使用元字符进行排列组合用来匹配字符串。</span><br><span class="line"></span><br><span class="line">元字符：具有固定含义的特殊符号。</span><br><span class="line"></span><br><span class="line">可以在 `开源中国` 中的工具进行测试学习。</span><br><span class="line"></span><br><span class="line">1. 常用元字符：</span><br><span class="line"></span><br><span class="line">    ```python</span><br><span class="line">    .   匹配除换行符外的任意字符（n个点n个字符）</span><br><span class="line">    \w  匹配字母或数字或下划线</span><br><span class="line">    \s  匹配任意的空白字符</span><br><span class="line">    \d  匹配数字</span><br><span class="line">    \n  匹配一个换行符</span><br><span class="line">    \t  匹配一个制表符</span><br><span class="line"></span><br><span class="line">    ^   匹配字符串的开始</span><br><span class="line">    $   匹配字符串的接尾</span><br><span class="line"></span><br><span class="line">    \W  匹配非字母或数字或下划线</span><br><span class="line">    \D  匹配非数字</span><br><span class="line">    \S  匹配非空白符</span><br><span class="line">    a|b 匹配字符a或字符b</span><br><span class="line">    ()  匹配括号内的表达式，也表示一个组</span><br><span class="line">    […] 匹配字符组中的字符，可用-表示范围</span><br><span class="line">        e.g.\w = [a-zA-Z0-9_]</span><br><span class="line">    [^…]匹配除了字符组中字符的所有字符</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>量词：控制前面的元字符出现的次数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*   重复零次或更多次</span><br><span class="line">+   重复一次或更多次</span><br><span class="line">?   重复零次或一次</span><br><span class="line">&#123;n&#125; 重复n次</span><br><span class="line">&#123;n,&#125;重复n次或更多次</span><br><span class="line">&#123;n,m&#125;重复n到m次</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>贪婪匹配和惰性匹配</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.*  贪婪匹配</span><br><span class="line">.*? 惰性匹配(用的最多)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="re解析"><a href="#re解析" class="headerlink" title="re解析"></a>re解析</h3><h4 id="re模块"><a href="#re模块" class="headerlink" title="re模块"></a>re模块</h4><ol>
+<li><p>findall：匹配字符串中所有的符合正则的内容，返回[列表]</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lst = re.findall(<span class="string">r&quot;\d+&quot;</span>,<span class="string">&quot;我的电话号是10086,他是2001&quot;</span>) <span class="comment">#r时原始字符串的标识，否则会警告语法错误</span></span><br><span class="line"><span class="built_in">print</span>(lst)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>finditer：匹配字符串中所有的符合正则的内容,返回[迭代器],从迭代器中拿到内容需要.group</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">it = re.finditer(<span class="string">r&quot;\d+&quot;</span>,<span class="string">&quot;我的电话号是10086,他是2001&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> it:</span><br><span class="line"><span class="built_in">print</span>(i.group())</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>search：全文匹配，找到一个结果就返回，返回的结果是match对象，拿数据需要.group</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = re.search(<span class="string">r&quot;\d+&quot;</span>,<span class="string">&quot;我的电话号是10086,他是2001&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(s.group())</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>match：从头开始匹配(即从第一位开始匹配，若不是，则返回空)，若没有，则返回空(NoneType)</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = re.<span class="keyword">match</span>(<span class="string">r&quot;\d+&quot;</span>,<span class="string">&quot;我的电话号是10086,他是2001&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(s.group())</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>预加载正则表达式compile：一个正则表达式可以在多个地方使用</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">obj = re.<span class="built_in">compile</span>(<span class="string">r&quot;\d+&quot;</span>)</span><br><span class="line"></span><br><span class="line">ret = obj.finditer(<span class="string">&quot;我的电话号是10086,他是2001&quot;</span>)</span><br><span class="line"><span class="keyword">for</span> it <span class="keyword">in</span> ret:</span><br><span class="line">    <span class="built_in">print</span>(it.group())</span><br><span class="line"></span><br><span class="line">ret = obj.findall(<span class="string">&quot;呵呵，我的电话号是1001001&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(ret)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>re.S：让.能匹配换行符,才会自动转行<br>(?P&lt;分组名&gt;正则)：可以单独从正则匹配的内容中进一步提取内容</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">&quot;&lt;div class=&#x27;jay&#x27;&gt;&lt;span id=&#x27;1&#x27;&gt;王莽&lt;/span&gt;&lt;/div&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">obj = re.<span class="built_in">compile</span>(<span class="string">r&quot;&lt;div class=&#x27;(.*?)&#x27;&gt;&lt;span id=&#x27;(?P&lt;id&gt;\d+)&#x27;&gt;(?P&lt;name&gt;.*?)&lt;/span&gt;&lt;/div&gt;&quot;</span>, re.S)</span><br><span class="line"></span><br><span class="line">result = obj.finditer(s)</span><br><span class="line"><span class="keyword">for</span> it <span class="keyword">in</span> result:</span><br><span class="line">    <span class="built_in">print</span>(it.group(<span class="string">&quot;name&quot;</span>))</span><br><span class="line">    <span class="built_in">print</span>(it.group(<span class="string">&quot;id&quot;</span>))</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="简单实操"><a href="#简单实操" class="headerlink" title="简单实操"></a>简单实操</h4><ol>
+<li><p>豆瓣top 250(GET):</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> csv  <span class="comment">#方便处理数据</span></span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://movie.douban.com/top250&quot;</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line"><span class="string">&quot;User-Agent&quot;</span>:<span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0&quot;</span></span><br><span class="line">&#125;</span><br><span class="line">resp = requests.get(url, headers=headers)</span><br><span class="line"></span><br><span class="line">page_content = resp.text</span><br><span class="line"></span><br><span class="line"><span class="comment">#解析数据</span></span><br><span class="line">obj = re.<span class="built_in">compile</span>(<span class="string">r&#x27;&lt;li&gt;.*?&lt;div class=&quot;item&quot;&gt;.*?&lt;span class=&quot;title&quot;&gt;(?P&lt;name&gt;.*?)&#x27;</span></span><br><span class="line">                <span class="string">r&#x27;&lt;/span&gt;.*?&lt;p class=&quot;&quot;&gt;.*?&lt;br&gt;(?P&lt;year&gt;.*?)&amp;nbsp.*?&lt;span&#x27;</span></span><br><span class="line">                <span class="string">r&#x27; class=&quot;rating_num&quot; property=&quot;v:average&quot;&gt;(?P&lt;score&gt;.*?)&lt;/span&gt;.*?&#x27;</span></span><br><span class="line">                <span class="string">r&#x27; &lt;span&gt;(?P&lt;num&gt;.*?)人评价&lt;/span&gt;&#x27;</span>, re.S)</span><br><span class="line"><span class="comment">#开始匹配</span></span><br><span class="line">result = obj.finditer(page_content)</span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;data.csv&quot;</span>, mode =<span class="string">&quot;w&quot;</span>, encoding=<span class="string">&quot;utf-8&quot;</span>)   <span class="comment">#encoding必须定义，否则会输出乱码</span></span><br><span class="line">csvwriter = csv.writer(f)</span><br><span class="line"><span class="keyword">for</span> it <span class="keyword">in</span> result:</span><br><span class="line"><span class="comment">#     print(it.group(&quot;name&quot;))</span></span><br><span class="line"><span class="comment">#     print(it.group(&quot;score&quot;))</span></span><br><span class="line"><span class="comment">#     print(it.group(&quot;num&quot;))</span></span><br><span class="line"><span class="comment">#     print(it.group(&quot;year&quot;).strip())</span></span><br><span class="line">    dic = it.groupdict()</span><br><span class="line">    dic[<span class="string">&#x27;year&#x27;</span>] = dic[<span class="string">&#x27;year&#x27;</span>].strip()   <span class="comment">#year特殊处理，因为有空格</span></span><br><span class="line">    csvwriter.writerow(dic.values())</span><br><span class="line"></span><br><span class="line">resp.close()    <span class="comment">#关闭请求</span></span><br><span class="line">f.close()   <span class="comment">#关闭文件</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;over!&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>盗版天堂</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#1. 定位到2023必看片</span></span><br><span class="line"><span class="comment">#2. 从2023必看片中提取到子页面的链接地址</span></span><br><span class="line"><span class="comment">#3. 请求子页面的链接地址，拿到想要的下载地址...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> certifi</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">delay = random.randint(<span class="number">1</span>, <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">domain = <span class="string">&quot;https://dytt89.com/&quot;</span></span><br><span class="line"></span><br><span class="line">resp = requests.get(domain, verify=certifi.where())   <span class="comment">#verify=False去掉安全验证，在此网站可以不去掉，verify=False无效，需使用verify=certifi.where()</span></span><br><span class="line">resp.encoding = <span class="string">&#x27;gb2312&#x27;</span>    <span class="comment">#指定字符集，否则无法正常解码，也可以指定成gbk</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#拿到ul里的li</span></span><br><span class="line">obj1 = re.<span class="built_in">compile</span>(<span class="string">r&quot;2023必看热片.*?&lt;ul&gt;(?P&lt;ul&gt;.*?)&lt;/ul&gt;&quot;</span>, re.S)</span><br><span class="line">obj2 = re.<span class="built_in">compile</span>(<span class="string">r&quot;&lt;a href=&#x27;(?P&lt;href&gt;.*?)&#x27;&quot;</span>, re.S)</span><br><span class="line">obj3 = re.<span class="built_in">compile</span>(<span class="string">r&#x27;◎片　　名(?P&lt;movie&gt;.*?)&lt;br /&gt;.*?&lt;td style=&quot;WORD-WRAP: break-word&quot; bgcolor=&quot;#fdfddf&quot;&gt;&lt;a href=&quot;&#x27;</span></span><br><span class="line">                <span class="string">r&#x27;(?P&lt;download&gt;.*?)&quot;&gt;&#x27;</span>, re.S)</span><br><span class="line"></span><br><span class="line">result1 = obj1.finditer(resp.text)</span><br><span class="line">child_href_list = []</span><br><span class="line"><span class="keyword">for</span> it <span class="keyword">in</span> result1:</span><br><span class="line">    ul = it.group(<span class="string">&#x27;ul&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#提取子页面链接</span></span><br><span class="line">    result2 = obj2.finditer(ul)</span><br><span class="line">    <span class="keyword">for</span> itt <span class="keyword">in</span> result2:</span><br><span class="line">        <span class="comment">#拼接子页面的url地址：域名 + 子页面地址</span></span><br><span class="line">        child_href = domain+itt.group(<span class="string">&quot;href&quot;</span>).lstrip(<span class="string">&quot;/&quot;</span>)</span><br><span class="line">        child_href_list.append(child_href)</span><br><span class="line"></span><br><span class="line"><span class="comment">#提取子页面内容</span></span><br><span class="line"><span class="keyword">for</span> href <span class="keyword">in</span> child_href_list:</span><br><span class="line">    time.sleep(<span class="number">0.01</span> * delay)  <span class="comment"># 随机延迟模块</span></span><br><span class="line">    child_resp = requests.get(href, verify=certifi.where())</span><br><span class="line">    child_resp.encoding = <span class="string">&#x27;gb2312&#x27;</span></span><br><span class="line">    result3 = obj3.search(child_resp.text)</span><br><span class="line">    <span class="built_in">print</span>(result3.group(<span class="string">&quot;movie&quot;</span>))</span><br><span class="line">    <span class="built_in">print</span>(result3.group(<span class="string">&quot;download&quot;</span>))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>樱花动漫封面</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 定位到排行榜</span></span><br><span class="line"><span class="comment"># 2. 从排行榜中提取到子页面的链接地址</span></span><br><span class="line"><span class="comment"># 3. 请求子页面的链接地址，拿到封面地址</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> certifi</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="comment"># 随机延迟模块，用来减少封ip以及减少验证码模块出现的概率</span></span><br><span class="line">delay = random.randint(<span class="number">1</span>, <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">domain = <span class="string">&quot;http://www.iyinghua.io/&quot;</span></span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">&quot;User-Agent&quot;</span>: <span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 &quot;</span></span><br><span class="line">                <span class="string">&quot;Safari/537.36 Edg/119.0.0.0&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 请求排行榜</span></span><br><span class="line">resp = requests.get(domain+<span class="string">&#x27;top/&#x27;</span>, headers=headers, verify=certifi.where())     <span class="comment"># verify=False去掉安全验证，在此网站可以不去掉</span></span><br><span class="line"><span class="comment"># ，verify=False无效，需使用verify=certifi.where()</span></span><br><span class="line">resp.encoding = <span class="string">&quot;utf-8&quot;</span>     <span class="comment"># 指定字符集，否则无法正常解码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 1定位到排行榜 2从排行榜中提取到子页面的链接地址 3请求子页面的链接地址，拿到封面地址</span></span><br><span class="line">obj1 = re.<span class="built_in">compile</span>(<span class="string">r&#x27;&lt;h1&gt;&lt;a href=&quot;/top/&quot;&gt;动漫排行榜&lt;/a&gt;&lt;/h1&gt;&lt;/div&gt;&lt;div class=&quot;topli&quot;&gt;.*?&lt;ul&gt;(?P&lt;ul&gt;.*?)&lt;/ul&gt;&#x27;</span>, re.S)</span><br><span class="line">obj2 = re.<span class="built_in">compile</span>(<span class="string">r&#x27;&lt;a href=&quot;(?P&lt;href&gt;.*?)&quot; target=&quot;_blank&quot;&gt;(?P&lt;name&gt;.*?)&lt;/a&gt;&lt;/li&gt;&#x27;</span>, re.S)</span><br><span class="line">obj3 = re.<span class="built_in">compile</span>(<span class="string">r&#x27;&lt;body&gt;.*?&lt;img src=&quot;(?P&lt;href&gt;.*?)&quot; alt=&quot;.*/?&quot;&gt;&lt;/div&gt;&#x27;</span>, re.S)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1定位到排行榜</span></span><br><span class="line">result1 = obj1.finditer(resp.text)</span><br><span class="line">child_href_list = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> it <span class="keyword">in</span> result1:</span><br><span class="line">    ul = it.group(<span class="string">&#x27;ul&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 2从排行榜中提取到子页面的链接地址</span></span><br><span class="line">    result2 = obj2.finditer(ul)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> itt <span class="keyword">in</span> result2:</span><br><span class="line">        child_href = domain+itt.group(<span class="string">&quot;href&quot;</span>).lstrip(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">        child_href_list.append(child_href)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3请求子页面的链接地址，拿到封面地址</span></span><br><span class="line"><span class="keyword">for</span> href <span class="keyword">in</span> child_href_list:</span><br><span class="line">    time.sleep(<span class="number">0.01</span>*delay)      <span class="comment"># 随机延迟模块</span></span><br><span class="line"></span><br><span class="line">    child_resp = requests.get(href, headers=headers, verify=certifi.where())</span><br><span class="line">    child_resp.encoding = <span class="string">&quot;utf-8&quot;</span></span><br><span class="line"></span><br><span class="line">    result3 = obj3.search(child_resp.text)</span><br><span class="line">    <span class="built_in">print</span>(result3.group(<span class="string">&quot;href&quot;</span>))</span><br><span class="line"></span><br><span class="line">resp.close()</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="bs4解析"><a href="#bs4解析" class="headerlink" title="bs4解析"></a>bs4解析</h3><h4 id="HTML语法"><a href="#HTML语法" class="headerlink" title="HTML语法"></a>HTML语法</h4><ol>
+<li><p>HTML超文本标记语言基础语法与bs4实现关系</p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>i love you<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span> <span class="attr">align</span>=<span class="string">&quot;center&quot;</span>&gt;</span>i don&#x27;t love you<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">标签</span> <span class="attr">属性</span>=<span class="string">&quot;属性值&quot;</span>&gt;</span>被标记的内容<span class="tag">&lt;/<span class="name">标签</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">标签</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>h1：标签</li>
+<li>align：属性</li>
+<li>center：属性值</li>
+</ul>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span> <span class="attr">class</span>=<span class="string">&quot;h1&quot;</span>&gt;</span>jay<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">span</span>&gt;</span>xxxxx<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> 通过<strong>标签名</strong>称来拿到数据</p>
+<p> div -&gt; id&#x3D;1 &#x3D;&gt; jay</p>
+</li>
+</ol>
+<h4 id="CSS语法"><a href="#CSS语法" class="headerlink" title="CSS语法"></a>CSS语法</h4><ol>
+<li><p>CSS层叠样式表语言基础语法</p>
+<ul>
+<li><p>语法规则：  </p>
+<ol>
+<li>通过style属性来编写样式</li>
+<li>通过style标签.然后使用选择器的形式编写样式</li>
+<li>在css文件中编写样式，通过link引入该文件</li>
+</ol>
+</li>
+<li><p>CSS选择器</p>
+<ol>
+<li>id选择器     #id</li>
+<li>标签选择器   标签</li>
+<li>类选择器     .类</li>
+<li>选择器分组   ,</li>
+<li>后代选择器   空格</li>
+<li>子代选择器   &gt;</li>
+<li>相邻选择器   +</li>
+<li>属性选择器   [属性&#x3D;值]</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="安装bs4"><a href="#安装bs4" class="headerlink" title="安装bs4"></a>安装bs4</h4><p><code>pip install bs4</code></p>
+<h4 id="示例教学"><a href="#示例教学" class="headerlink" title="示例教学"></a>示例教学</h4><blockquote>
+<p>find(&quot;标签名&quot;, attrs&#x3D;{&quot;属性&quot;:&quot;值&quot;})<br>  find_all(&quot;标签名&quot;, attrs&#x3D;{&quot;属性&quot;:&quot;值&quot;})</p>
+</blockquote>
+<blockquote>
+<p>.get(&quot;属性名&quot;)   拿属性</p>
+</blockquote>
+<blockquote>
+<p>.text           拿文本</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line">html = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">&lt;ul&gt;</span></span><br><span class="line"><span class="string">    &lt;li&gt;&lt;a href=&quot;zhangwuji.com&quot;&gt;张无忌&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">    &lt;li id=&quot;abc&quot;&gt;&lt;a href=&quot;zhouxingchi.com&quot;&gt;周星驰&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">    &lt;li&gt;&lt;a href=&quot;zhubajie.com&quot;&gt;猪八戒&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">    &lt;li&gt;&lt;a href=&quot;wuzetian.com&quot;&gt;武则天&lt;/a&gt;&lt;/li&gt;</span></span><br><span class="line"><span class="string">&lt;/ul&gt;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#1. 初始化BeautifulSoup对象</span></span><br><span class="line">page = BeautifulSoup(html, <span class="string">&quot;html.parser&quot;</span>)   <span class="comment">#定义解析器为html解析器</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#page.find(&quot;标签名&quot;, attrs=&#123;&quot;属性&quot;:&quot;值&quot;&#125;)     #查找某个元素,只会返回一个结果</span></span><br><span class="line">li = page.find(<span class="string">&quot;li&quot;</span>, attrs=&#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;abc&quot;</span>&#125;)</span><br><span class="line"></span><br><span class="line">a = li.find(<span class="string">&quot;a&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(a.text)           <span class="comment">#拿文本 .text 张无忌</span></span><br><span class="line"><span class="built_in">print</span>(a.get(<span class="string">&quot;href&quot;</span>))    <span class="comment">#拿属性 .get(&quot;属性名&quot;) zhangwuji.com</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#page.find_all(&quot;标签名&quot;, attrs=&#123;&quot;属性&quot;:&quot;值&quot;&#125;)     #找到一堆结果</span></span><br><span class="line">li_list = page.find_all(<span class="string">&quot;li&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">    a = li.find(<span class="string">&quot;a&quot;</span>)</span><br><span class="line">    text = a.text       <span class="comment">#拿文本 .text 张无忌</span></span><br><span class="line">    href = a.get(<span class="string">&quot;href&quot;</span>)<span class="comment">#拿属性 .get(&quot;属性名&quot;) zhangwuji.com</span></span><br><span class="line">    <span class="built_in">print</span>(text, href)</span><br></pre></td></tr></table></figure>
+
+<h4 id="简单实操-1"><a href="#简单实操-1" class="headerlink" title="简单实操"></a>简单实操</h4><ol>
+<li><p>优美图库</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拿到主页面源代码，然后提取到子页面的链接地址href</span></span><br><span class="line"><span class="comment"># 通过href拿到子页面的内容，从子页面中找到图片的下载地址</span></span><br><span class="line"><span class="comment"># 下载图片</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line">delay = random.randint(<span class="number">1</span>, <span class="number">20</span>)</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://www.umei.cc/bizhitupian/weimeibizhi/&quot;</span></span><br><span class="line">resp = requests.get(url)</span><br><span class="line">resp.encoding = <span class="string">&#x27;utf-8&#x27;</span>  <span class="comment"># 处理乱码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将源代码交给bs</span></span><br><span class="line">main_page = BeautifulSoup(resp.text, <span class="string">&quot;html.parser&quot;</span>)</span><br><span class="line">alist = main_page.find(<span class="string">&quot;div&quot;</span>, class_=<span class="string">&quot;listlbc_cont_l&quot;</span>).find_all(<span class="string">&quot;div&quot;</span>, class_=<span class="string">&quot;title&quot;</span>)  <span class="comment"># 范围缩小，使得每个迭代</span></span><br><span class="line"><span class="comment"># 元素中仅有一个a标签名</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># print(alist)</span></span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> alist:</span><br><span class="line">    href = a.find(<span class="string">&#x27;a&#x27;</span>).get(<span class="string">&#x27;href&#x27;</span>)  <span class="comment"># 先用find寻找到标签里，再用get拿到标签里特定属性的值</span></span><br><span class="line">    href = <span class="string">&quot;https://www.umei.cc&quot;</span> + href  <span class="comment"># 拼接href，使得其成为完整链接</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 拿到子页面的源代码</span></span><br><span class="line">    child_page_resp = requests.get(href)</span><br><span class="line">    child_page_resp.encoding = <span class="string">&#x27;utf-8&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 从子页面中拿到图片的下载路径</span></span><br><span class="line">    child_page = BeautifulSoup(child_page_resp.text, <span class="string">&quot;html.parser&quot;</span>)</span><br><span class="line">    child_page = child_page.find(<span class="string">&quot;div&quot;</span>, class_=<span class="string">&quot;big-pic&quot;</span>)</span><br><span class="line">    src = child_page.find(<span class="string">&quot;img&quot;</span>).get(<span class="string">&quot;src&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 下载图片</span></span><br><span class="line">    img_resp = requests.get(src)</span><br><span class="line">    <span class="comment"># img_resp.content 拿到的是字节</span></span><br><span class="line">    img_name = src.split(<span class="string">&quot;/&quot;</span>)[-<span class="number">1</span>]   <span class="comment"># 拿到url中最后一个/以后的内容</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;img/&quot;</span>+img_name, mode=<span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(img_resp.content)</span><br><span class="line"></span><br><span class="line">    child_page_resp.close()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;over.&quot;</span>, img_name)</span><br><span class="line">    time.sleep(<span class="number">0.01</span>*delay)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;All over!&quot;</span>)</span><br><span class="line">resp.close()</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="Xpath"><a href="#Xpath" class="headerlink" title="Xpath"></a>Xpath</h3><h4 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h4><ol>
+<li><p>Xpath 是在XML文档中搜索内容的一门语言</p>
+<blockquote>
+<p>类正则表达式检索内容</p>
+</blockquote>
+</li>
+<li><p>HTML是XML的一个子集</p>
+<blockquote>
+<p>XML的形式与HMTL相似，有父子节点，同胞节点等</p>
+</blockquote>
+</li>
+<li><p>Xpath 搜索方式通过节点间关系查找节点</p>
+<blockquote>
+<p>类似文件地址</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="Xpath模块-需提前安装lxml"><a href="#Xpath模块-需提前安装lxml" class="headerlink" title="Xpath模块(需提前安装lxml)"></a>Xpath模块(需提前安装lxml)</h4><ol>
+<li><p>lxml模块需提前安装</p>
+<blockquote>
+<p>pip install lxml</p>
+</blockquote>
+</li>
+<li><p>etree.XML()树</p>
+</li>
+<li><p>xpath()函数</p>
+</li>
+<li><p>text()拿文本</p>
+</li>
+</ol>
+<h4 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h4><ol>
+<li><p>简单示例_1</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">xml = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">&lt;book&gt;</span></span><br><span class="line"><span class="string">    &lt;id&gt;1&lt;/id&gt;</span></span><br><span class="line"><span class="string">    &lt;name&gt;野花遍地香&lt;/name&gt;</span></span><br><span class="line"><span class="string">    &lt;price&gt;1.23&lt;/price&gt;</span></span><br><span class="line"><span class="string">    &lt;nick&gt;臭豆腐&lt;/nick&gt;</span></span><br><span class="line"><span class="string">    &lt;author&gt;</span></span><br><span class="line"><span class="string">        &lt;nick id=&quot;10086&quot;&gt;周大强&lt;/nick&gt;</span></span><br><span class="line"><span class="string">        &lt;nick id=&quot;10010&quot;&gt;周芷若&lt;/nick&gt;</span></span><br><span class="line"><span class="string">        &lt;nick class=&quot;joy&quot;&gt;周杰伦&lt;/nick&gt;</span></span><br><span class="line"><span class="string">        &lt;nick class=&quot;jolin&quot;&gt;蔡依林&lt;/nick&gt;</span></span><br><span class="line"><span class="string">        &lt;div&gt;</span></span><br><span class="line"><span class="string">            &lt;nick&gt;热热1&lt;/nick&gt;</span></span><br><span class="line"><span class="string">        &lt;/div&gt;</span></span><br><span class="line"><span class="string">        &lt;span&gt;</span></span><br><span class="line"><span class="string">            &lt;nick&gt;热热2&lt;/nick&gt;</span></span><br><span class="line"><span class="string">            &lt;car&gt;</span></span><br><span class="line"><span class="string">                &lt;nick&gt;热热3&lt;/nick&gt;</span></span><br><span class="line"><span class="string">            &lt;/car&gt;</span></span><br><span class="line"><span class="string">        &lt;/span&gt;</span></span><br><span class="line"><span class="string">    &lt;/author&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &lt;partner&gt;</span></span><br><span class="line"><span class="string">        &lt;nick id=&quot;ppc&quot;&gt;胖胖陈&lt;/nick&gt;</span></span><br><span class="line"><span class="string">        &lt;nick id=&quot;ppc&quot;&gt;胖胖不陈&lt;/nick&gt;</span></span><br><span class="line"><span class="string">    &lt;/partner&gt;</span></span><br><span class="line"><span class="string">&lt;/book&gt;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">tree = etree.XML(xml)   <span class="comment"># etree.n n=xml,html,parse(文件)都行</span></span><br><span class="line"><span class="comment"># # result = tree.xpath(&quot;/book&quot;)  # /表示层级关系，第一个/是根节点</span></span><br><span class="line"><span class="comment"># result = tree.xpath(&quot;/book/name&quot;)</span></span><br><span class="line"><span class="comment"># result = tree.xpath(&quot;/book/name/text()&quot;)  # text()拿文本</span></span><br><span class="line"><span class="comment"># result = tree.xpath(&quot;/book/author//nick/text()&quot;)    # // 即直接匹配后代中的内容</span></span><br><span class="line"><span class="comment"># result = tree.xpath(&quot;/book/author/*/nick/text()&quot;)   # * 任意的节点，通配符</span></span><br><span class="line">result = tree.xpath(<span class="string">&quot;/book//nick/text()&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>简单示例_2</p>
+<p> 以下为</p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--learn13_1.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;http://www.baidu.com&quot;</span>&gt;</span>百度<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;http://www.google.com&quot;</span>&gt;</span>谷歌<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;http://www.sogou.com&quot;</span>&gt;</span>搜狗<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ol</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;feiji&quot;</span>&gt;</span>飞机<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;dapao&quot;</span>&gt;</span>大炮<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;huoche&quot;</span>&gt;</span>火车<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ol</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;job&quot;</span>&gt;</span>李嘉诚<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;common&quot;</span>&gt;</span>胡辣汤<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> 示例代码片段</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">tree = etree.parse(<span class="string">&quot;learn13_1.html&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># result = tree.xpath(&#x27;/html&#x27;)</span></span><br><span class="line"><span class="comment"># result = tree.xpath(&quot;/html/body/ul/li/a/text()&quot;)</span></span><br><span class="line"><span class="comment"># result = tree.xpath(&quot;/html/body/ul/li[1]/a/text()&quot;)   #xpath的顺序是从1开始数的，[]表示索引</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># result = tree.xpath(&quot;/html/body/ol/li/a[@href=&#x27;dapao&#x27;]/text()&quot;)   #[@xxx=xxx]属性的筛选</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># print(result)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ol_li_list = tree.xpath(&quot;/html/body/ol/li&quot;)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># for li in ol_li_list:</span></span><br><span class="line"><span class="comment">#     # 从每一个li中提取到文字信息</span></span><br><span class="line"><span class="comment">#     result1 = li.xpath(&quot;./a/text()&quot;)  # 在li中继续去寻找，相对查找 ./</span></span><br><span class="line"><span class="comment">#     print(result1)</span></span><br><span class="line"><span class="comment">#     result2 = li.xpath(&quot;./a/@href&quot;)  # 拿到属性值：@属性</span></span><br><span class="line"><span class="comment">#     print(result2)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># print(tree.xpath(&quot;/html/body/ul/li/a/@href&quot;))</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(tree.xpath(<span class="string">&quot;/html/body/div[1]/text()&quot;</span>))   <span class="comment"># 可直接在浏览其中开发者工具中，选中元素，复制得到xpath地址</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="简单实操-2"><a href="#简单实操-2" class="headerlink" title="简单实操"></a>简单实操</h4><ol>
+<li><p>猪八戒</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拿到页面源代码</span></span><br><span class="line"><span class="comment"># 提取和解析数据</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">url = <span class="string">&quot;https://www.zbj.com/fw/?k=saas&quot;</span></span><br><span class="line">resp = requests.get(url)</span><br><span class="line"><span class="comment"># print(resp.text)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析</span></span><br><span class="line">html = etree.HTML(resp.text)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 拿到每一个服务商的div</span></span><br><span class="line">divs = html.xpath(<span class="string">&quot;&quot;&quot;//*[@id=&quot;__layout&quot;]/div/div[3]/div/div[4]/div/div[2]/div[1]/div&quot;&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> div <span class="keyword">in</span> divs:    <span class="comment"># 每一个服务商</span></span><br><span class="line">    price = div.xpath(<span class="string">&quot;./div/div[3]/div[1]/span/text()&quot;</span>)[<span class="number">0</span>].strip(<span class="string">&quot;¥&quot;</span>)</span><br><span class="line">    title = <span class="string">&quot;saas&quot;</span>.join(div.xpath(<span class="string">&quot;./div/div[3]/div[2]/a/text()&quot;</span>))</span><br><span class="line">    com_name = div.xpath(<span class="string">&quot;./div/a/div[2]/div[1]/div/text()&quot;</span>)[<span class="number">0</span>]</span><br><span class="line"><span class="comment">#    location = div.xpath(&quot;./div/div[2]/a/div[2]/div/span[2]/text()&quot;)   # 无法读取，未知原因</span></span><br><span class="line">    <span class="built_in">print</span>(com_name)</span><br><span class="line"></span><br><span class="line">resp.close()</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="requests模块进阶"><a href="#requests模块进阶" class="headerlink" title="requests模块进阶"></a>requests模块进阶</h2><h3 id="requests进阶内容"><a href="#requests进阶内容" class="headerlink" title="requests进阶内容"></a>requests进阶内容</h3><ol>
+<li>模拟浏览器登录：cookie</li>
+<li>防盗链处理</li>
+<li>代理</li>
+</ol>
+<h3 id="处理用户cookie"><a href="#处理用户cookie" class="headerlink" title="处理用户cookie"></a>处理用户cookie</h3><ol>
+<li><p>17k小说网做演示</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 登录 -&gt; 得到cookie</span></span><br><span class="line"><span class="comment"># 带着cookie 去请求到书架url -&gt; 书架上的内容</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 必须将以上两个操作连起来</span></span><br><span class="line"><span class="comment"># 我们可以使用session进行请求 -&gt; session你可以认为是一连串的请求，在这个过程中的cookie不会丢失</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment"># 会话</span></span><br><span class="line">session = requests.session()</span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">&quot;loginName&quot;</span>: <span class="string">&quot;18614875987&quot;</span>,</span><br><span class="line">    <span class="string">&quot;password&quot;</span>: <span class="string">&quot;q6035945&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1. 登录</span></span><br><span class="line">url = <span class="string">&quot;https://passport.17k.com/ck/user/login&quot;</span></span><br><span class="line">resp = session.post(url, data=data)</span><br><span class="line"><span class="comment"># print(resp.text)</span></span><br><span class="line"><span class="comment"># print(resp.cookies)   # 看cookies</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2. 拿书架上的数据</span></span><br><span class="line"><span class="comment"># 刚才的session中有cookie</span></span><br><span class="line">resp = session.get(<span class="string">&quot;https://user.17k.com/ck/author/shelf?page=1&amp;appKey=2406394919&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(resp.json())</span><br><span class="line"></span><br><span class="line"><span class="comment"># # 等同于以下内容，以下为野路子</span></span><br><span class="line"><span class="comment"># resp = requests.get(&quot;https://user.17k.com/ck/author2/shelf?page=1&amp;appKey=2406394919&quot;, headers=&#123;</span></span><br><span class="line"><span class="comment">#     &quot;User-Agent&quot;: &quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 &quot;</span></span><br><span class="line"><span class="comment">#                   &quot;Safari/537.36 Edg/119.0.0.0&quot;,</span></span><br><span class="line"><span class="comment">#     &quot;Cookie&quot;: &quot;GUID=0ede9a6e-0431-4a6a-8793-94dc38ef2992; sajssdk_2015_cross_new_user=1; _openId=ow-yN5v2NYuyR2ry9Cks&quot;</span></span><br><span class="line"><span class="comment">#               &quot;pu95Q7DM; c_channel=0; c_csc=web; c_referer_17k=https://www.baidu.com/link?url=QDoY3M0rvYKhxCaHwsSlx4C&quot;</span></span><br><span class="line"><span class="comment">#               &quot;aS51PwkqbK8K70u9gL4i&amp;wd=&amp;eqid=a9f0d9e60004a7570000000365732c70; accessToken=nickname%3D%25E4%25B9%25A6&quot;</span></span><br><span class="line"><span class="comment">#               &quot;%25E5%258F%258B7xMU04b7E%26avatarUrl%3Dhttps%253A%252F%252Fcdn.static.17k.com%252Fuser%252Favatar%252F&quot;</span></span><br><span class="line"><span class="comment">#               &quot;11%252F91%252F87%252F102628791.jpg-88x88%253Fv%253D1702042539000%26id%3D102628791%26e%3D1717598877%26s&quot;</span></span><br><span class="line"><span class="comment">#               &quot;%3Dbae653e5a3fe69b4; sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22102628791%22%2C%22%24device_i&quot;</span></span><br><span class="line"><span class="comment">#               &quot;d%22%3A%2218c49a051c420bc-051299d1d6f72a-4c657b58-1821369-18c49a051c5229e%22%2C%22props%22%3A%7B%22%24&quot;</span></span><br><span class="line"><span class="comment">#               &quot;latest_traffic_source_type%22%3A%22%E7%9B%B4%E6%8E%A5%E6%B5%81%E9%87%8F%22%2C%22%24latest_referrer%22%&quot;</span></span><br><span class="line"><span class="comment">#               &quot;3A%22%22%2C%22%24latest_referrer_host%22%3A%22%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8&quot;</span></span><br><span class="line"><span class="comment">#               &quot;F%96%E5%88%B0%E5%80%BC_%E7%9B%B4%E6%8E%A5%E6%89%93%E5%BC%80%22%7D%2C%22first_id%22%3A%220ede9a6e-0431-&quot;</span></span><br><span class="line"><span class="comment">#               &quot;4a6a-8793-94dc38ef2992%22%7D&quot;</span></span><br><span class="line"><span class="comment"># &#125;)</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># print(resp.text)</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="处理防盗链"><a href="#处理防盗链" class="headerlink" title="处理防盗链"></a>处理防盗链</h3><ol>
+<li><p>梨视频做演示</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">    </span><br></pre></td></tr></table></figure></li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2025/04/15/web-crawler/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            p2s学习笔记（二）：chapter 2与chapter 3
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2025-04-10T00:00:00+08:00">
+	
+		    4月 10, 2025
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="datawhale-p2s-学习chapter-2与chapter-3"><a href="#datawhale-p2s-学习chapter-2与chapter-3" class="headerlink" title="datawhale p2s 学习chapter_2与chapter_3"></a>datawhale p2s 学习chapter_2与chapter_3</h1><h2 id="chapter-2：数据类型和操作"><a href="#chapter-2：数据类型和操作" class="headerlink" title="chapter_2：数据类型和操作"></a>chapter_2：数据类型和操作</h2><h3 id="常用内置类型"><a href="#常用内置类型" class="headerlink" title="常用内置类型"></a>常用内置类型</h3><ol>
+<li>整数 int<blockquote>
+<p>离散</p>
+</blockquote>
+</li>
+<li>浮点数 float<blockquote>
+<p>双精度</p>
+</blockquote>
+</li>
+<li>布尔值 bool<blockquote>
+<p>True or False</p>
+</blockquote>
+</li>
+<li>类型 type<blockquote>
+<p>即int float等类型</p>
+</blockquote>
+</li>
+<li>字符串 string<blockquote>
+<p>5~9为数组类型</p>
+</blockquote>
+</li>
+<li>列表 list</li>
+<li>元组 tuple</li>
+<li>集合 set</li>
+<li>字典 Dictionary (映射map)</li>
+<li>复数 complex</li>
+<li>函数 function</li>
+<li>模块 module</li>
+</ol>
+<h3 id="常用内置常数"><a href="#常用内置常数" class="headerlink" title="常用内置常数"></a>常用内置常数</h3><ol>
+<li>True<blockquote>
+<p>真</p>
+</blockquote>
+</li>
+<li>False<blockquote>
+<p>假</p>
+</blockquote>
+</li>
+<li>None<blockquote>
+<p>空</p>
+</blockquote>
+</li>
+<li>pi<blockquote>
+<p>数学常数 π &#x3D; 3.141592...，精确到可用精度</p>
+</blockquote>
+</li>
+<li>e<blockquote>
+<p>数学常数 e &#x3D; 2.718281...，精确到可用精度</p>
+</blockquote>
+</li>
+<li>tau<blockquote>
+<p>数学常数 τ &#x3D; 6.283185...，精确到可用精度</p>
+</blockquote>
+</li>
+<li>inf<blockquote>
+<p>浮点正无穷大，等价于 float(&#39;inf&#39;)，负无穷大使用 -math.inf</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="常用内置运算符"><a href="#常用内置运算符" class="headerlink" title="常用内置运算符"></a>常用内置运算符</h3><ol>
+<li>算术：+, -, *, @, &#x2F;, &#x2F;&#x2F;, **, %, - (一元算符), + (一元算符)</li>
+<li>关系：&lt;, &lt;&#x3D;, &gt;&#x3D;, &gt;, &#x3D;&#x3D;, !&#x3D;</li>
+<li>赋值： +&#x3D;, -&#x3D;, *&#x3D;, &#x2F;&#x3D;, &#x2F;&#x2F;&#x3D;, **&#x3D;, %&#x3D;</li>
+<li>逻辑：and, or, not</li>
+</ol>
+<ul>
+<li><p>除法类型</p>
+<p>&#x2F; 指的是浮点数除法，它的结果是一个浮点数&#x2F;&#x2F; 指的是整除除法，它的计算结果是整数，舍弃余数</p>
+</li>
+<li><p>模运算<br>% 代表模运算（取余），结果为商的余数<br>a mod b ⟺ a−(a∣b)×b</p>
+</li>
+</ul>
+<h3 id="类型影响语义"><a href="#类型影响语义" class="headerlink" title="类型影响语义"></a>类型影响语义</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="number">3</span> * <span class="number">2</span>)  <span class="comment">#6</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">3</span> * <span class="string">&quot;p2s&quot;</span>)  <span class="comment">#p2sp2sp2s</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">3</span> + <span class="number">2</span>)  <span class="comment">#5</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Data&quot;</span> + <span class="string">&quot;whale&quot;</span>)  <span class="comment">#Datawhale</span></span><br><span class="line"><span class="built_in">print</span>(<span class="number">3</span> + <span class="string">&quot;p2s&quot;</span>)  <span class="comment">#3p2s</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="运算符优先级"><a href="#运算符优先级" class="headerlink" title="运算符优先级"></a>运算符优先级</h3><table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">(expressions...),[expressions...], {key: value...}, {expressions...}</td>
+<td align="left">绑定或加圆括号的表达式，列表显示，字典显示，集合显示</td>
+</tr>
+<tr>
+<td align="left">x[index], x[index:index], x(arguments...), x.attribute</td>
+<td align="left">抽取，切片，调用，属性引用</td>
+</tr>
+<tr>
+<td align="left">await x</td>
+<td align="left">await 表达式</td>
+</tr>
+<tr>
+<td align="left">**</td>
+<td align="left">乘方</td>
+</tr>
+<tr>
+<td align="left">+x, -x, ~x</td>
+<td align="left">正，负，按位非 NOT</td>
+</tr>
+<tr>
+<td align="left">*, @, &#x2F;, &#x2F;&#x2F;, %</td>
+<td align="left">乘，矩阵乘，除，整除，取余</td>
+</tr>
+<tr>
+<td align="left">+, -</td>
+<td align="left">加和减</td>
+</tr>
+<tr>
+<td align="left">&lt;&lt;, &gt;&gt;</td>
+<td align="left">移位</td>
+</tr>
+<tr>
+<td align="left">&amp;</td>
+<td align="left">按位与 AND</td>
+</tr>
+<tr>
+<td align="left">^</td>
+<td align="left">按位异或 XOR</td>
+</tr>
+<tr>
+<td align="left">|</td>
+<td align="left">按位或 OR</td>
+</tr>
+<tr>
+<td align="left">in, not in, is, is not, &lt;, &lt;&#x3D;, &gt;, &gt;&#x3D;, !&#x3D;, &#x3D;&#x3D;</td>
+<td align="left">比较运算，包括成员检测和标识号检测</td>
+</tr>
+<tr>
+<td align="left">not x</td>
+<td align="left">布尔逻辑非 NOT</td>
+</tr>
+<tr>
+<td align="left">and</td>
+<td align="left">布尔逻辑与 AND</td>
+</tr>
+<tr>
+<td align="left">or</td>
+<td align="left">布尔逻辑或 OR</td>
+</tr>
+<tr>
+<td align="left">if -- else</td>
+<td align="left">条件表达式</td>
+</tr>
+<tr>
+<td align="left">lambda</td>
+<td align="left">lambda 表达式</td>
+</tr>
+<tr>
+<td align="left">:&#x3D;</td>
+<td align="left">赋值表达式</td>
+</tr>
+</tbody></table>
+<h3 id="短路求值"><a href="#短路求值" class="headerlink" title="短路求值"></a>短路求值</h3><table>
+<thead>
+<tr>
+<th align="left">X</th>
+<th align="left">Y</th>
+<th align="left">X and Y</th>
+<th align="left">X or Y</th>
+<th align="left">not X</th>
+<th align="left">not Y</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">True</td>
+<td align="left">True</td>
+<td align="left">True</td>
+<td align="left">True</td>
+<td align="left">False</td>
+<td align="left">False</td>
+</tr>
+<tr>
+<td align="left">True</td>
+<td align="left">False</td>
+<td align="left">False</td>
+<td align="left">True</td>
+<td align="left">False</td>
+<td align="left">True</td>
+</tr>
+<tr>
+<td align="left">False</td>
+<td align="left">False</td>
+<td align="left">False</td>
+<td align="left">False</td>
+<td align="left">True</td>
+<td align="left">True</td>
+</tr>
+<tr>
+<td align="left">False</td>
+<td align="left">True</td>
+<td align="left">False</td>
+<td align="left">True</td>
+<td align="left">True</td>
+<td align="left">False</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">yes</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">no</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">crash</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>/<span class="number">0</span> <span class="comment"># 会崩溃！</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(no() <span class="keyword">and</span> crash()) <span class="comment"># 成功运行！</span></span><br><span class="line"><span class="built_in">print</span>(crash() <span class="keyword">and</span> no()) <span class="comment"># 崩溃了！</span></span><br><span class="line"><span class="built_in">print</span> (yes() <span class="keyword">and</span> crash()) <span class="comment"># 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃</span></span><br><span class="line"><span class="comment">#输出False</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(yes() <span class="keyword">or</span> crash()) <span class="comment"># 成功运行</span></span><br><span class="line"><span class="built_in">print</span>(crash() <span class="keyword">or</span> yes()) <span class="comment"># 崩溃了</span></span><br><span class="line"><span class="built_in">print</span>(no() <span class="keyword">or</span> crash())  <span class="comment"># 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃</span></span><br><span class="line"><span class="comment">#输出True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="type-vs-isinstance"><a href="#type-vs-isinstance" class="headerlink" title="type() vs isinstance()"></a>type() vs isinstance()</h3><ul>
+<li>isinstance() 比 type() 更具有 稳健性（Robustness）</li>
+<li>这种做法更加符合 面向对象编程 中 继承（inheritance）的思想</li>
+</ul>
+<h2 id="chapter-3：变量与函数"><a href="#chapter-3：变量与函数" class="headerlink" title="chapter_3：变量与函数"></a>chapter_3：变量与函数</h2><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><ol>
+<li><p>变量的规则</p>
+<ul>
+<li>变量是一个标签，它所指代的是一段数据</li>
+<li>使用 &#x3D; 来对这段数据的区域进行赋值</li>
+<li>新值会覆盖旧值</li>
+<li>新值的数据类型不一定与旧值相同</li>
+</ul>
+</li>
+<li><p>变量命名规则：</p>
+<ul>
+<li>必须以字母或下划线（_）开头</li>
+<li>命名可由字母、数字和下划线组成</li>
+<li>大小写敏感</li>
+<li>尽量避免使用保留字命名</li>
+</ul>
+</li>
+<li><p>保留字</p>
+<p>False、None、True、and、as、assert、break、class、continue、def、del、elif、else、except、finally、for、from、global、if、import、in、is、lambda、nonlocal、not、or、pass、raise、return、try、while、with、yield</p>
+</li>
+<li><p>更新变量</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">5</span></span><br><span class="line">x += <span class="number">2</span> <span class="comment"># 等价于 x = x + 2</span></span><br></pre></td></tr></table></figure></li>
+<li><p>多变量赋值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = b = c = <span class="number">2</span></span><br><span class="line">a, b, c = <span class="number">1</span>, <span class="number">2</span>, <span class="number">6</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><ol>
+<li><p>函数由两个部分组成：header 和 body</p>
+<ul>
+<li>header 用于定义函数接口（函数 名称 与 参数）</li>
+<li>body 包含函数所需要执行的操作</li>
+</ul>
+</li>
+<li><p>header</p>
+<blockquote>
+<p>header 用于定义函数的名称和参数</p>
+</blockquote>
+<ul>
+<li>当函数被调用时，参数将会作为变量被提供给函数的 body 部分</li>
+<li>可以提供多个参数（用 , 分隔），也可以不提供参数</li>
+<li>header 以 : 结尾，代表后面会跟着 body 部分</li>
+</ul>
+</li>
+<li><p>body</p>
+<blockquote>
+<p>body 包含函数执行的语句（statement）</p>
+</blockquote>
+<ul>
+<li>语句需要缩进（由 Code Style Guide 决定）</li>
+<li>当语句不再缩进，函数部分结束</li>
+<li>一般会使用 return 语句让函数返回其结果，但不是必须的</li>
+</ul>
+</li>
+<li><p>函数示例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">double</span>(<span class="params">x</span>):</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;I&#x27;m in double!&quot;</span>)</span><br><span class="line"><span class="keyword">return</span> <span class="number">2</span> * x</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>我们使用函数名来调用函数</li>
+<li>函数名后紧跟一对括号</li>
+<li>括号中是我们设定的参数的值，一个不多，一个不少（这很重要）</li>
+<li>函数会返回设定的 return 语句的值</li>
+<li>如果参数数目没有匹配会Oops</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x, y, z</span>):</span><br><span class="line"><span class="keyword">return</span> x + y + z</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">g</span>():</span><br><span class="line"><span class="keyword">return</span> <span class="number">42</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(g(<span class="number">2</span>)) <span class="comment"># 崩溃！</span></span><br><span class="line"><span class="built_in">print</span>(f(<span class="number">1</span>, <span class="number">2</span>)) <span class="comment"># 也会崩溃</span></span><br></pre></td></tr></table></figure></li>
+<li><p>多返回值</p>
+<blockquote>
+<p>可设置多返回值</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> </span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="语句与表达式"><a href="#语句与表达式" class="headerlink" title="语句与表达式"></a>语句与表达式</h3><ol>
+<li><p>表达式</p>
+<ul>
+<li>它本身是值</li>
+<li>它的计算结果是值</li>
+</ul>
+</li>
+<li><p>语句</p>
+<ul>
+<li>它不是值</li>
+<li>它不能打印</li>
+<li>但它能执行一些操作</li>
+</ul>
+</li>
+</ol>
+<h3 id="内置函数"><a href="#内置函数" class="headerlink" title="内置函数"></a>内置函数</h3><ol>
+<li>bool(),float()等python内置类型转换函数</li>
+<li>abs(),max(),min(),pow(),round()等python内置math库</li>
+</ol>
+<h3 id="变量作用域"><a href="#变量作用域" class="headerlink" title="变量作用域"></a>变量作用域</h3><ol>
+<li><p>每个变量都有属于自己的作用范围，在范围内生效</p>
+</li>
+<li><p>局部作用域</p>
+<blockquote>
+<p>局部生效，只存在于函数内部，与其他函数中的同名变量无关，优先级大于全局</p>
+</blockquote>
+</li>
+<li><p>全局作用域</p>
+<blockquote>
+<p>全局生效</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="返回语句-vs-输出语句"><a href="#返回语句-vs-输出语句" class="headerlink" title="返回语句 vs 输出语句"></a>返回语句 vs 输出语句</h3><ol>
+<li>返回立即结束(函数内或全局)</li>
+<li>输出不结束，且不会赋值于其他变量</li>
+</ol>
+<h3 id="嵌套函数-or-组合函数"><a href="#嵌套函数-or-组合函数" class="headerlink" title="嵌套函数 or 组合函数"></a>嵌套函数 or 组合函数</h3><ol>
+<li><p>嵌套函数，最先运行最内层的函数。</p>
+<blockquote>
+<p>递归</p>
+</blockquote>
+</li>
+<li><p>组合函数，一般用于分治或模块化</p>
+<blockquote>
+<p>分治</p>
+</blockquote>
+</li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2025/04/10/p2s-learning-notes-2/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    <div class="pagination-bar">
+    <ul class="pagination">
+        
+          <li class="pagination-prev">
+            <a
+                class="btn btn--default btn--small"
+                href="/archives/page/3/"
+                aria-label="NEWER POSTS"
+            >
+              <i class="fa fa-angle-left text-base icon-mr"></i>
+              <span>NEWER POSTS</span>
+            </a>
+          </li>
+        
+        
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/archives/page/5/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 4 of 5</li>
+    </ul>
+</div>
+
+</section>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2026 LPF05. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">LPF05</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                China
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-6yu5w4pfz4aqanvhrjcwld22ilanwb1tmjt8vttlswsuc7y6omw9oxqp9prz.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

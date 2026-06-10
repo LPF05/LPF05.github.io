@@ -5,29 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="My Blog">
-    <title>Python类的实现中有关__setattr__原理问题 - My Blog</title>
-    <meta name="author" content="GOD">
+    <meta name="generator" content="LPF05&#39; s Blog">
+    <title>Python类的实现中有关__setattr__原理问题 - LPF05&#39; s Blog</title>
+    <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
     
+    
+        <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
     
     
         
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg"},"articleBody":"python类的实现中有关__settar__原理问题具体解决思路问题代码段:\n1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        # 允许设置名为 &#x27;_attributes&#x27; 的属性，这是实现所必需的          if name == &#x27;_attributes&#x27;:            super().__setattr__(name, value)            # 对于其他属性，添加它们到 _attributes 字典中        else:            self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性          if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35# 访问属性  print(obj.name)  # 输出: Alice  print(obj.age)  # 输出: 35\n\n在这段代码中，我发现特殊方法__setattr__中有段未知代码 super().__setattr__(name, value)，我要对其功能进行一个测试。\n\n在代码测试中加入_attributes的value。\n123456789101112131415161718192021222324import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attrubites = 10# 访问属性  print(obj.name)  print(obj.age)print(obj._attributes)&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 32, in &lt;module&gt;        print(obj.name)            ^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 15, in __getattr__        if name in self._attributes:        ^^^^^^^^^^^^^^^^^^^^^^^^    TypeError: argument of type &#x27;int&#x27; is not iterable&#x27;&#x27;&#x27;\n\n123456789101112import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attributes = 10# 访问属性  print(obj._attributes)  # 输出:10\n\n由此得知，super().__setattr__(name, value)这段代码的功能是使 _attributes的key可以覆盖原属性dict。\n\n删掉这段代码，测试其是否为重要组成部分。\n1234567891011121314151617181920212223242526272829303132333435363738394041424344class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性        if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 19, in &lt;module&gt;        obj = CustomAttributes()            ^^^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 3, in __init__        self._attributes = &#123;&#125;        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 6, in __setattr__        self._attributes[name] = value        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    [Previous line repeated 743 more times]RecursionError: maximum recursion depth exceeded&#x27;&#x27;&#x27;\n\n由此得知，去除掉这段代码会导致触发无限递归，当 __init__ 方法在创建 CustomAttributes 实例时被调用时，它尝试设置 _attributes 字典。这触发了 __setattr__ 方法的调用。在 __setattr__ 方法内部，当尝试访问 self._attributes 时，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性。然后，__getattr__ 方法又尝试检查 name 是否在 self._attributes 中，这再次触发了 __getattr__ 的调用，从而形成了无限递归。\n\n\n总结\n由两个实验得之:uper().__setattr__(name, value)允许你绕过当前类中的 __setattr__方法，并直接调用其父类的 __setattr__方法。\n在 __init__方法创建实例时被调用时，会调用 __setattr__方法去设置实例的属性，当在 __setattr__方法内部尝试访问，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性，从而造成递归循环。\n\n","dateCreated":"2025-05-10T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-05-10T00:00:00+08:00","description":"","headline":"Python类的实现中有关__setattr__原理问题","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/10/python-setattr-principle/"},"publisher":{"@type":"Organization","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg","logo":{"@type":"ImageObject","url":"please-run.jpg"}},"url":"https://lpf05.github.io/2025/05/10/python-setattr-principle/","keywords":"Python, 面向对象, 魔术方法"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"python类的实现中有关__settar__原理问题具体解决思路问题代码段:\n1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        # 允许设置名为 &#x27;_attributes&#x27; 的属性，这是实现所必需的          if name == &#x27;_attributes&#x27;:            super().__setattr__(name, value)            # 对于其他属性，添加它们到 _attributes 字典中        else:            self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性          if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35# 访问属性  print(obj.name)  # 输出: Alice  print(obj.age)  # 输出: 35\n\n在这段代码中，我发现特殊方法__setattr__中有段未知代码 super().__setattr__(name, value)，我要对其功能进行一个测试。\n\n在代码测试中加入_attributes的value。\n123456789101112131415161718192021222324import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attrubites = 10# 访问属性  print(obj.name)  print(obj.age)print(obj._attributes)&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 32, in &lt;module&gt;        print(obj.name)            ^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 15, in __getattr__        if name in self._attributes:        ^^^^^^^^^^^^^^^^^^^^^^^^    TypeError: argument of type &#x27;int&#x27; is not iterable&#x27;&#x27;&#x27;\n\n123456789101112import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attributes = 10# 访问属性  print(obj._attributes)  # 输出:10\n\n由此得知，super().__setattr__(name, value)这段代码的功能是使 _attributes的key可以覆盖原属性dict。\n\n删掉这段代码，测试其是否为重要组成部分。\n1234567891011121314151617181920212223242526272829303132333435363738394041424344class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性        if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 19, in &lt;module&gt;        obj = CustomAttributes()            ^^^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 3, in __init__        self._attributes = &#123;&#125;        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 6, in __setattr__        self._attributes[name] = value        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    [Previous line repeated 743 more times]RecursionError: maximum recursion depth exceeded&#x27;&#x27;&#x27;\n\n由此得知，去除掉这段代码会导致触发无限递归，当 __init__ 方法在创建 CustomAttributes 实例时被调用时，它尝试设置 _attributes 字典。这触发了 __setattr__ 方法的调用。在 __setattr__ 方法内部，当尝试访问 self._attributes 时，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性。然后，__getattr__ 方法又尝试检查 name 是否在 self._attributes 中，这再次触发了 __getattr__ 的调用，从而形成了无限递归。\n\n\n总结\n由两个实验得之:uper().__setattr__(name, value)允许你绕过当前类中的 __setattr__方法，并直接调用其父类的 __setattr__方法。\n在 __init__方法创建实例时被调用时，会调用 __setattr__方法去设置实例的属性，当在 __setattr__方法内部尝试访问，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性，从而造成递归循环。\n\n","dateCreated":"2025-05-10T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-05-10T00:00:00+08:00","description":"","headline":"Python类的实现中有关__setattr__原理问题","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/10/python-setattr-principle/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/05/10/python-setattr-principle/","keywords":"Python, 面向对象, 魔术方法"}</script>
     <meta name="description" content="python类的实现中有关__settar__原理问题具体解决思路问题代码段: 1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes &#x3D; &#123;&#125;    def __setattr__(">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Python类的实现中有关__setattr__原理问题">
 <meta property="og:url" content="https://lpf05.github.io/2025/05/10/python-setattr-principle/index.html">
-<meta property="og:site_name" content="My Blog">
+<meta property="og:site_name" content="LPF05&#39; s Blog">
 <meta property="og:description" content="python类的实现中有关__settar__原理问题具体解决思路问题代码段: 1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes &#x3D; &#123;&#125;    def __setattr__(">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-09T16:00:00.000Z">
 <meta property="article:modified_time" content="2026-06-09T16:17:03.633Z">
-<meta property="article:author" content="GOD">
+<meta property="article:author" content="LPF05">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="面向对象">
 <meta property="article:tag" content="魔术方法">
@@ -37,7 +39,7 @@
         
     
     
-        <meta property="og:image" content="https://LPF05.github.io/assets/images/please-run.jpg"/>
+        <meta property="og:image" content="https://LPF05.github.io/assets/images/the_night_of_dream.jpg"/>
     
     
     
@@ -75,7 +77,7 @@
             href="/"
             aria-label=""
         >
-            My Blog
+            LPF05&#39; s Blog
         </a>
     </div>
     
@@ -83,11 +85,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Ouvrir le lien: /#about"
+                aria-label="Open the link: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -106,11 +108,11 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="En savoir plus sur l&#39;auteur"
+                    aria-label="Read more about the author"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
                 </a>
-                <h4 class="sidebar-profile-name">GOD</h4>
+                <h4 class="sidebar-profile-name">LPF05</h4>
                 
                     <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
@@ -127,10 +129,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Accueil"
+                            title="Home"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Accueil</span>
+                        <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
             
@@ -169,10 +171,24 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archive"
+                            title="Archives"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archive</span>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -183,10 +199,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Rechercher"
+                            title="Search"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Rechercher</span>
+                        <span class="sidebar-button-desc">Search</span>
                     </a>
             </li>
             
@@ -252,11 +268,11 @@
         <div class="post-meta">
     <time datetime="2025-05-10T00:00:00+08:00">
 	
-		    10 5月 2025
+		    5月 10, 2025
     	
     </time>
     
-        <span>dans </span>
+        <span>in </span>
         
     <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
@@ -301,7 +317,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGÉ DANS</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/" rel="tag">魔术方法</a>
 
@@ -318,11 +334,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/05/15/product-recommendation-tianchi/"
                     data-tooltip="商品推荐学习-天池极客挑赛安泰杯"
-                    aria-label="PRÉCÉDENT: 商品推荐学习-天池极客挑赛安泰杯"
+                    aria-label="PREVIOUS: 商品推荐学习-天池极客挑赛安泰杯"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -332,10 +348,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/05/01/frontend/"
                     data-tooltip="前端学习笔记"
-                    aria-label="SUIVANT: 前端学习笔记"
+                    aria-label="NEXT: 前端学习笔记"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -346,7 +362,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -358,8 +374,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -371,8 +387,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -384,8 +400,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -396,7 +412,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -416,7 +432,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2026 GOD. All Rights Reserved.
+        Copyrights &copy; 2026 LPF05. All Rights Reserved.
     </span>
 </footer>
 
@@ -433,11 +449,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/05/15/product-recommendation-tianchi/"
                     data-tooltip="商品推荐学习-天池极客挑赛安泰杯"
-                    aria-label="PRÉCÉDENT: 商品推荐学习-天池极客挑赛安泰杯"
+                    aria-label="PREVIOUS: 商品推荐学习-天池极客挑赛安泰杯"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -447,10 +463,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/05/01/frontend/"
                     data-tooltip="前端学习笔记"
-                    aria-label="SUIVANT: 前端学习笔记"
+                    aria-label="NEXT: 前端学习笔记"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -461,7 +477,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -473,8 +489,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -486,8 +502,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -499,8 +515,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -511,7 +527,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -533,9 +549,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                        aria-label="Partager sur Facebook"
+                        aria-label="Share on Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Partager sur Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                     </a>
                 </li>
             
@@ -546,9 +562,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                        aria-label="Partager sur Twitter"
+                        aria-label="Share on Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Partager sur Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                     </a>
                 </li>
             
@@ -559,9 +575,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/05/10/python-setattr-principle/"
-                        aria-label="Partager sur Weibo"
+                        aria-label="Share on Weibo"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Partager sur Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
                     </a>
                 </li>
             
@@ -584,9 +600,9 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
-            <h4 id="about-card-name">GOD</h4>
+            <h4 id="about-card-name">LPF05</h4>
         
             <div id="about-card-bio"><p>author.bio</p>
 </div>

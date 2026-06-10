@@ -5,29 +5,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="My Blog">
-    <title>WoW-RAG：检索增强生成 - My Blog</title>
-    <meta name="author" content="GOD">
+    <meta name="generator" content="LPF05&#39; s Blog">
+    <title>WoW-RAG：检索增强生成 - LPF05&#39; s Blog</title>
+    <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
     
+    
+        <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
     
     
         
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg"},"articleBody":"Wow-RAG手搓一个土的RAG\n安装相关库：faiss-gpu、scikit-learn、scipy、openai、python-dotenv；配置api_key、base_url、chat_model、emb_model。\n\n加载APIkey，配置环境：  \n 12345678910import osfrom dotenv import load_dotenv# 加载环境变量load_dotenv()# 从环境变量中读取api_keyapi_key = os.getenv(...)base_url = ...chat_model = ...emb_model = ...\n\n构造client：  \n 12345from openai import OpenAIclient = OpenAI(    api_key = api_key,    base_url = base_url)\n\n构造文档，并将文档向量化：\n 1234567891011121314151617181920212223242526272829303132333435363738394041from sklearn.preprocessing import normalizeimport numpy as npimport faissembedding_text = &quot;...&quot;# 设置每个文本块的大小为 150 个字符chunk_size = 150# 使用列表推导式将长文本分割成多个块，每个块的大小为 chunk_size （将文本分段，是因为API输入有长度限制）chunks = [embedding_text[i:i + chunk_size] for i in range(0, len(embedding_text), chunk_size)]# 初始化一个空列表来存储每个文本块的嵌入向量embeddings = []# 遍历每个文本块for chunk in chunks:    # 使用 OpenAI API 为当前文本块创建嵌入向量    response = client.embeddings.create(        model=emb_model,        input=chunk,    )        # 将嵌入向量添加到列表中    embeddings.append(response.data[0].embedding)# 使用 sklearn 的 normalize 函数对嵌入向量进行归一化处理normalized_embeddings = normalize(np.array(embeddings).astype(&#x27;float32&#x27;))# 获取嵌入向量的维度d = len(embeddings[0])# 创建一个 Faiss 索引，用于存储和检索嵌入向量（使用faiss创建向量索引，可以降低向量匹配检索的时间复杂度，且无需训练、是精确检索、无近似误差，在更大规模数据的检索中可以使用更高效的索引类型代替）index = faiss.IndexFlatIP(d)# 将归一化后的嵌入向量添加到索引中index.add(normalized_embeddings)# 获取索引中的向量总数n_vectors = index.ntotalprint(n_vectors)\n\n定义input_text向量化并匹配相似文本：\n 12345678910111213141516171819202122232425262728293031323334353637383940from sklearn.preprocessing import normalizedef match_text(input_text, index, chunks, k=2):    &quot;&quot;&quot;    在给定的文本块集合中，找到与输入文本最相似的前k个文本块。    参数:        input_text (str): 要匹配的输入文本。        index (faiss.Index): 用于搜索的Faiss索引。        chunks (list of str): 文本块的列表。        k (int, optional): 要返回的最相似文本块的数量。默认值为2。    返回:        str: 格式化的字符串，包含最相似的文本块及其相似度。    &quot;&quot;&quot;    # 确保k不超过文本块的总数    k = min(k, len(chunks))    # 使用OpenAI API为输入文本创建嵌入向量    response = client.embeddings.create(        model=emb_model,        input=input_text,    )    # 获取输入文本的嵌入向量    input_embedding = response.data[0].embedding    # 对输入嵌入向量进行归一化处理    input_embedding = normalize(np.array([input_embedding]).astype(&#x27;float32&#x27;))    # 在索引中搜索与输入嵌入向量最相似的k个向量    distances, indices = index.search(input_embedding, k)    # 初始化一个字符串来存储匹配的文本    matching_texts = &quot;&quot;    # 遍历搜索结果    for i, idx in enumerate(indices[0]):        # 打印每个匹配文本块的相似度和文本内容        print(f&quot;similarity: &#123;distances[0][i]:.4f&#125;\\nmatching text: \\n&#123;chunks[idx]&#125;\\n&quot;)        # 将相似度和文本内容添加到匹配文本字符串中        matching_texts += f&quot;similarity: &#123;distances[0][i]:.4f&#125;\\nmatching text: \\n&#123;chunks[idx]&#125;\\n&quot;    # 返回包含匹配文本块及其相似度的字符串    return matching_texts\n\n获得匹配文块并构造prompt：\n 1234567891011input_text = &quot;What are the applications of Agent AI systems ?&quot;matched_texts = match_text(input_text=input_text, index=index, chunks=chunks, k=2)prompt = f&quot;&quot;&quot;根据找到的文档&#123;matched_texts&#125;生成&#123;input_text&#125;的答案，尽可能使用文档语句的原文回答。不要复述问题，直接开始回答。&quot;&quot;&quot;\n\n构建prompt：\n 12345678910111213141516171819202122232425262728293031323334def get_completion_stream(prompt):    &quot;&quot;&quot;    使用 OpenAI 的 Chat Completions API 生成流式的文本回复。    参数:        prompt (str): 要生成回复的提示文本。    返回:        None: 该函数直接打印生成的回复内容。    &quot;&quot;&quot;    # 使用 OpenAI 的 Chat Completions API 创建一个聊天完成请求    response = client.chat.completions.create(        model=chat_model,  # 填写需要调用的模型名称        messages=[            &#x27;&#x27;&#x27;            常用的role值分为&quot;system&quot;、&quot;user&quot;、&quot;assistant&quot;；            其中system是系统消息，一般用于设置模型的行为和角色，一般作为对话的第一条消息，会影响模型的整体回复风格；            user是用户消息，代表用户输入的内容；            assistant是助手消息，即模型生成的回复，一般在多轮会话中需要加历史中的assistant加入，保持上下文连贯性。            &#x27;&#x27;&#x27;            &#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt&#125;,        ],        stream=True,    )    # 如果响应存在    if response:        # 遍历响应中的每个块        for chunk in response:            # 获取当前块的内容            content = chunk.choices[0].delta.content            # 如果内容存在            if content:                # 打印内容，并刷新输出缓冲区                print(content, end=&#x27;&#x27;, flush=True)\n\n使用prompt\n 1get_completion_stream(prompt)\n\n感谢datawhale的wow-RAG教程支持","dateCreated":"2025-06-15T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-06-15T00:00:00+08:00","description":"","headline":"WoW-RAG：检索增强生成","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/06/15/wow-rag/"},"publisher":{"@type":"Organization","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg","logo":{"@type":"ImageObject","url":"please-run.jpg"}},"url":"https://lpf05.github.io/2025/06/15/wow-rag/","keywords":"LLM, RAG, 检索增强生成, 向量检索"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"Wow-RAG手搓一个土的RAG\n安装相关库：faiss-gpu、scikit-learn、scipy、openai、python-dotenv；配置api_key、base_url、chat_model、emb_model。\n\n加载APIkey，配置环境：  \n 12345678910import osfrom dotenv import load_dotenv# 加载环境变量load_dotenv()# 从环境变量中读取api_keyapi_key = os.getenv(...)base_url = ...chat_model = ...emb_model = ...\n\n构造client：  \n 12345from openai import OpenAIclient = OpenAI(    api_key = api_key,    base_url = base_url)\n\n构造文档，并将文档向量化：\n 1234567891011121314151617181920212223242526272829303132333435363738394041from sklearn.preprocessing import normalizeimport numpy as npimport faissembedding_text = &quot;...&quot;# 设置每个文本块的大小为 150 个字符chunk_size = 150# 使用列表推导式将长文本分割成多个块，每个块的大小为 chunk_size （将文本分段，是因为API输入有长度限制）chunks = [embedding_text[i:i + chunk_size] for i in range(0, len(embedding_text), chunk_size)]# 初始化一个空列表来存储每个文本块的嵌入向量embeddings = []# 遍历每个文本块for chunk in chunks:    # 使用 OpenAI API 为当前文本块创建嵌入向量    response = client.embeddings.create(        model=emb_model,        input=chunk,    )        # 将嵌入向量添加到列表中    embeddings.append(response.data[0].embedding)# 使用 sklearn 的 normalize 函数对嵌入向量进行归一化处理normalized_embeddings = normalize(np.array(embeddings).astype(&#x27;float32&#x27;))# 获取嵌入向量的维度d = len(embeddings[0])# 创建一个 Faiss 索引，用于存储和检索嵌入向量（使用faiss创建向量索引，可以降低向量匹配检索的时间复杂度，且无需训练、是精确检索、无近似误差，在更大规模数据的检索中可以使用更高效的索引类型代替）index = faiss.IndexFlatIP(d)# 将归一化后的嵌入向量添加到索引中index.add(normalized_embeddings)# 获取索引中的向量总数n_vectors = index.ntotalprint(n_vectors)\n\n定义input_text向量化并匹配相似文本：\n 12345678910111213141516171819202122232425262728293031323334353637383940from sklearn.preprocessing import normalizedef match_text(input_text, index, chunks, k=2):    &quot;&quot;&quot;    在给定的文本块集合中，找到与输入文本最相似的前k个文本块。    参数:        input_text (str): 要匹配的输入文本。        index (faiss.Index): 用于搜索的Faiss索引。        chunks (list of str): 文本块的列表。        k (int, optional): 要返回的最相似文本块的数量。默认值为2。    返回:        str: 格式化的字符串，包含最相似的文本块及其相似度。    &quot;&quot;&quot;    # 确保k不超过文本块的总数    k = min(k, len(chunks))    # 使用OpenAI API为输入文本创建嵌入向量    response = client.embeddings.create(        model=emb_model,        input=input_text,    )    # 获取输入文本的嵌入向量    input_embedding = response.data[0].embedding    # 对输入嵌入向量进行归一化处理    input_embedding = normalize(np.array([input_embedding]).astype(&#x27;float32&#x27;))    # 在索引中搜索与输入嵌入向量最相似的k个向量    distances, indices = index.search(input_embedding, k)    # 初始化一个字符串来存储匹配的文本    matching_texts = &quot;&quot;    # 遍历搜索结果    for i, idx in enumerate(indices[0]):        # 打印每个匹配文本块的相似度和文本内容        print(f&quot;similarity: &#123;distances[0][i]:.4f&#125;\\nmatching text: \\n&#123;chunks[idx]&#125;\\n&quot;)        # 将相似度和文本内容添加到匹配文本字符串中        matching_texts += f&quot;similarity: &#123;distances[0][i]:.4f&#125;\\nmatching text: \\n&#123;chunks[idx]&#125;\\n&quot;    # 返回包含匹配文本块及其相似度的字符串    return matching_texts\n\n获得匹配文块并构造prompt：\n 1234567891011input_text = &quot;What are the applications of Agent AI systems ?&quot;matched_texts = match_text(input_text=input_text, index=index, chunks=chunks, k=2)prompt = f&quot;&quot;&quot;根据找到的文档&#123;matched_texts&#125;生成&#123;input_text&#125;的答案，尽可能使用文档语句的原文回答。不要复述问题，直接开始回答。&quot;&quot;&quot;\n\n构建prompt：\n 12345678910111213141516171819202122232425262728293031323334def get_completion_stream(prompt):    &quot;&quot;&quot;    使用 OpenAI 的 Chat Completions API 生成流式的文本回复。    参数:        prompt (str): 要生成回复的提示文本。    返回:        None: 该函数直接打印生成的回复内容。    &quot;&quot;&quot;    # 使用 OpenAI 的 Chat Completions API 创建一个聊天完成请求    response = client.chat.completions.create(        model=chat_model,  # 填写需要调用的模型名称        messages=[            &#x27;&#x27;&#x27;            常用的role值分为&quot;system&quot;、&quot;user&quot;、&quot;assistant&quot;；            其中system是系统消息，一般用于设置模型的行为和角色，一般作为对话的第一条消息，会影响模型的整体回复风格；            user是用户消息，代表用户输入的内容；            assistant是助手消息，即模型生成的回复，一般在多轮会话中需要加历史中的assistant加入，保持上下文连贯性。            &#x27;&#x27;&#x27;            &#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt&#125;,        ],        stream=True,    )    # 如果响应存在    if response:        # 遍历响应中的每个块        for chunk in response:            # 获取当前块的内容            content = chunk.choices[0].delta.content            # 如果内容存在            if content:                # 打印内容，并刷新输出缓冲区                print(content, end=&#x27;&#x27;, flush=True)\n\n使用prompt\n 1get_completion_stream(prompt)\n\n感谢datawhale的wow-RAG教程支持","dateCreated":"2025-06-15T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-06-15T00:00:00+08:00","description":"","headline":"WoW-RAG：检索增强生成","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/06/15/wow-rag/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/06/15/wow-rag/","keywords":"LLM, RAG, 检索增强生成, 向量检索"}</script>
     <meta name="description" content="Wow-RAG手搓一个土的RAG 安装相关库：faiss-gpu、scikit-learn、scipy、openai、python-dotenv；配置api_key、base_url、chat_model、emb_model。  加载APIkey，配置环境：    12345678910import osfrom dotenv import load_dotenv# 加载环境变量load_dote">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="WoW-RAG：检索增强生成">
 <meta property="og:url" content="https://lpf05.github.io/2025/06/15/wow-rag/index.html">
-<meta property="og:site_name" content="My Blog">
+<meta property="og:site_name" content="LPF05&#39; s Blog">
 <meta property="og:description" content="Wow-RAG手搓一个土的RAG 安装相关库：faiss-gpu、scikit-learn、scipy、openai、python-dotenv；配置api_key、base_url、chat_model、emb_model。  加载APIkey，配置环境：    12345678910import osfrom dotenv import load_dotenv# 加载环境变量load_dote">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-14T16:00:00.000Z">
 <meta property="article:modified_time" content="2026-06-09T16:17:03.620Z">
-<meta property="article:author" content="GOD">
+<meta property="article:author" content="LPF05">
 <meta property="article:tag" content="LLM">
 <meta property="article:tag" content="RAG">
 <meta property="article:tag" content="向量检索">
@@ -38,7 +40,7 @@
         
     
     
-        <meta property="og:image" content="https://LPF05.github.io/assets/images/please-run.jpg"/>
+        <meta property="og:image" content="https://LPF05.github.io/assets/images/the_night_of_dream.jpg"/>
     
     
     
@@ -76,7 +78,7 @@
             href="/"
             aria-label=""
         >
-            My Blog
+            LPF05&#39; s Blog
         </a>
     </div>
     
@@ -84,11 +86,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Ouvrir le lien: /#about"
+                aria-label="Open the link: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
         </a>
     
@@ -107,11 +109,11 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="En savoir plus sur l&#39;auteur"
+                    aria-label="Read more about the author"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
                 </a>
-                <h4 class="sidebar-profile-name">GOD</h4>
+                <h4 class="sidebar-profile-name">LPF05</h4>
                 
                     <h5 class="sidebar-profile-bio"><p>author.bio</p>
 </h5>
@@ -128,10 +130,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Accueil"
+                            title="Home"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Accueil</span>
+                        <span class="sidebar-button-desc">Home</span>
                     </a>
             </li>
             
@@ -170,10 +172,24 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archive"
+                            title="Archives"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archive</span>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/about"
+                            
+                            rel="noopener"
+                            title="About"
+                        >
+                        <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
                     </a>
             </li>
             
@@ -184,10 +200,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Rechercher"
+                            title="Search"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Rechercher</span>
+                        <span class="sidebar-button-desc">Search</span>
                     </a>
             </li>
             
@@ -253,11 +269,11 @@
         <div class="post-meta">
     <time datetime="2025-06-15T00:00:00+08:00">
 	
-		    15 6月 2025
+		    6月 15, 2025
     	
     </time>
     
-        <span>dans </span>
+        <span>in </span>
         
     <a class="category-link" href="/categories/NLP/">NLP</a>
 
@@ -304,7 +320,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGÉ DANS</span><br/>
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/LLM/" rel="tag">LLM</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/RAG/" rel="tag">RAG</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%90%91%E9%87%8F%E6%A3%80%E7%B4%A2/" rel="tag">向量检索</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%A3%80%E7%B4%A2%E5%A2%9E%E5%BC%BA%E7%94%9F%E6%88%90/" rel="tag">检索增强生成</a>
 
@@ -321,11 +337,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/06/20/d2l-new-knowledge/"
                     data-tooltip="动手学深度学习新知"
-                    aria-label="PRÉCÉDENT: 动手学深度学习新知"
+                    aria-label="PREVIOUS: 动手学深度学习新知"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -335,10 +351,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/06/10/deep-learning-49-questions/"
                     data-tooltip="深度学习49问"
-                    aria-label="SUIVANT: 深度学习49问"
+                    aria-label="NEXT: 深度学习49问"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -349,7 +365,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -361,8 +377,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/06/15/wow-rag/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -374,8 +390,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/06/15/wow-rag/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -387,8 +403,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/06/15/wow-rag/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -399,7 +415,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -419,7 +435,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2026 GOD. All Rights Reserved.
+        Copyrights &copy; 2026 LPF05. All Rights Reserved.
     </span>
 </footer>
 
@@ -436,11 +452,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/06/20/d2l-new-knowledge/"
                     data-tooltip="动手学深度学习新知"
-                    aria-label="PRÉCÉDENT: 动手学深度学习新知"
+                    aria-label="PREVIOUS: 动手学深度学习新知"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
             </li>
             <li class="post-action">
@@ -450,10 +466,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/06/10/deep-learning-49-questions/"
                     data-tooltip="深度学习49问"
-                    aria-label="SUIVANT: 深度学习49问"
+                    aria-label="NEXT: 深度学习49问"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -464,7 +480,7 @@
             <a
                 class="post-action-btn btn btn--default btn-open-shareoptions"
                 href="#btn-open-shareoptions"
-                aria-label="Diesen Beitrag teilen"
+                aria-label="Share this post"
             >
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
@@ -476,8 +492,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/06/15/wow-rag/"
-                    title="Partager sur Facebook"
-                    aria-label="Partager sur Facebook"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -489,8 +505,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/06/15/wow-rag/"
-                    title="Partager sur Twitter"
-                    aria-label="Partager sur Twitter"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -502,8 +518,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/06/15/wow-rag/"
-                    title="Partager sur Weibo"
-                    aria-label="Partager sur Weibo"
+                    title="Share on Weibo"
+                    aria-label="Share on Weibo"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -514,7 +530,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -536,9 +552,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/06/15/wow-rag/"
-                        aria-label="Partager sur Facebook"
+                        aria-label="Share on Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Partager sur Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                     </a>
                 </li>
             
@@ -549,9 +565,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/06/15/wow-rag/"
-                        aria-label="Partager sur Twitter"
+                        aria-label="Share on Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Partager sur Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                     </a>
                 </li>
             
@@ -562,9 +578,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/06/15/wow-rag/"
-                        aria-label="Partager sur Weibo"
+                        aria-label="Share on Weibo"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Partager sur Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
                     </a>
                 </li>
             
@@ -587,9 +603,9 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
         
-            <h4 id="about-card-name">GOD</h4>
+            <h4 id="about-card-name">LPF05</h4>
         
             <div id="about-card-bio"><p>author.bio</p>
 </div>
