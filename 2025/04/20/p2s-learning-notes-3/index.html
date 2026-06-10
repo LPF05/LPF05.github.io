@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-cn">
     
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <title>p2s学习笔记（三）：chapter 4与选学01 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
+        <meta name="keywords" content="Deep Learning,Python,Machine Learning,Transformer,Reinforcement Learning,AGI,LPF05,lpf05,">
     
     
         <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_4与选学01chapter_4：条件if语句\nif语句\n 12if x == 0:    print(a)\n\nif-else 语句\n 1234if x == 0:     print(&quot;B&quot;, end=&quot;&quot;)else:    print(&quot;D&quot;, end=&quot;&quot;)\n\n\nabs转换示例\n\n 123456def abs(n):    if n &gt;= 0:        sign = +1    else:        sign = -1    return sign * n\n\nif-elif-else 语句\n 1234567print(&quot;A&quot;, end=&quot;&quot;)if x == 0:    print(&quot;B&quot;, end=&quot;&quot;)elif x == 1:    print(&quot;D&quot;, end=&quot;&quot;)else:    print(&quot;E&quot;, end=&quot;&quot;)\n\n一元二次方程示例\n\n求一元二次方程实数根数\n\n 123456789def numberOfRoots(a, b, c):# 返回 y 的实数根（零点）数量： y = a*x**2 + b*x + cd = b**2 - 4*a*cif d &gt; 0:    return 2elif d == 0:    return 1else:    return 0\n\nif-else 推导式\n 1print(n if (n &gt;= 0) else -n)\n\nmatch-case语句Http响应状态码\n\nHttp响应码示例\n\nmatch 后的对象会依次与 case 后的内容进行匹配，如果匹配成功，则执行匹配到的表达式，否则直接跳过，_ 可以匹配一切。\n\n 1234567891011121314def http_error(status):    match status:        case 400:            return &quot;Bad request&quot;        case 404:            return &quot;Not found&quot;        case 418:            return &quot;I&#x27;m a teapot&quot;        case _:            return &quot;Something&#x27;s wrong with the internet&quot;mystatus=400print(http_error(mystatus))#输出 Bad request\n\n一个 case 也可以设置多个匹配条件，条件使用 ｜ 隔开\n 123...case 401|403|404:    return &quot;Not allowed&quot;\n\n选学01：代码style代码风格   修饰的前提时能跑通\n代码布局\n缩进\n\n如果开局有定界符，其余缩进需与开始定界符(例如括号)对齐\n\n 12a = function(accd,             eeef)\n\n\n需要一个4个空格(长度等于1个制表符)，以区分传入参数和其他内容\n\n 12345def function(        accd,eeef,        hijk)    print(accd)\n\n 123if (function(accd,eeef,hijk)        and a==0):    print(accd)\n\n\n空格一般用于添加以上缩进，tab键一般保持行与行间的一致。\n多行if语句衔接，需要一个额外的缩进区分。\n\n\n换行\n\n所有行限制最多79个字\n一般语句接受&quot;隐式&quot;显示，with语句不支持，需要用 \\ 来衔接\n\n 123with open(                          ) as file_1, \\open(                          ) as file_2:     file_2.write(file_1.read())\n\n\n如果一项参数需要单独成行时，符号跟在参数前\n\n 12345income = (gross_wages          + taxable_interest          +(dividends - qualified_dividends)          - ira_deduction          - student_loan_interest)\n\n导入规范\n导入本地同目录下封装好的模块或者文件，直接导入即可\n\n导入子目录下封装好的模块或者文件，需声明子目录名\n 1form branch import m3\n\n空格\n紧接在括号内，不需要多余空格\n在逗号，分号或冒号之前，尾随逗号之后均不需要多余空格\n在切片中，两个冒号必须应用相同的间距\n紧接在开始函数调用的参数列表在左括号之前，不需要多余空格\n赋值或其他运算符周围需要多个空格以使其与另一个运算符对齐，在同时拥有不同级别运算符时，在优先级较低的符号加空格\n\n注释\n在有处理逻辑代码中，源程序有效注释量必须在20%以上。\n写注释文档时用&#96;&#96;&#96;\n\n命名规范\n不要将关键字和函数名用作变量名。\n变量名和函数名应既简短又具有描述性\n分号可以做隔断，换行自动添加分号\n\n","dateCreated":"2025-04-20T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-20T00:00:00+08:00","description":"","headline":"p2s学习笔记（三）：chapter 4与选学01","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/","keywords":"Datawhale, Python, 编程基础, 条件语句"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_4与选学01chapter_4：条件if语句\nif语句\n 12if x == 0:    print(a)\n\nif-else 语句\n 1234if x == 0:     print(&quot;B&quot;, end=&quot;&quot;)else:    print(&quot;D&quot;, end=&quot;&quot;)\n\n\nabs转换示例\n\n 123456def abs(n):    if n &gt;= 0:        sign = +1    else:        sign = -1    return sign * n\n\nif-elif-else 语句\n 1234567print(&quot;A&quot;, end=&quot;&quot;)if x == 0:    print(&quot;B&quot;, end=&quot;&quot;)elif x == 1:    print(&quot;D&quot;, end=&quot;&quot;)else:    print(&quot;E&quot;, end=&quot;&quot;)\n\n一元二次方程示例\n\n求一元二次方程实数根数\n\n 123456789def numberOfRoots(a, b, c):# 返回 y 的实数根（零点）数量： y = a*x**2 + b*x + cd = b**2 - 4*a*cif d &gt; 0:    return 2elif d == 0:    return 1else:    return 0\n\nif-else 推导式\n 1print(n if (n &gt;= 0) else -n)\n\nmatch-case语句Http响应状态码\n\nHttp响应码示例\n\nmatch 后的对象会依次与 case 后的内容进行匹配，如果匹配成功，则执行匹配到的表达式，否则直接跳过，_ 可以匹配一切。\n\n 1234567891011121314def http_error(status):    match status:        case 400:            return &quot;Bad request&quot;        case 404:            return &quot;Not found&quot;        case 418:            return &quot;I&#x27;m a teapot&quot;        case _:            return &quot;Something&#x27;s wrong with the internet&quot;mystatus=400print(http_error(mystatus))#输出 Bad request\n\n一个 case 也可以设置多个匹配条件，条件使用 ｜ 隔开\n 123...case 401|403|404:    return &quot;Not allowed&quot;\n\n选学01：代码style代码风格   修饰的前提时能跑通\n代码布局\n缩进\n\n如果开局有定界符，其余缩进需与开始定界符(例如括号)对齐\n\n 12a = function(accd,             eeef)\n\n\n需要一个4个空格(长度等于1个制表符)，以区分传入参数和其他内容\n\n 12345def function(        accd,eeef,        hijk)    print(accd)\n\n 123if (function(accd,eeef,hijk)        and a==0):    print(accd)\n\n\n空格一般用于添加以上缩进，tab键一般保持行与行间的一致。\n多行if语句衔接，需要一个额外的缩进区分。\n\n\n换行\n\n所有行限制最多79个字\n一般语句接受&quot;隐式&quot;显示，with语句不支持，需要用 \\ 来衔接\n\n 123with open(                          ) as file_1, \\open(                          ) as file_2:     file_2.write(file_1.read())\n\n\n如果一项参数需要单独成行时，符号跟在参数前\n\n 12345income = (gross_wages          + taxable_interest          +(dividends - qualified_dividends)          - ira_deduction          - student_loan_interest)\n\n导入规范\n导入本地同目录下封装好的模块或者文件，直接导入即可\n\n导入子目录下封装好的模块或者文件，需声明子目录名\n 1form branch import m3\n\n空格\n紧接在括号内，不需要多余空格\n在逗号，分号或冒号之前，尾随逗号之后均不需要多余空格\n在切片中，两个冒号必须应用相同的间距\n紧接在开始函数调用的参数列表在左括号之前，不需要多余空格\n赋值或其他运算符周围需要多个空格以使其与另一个运算符对齐，在同时拥有不同级别运算符时，在优先级较低的符号加空格\n\n注释\n在有处理逻辑代码中，源程序有效注释量必须在20%以上。\n写注释文档时用&#96;&#96;&#96;\n\n命名规范\n不要将关键字和函数名用作变量名。\n变量名和函数名应既简短又具有描述性\n分号可以做隔断，换行自动添加分号\n\n","dateCreated":"2025-04-20T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-20T00:00:00+08:00","description":"","headline":"p2s学习笔记（三）：chapter 4与选学01","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/","keywords":"Python, Datawhale, 编程基础, 条件语句"}</script>
     <meta name="description" content="datawhale p2s 学习chapter_4与选学01chapter_4：条件if语句 if语句  12if x &#x3D;&#x3D; 0:    print(a)  if-else 语句  1234if x &#x3D;&#x3D; 0:     print(&quot;B&quot;, end&#x3D;&quot;&quot;)else:    print(&quot;D&quot;, end&#x3D;&quot;&quot;)   ab">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="p2s学习笔记（三）：chapter 4与选学01">
@@ -86,11 +86,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Open the link: /#about"
+                aria-label="打开链接: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
         </a>
     
@@ -109,13 +109,13 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="Read more about the author"
+                    aria-label="阅读有关作者的更多信息"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
                 </a>
                 <h4 class="sidebar-profile-name">LPF05</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+                    <h5 class="sidebar-profile-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </h5>
                 
             </div>
@@ -130,10 +130,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Home"
+                            title="首页"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
+                        <span class="sidebar-button-desc">首页</span>
                     </a>
             </li>
             
@@ -144,10 +144,10 @@
                             href="/all-categories"
                             
                             rel="noopener"
-                            title="Categories"
+                            title="分类"
                         >
                         <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
+                        <span class="sidebar-button-desc">分类</span>
                     </a>
             </li>
             
@@ -158,10 +158,10 @@
                             href="/all-tags"
                             
                             rel="noopener"
-                            title="Tags"
+                            title="标签"
                         >
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
+                        <span class="sidebar-button-desc">标签</span>
                     </a>
             </li>
             
@@ -172,10 +172,10 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archives"
+                            title="归档"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
+                        <span class="sidebar-button-desc">归档</span>
                     </a>
             </li>
             
@@ -186,10 +186,10 @@
                             href="/about"
                             
                             rel="noopener"
-                            title="About"
+                            title="关于"
                         >
                         <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
+                        <span class="sidebar-button-desc">关于</span>
                     </a>
             </li>
             
@@ -200,10 +200,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Search"
+                            title="搜索"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
+                        <span class="sidebar-button-desc">搜索</span>
                     </a>
             </li>
             
@@ -269,11 +269,11 @@
         <div class="post-meta">
     <time datetime="2025-04-20T00:00:00+08:00">
 	
-		    4月 20, 2025
+		    2025 年 4 月 20 日
     	
     </time>
     
-        <span>in </span>
+        <span>发布在 </span>
         
     <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
@@ -385,7 +385,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">标签</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/Datawhale/" rel="tag">Datawhale</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5/" rel="tag">条件语句</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
 
@@ -402,11 +402,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/30/p2s-learning-notes-4/"
                     data-tooltip="p2s学习笔记（四）：chapter 5与chapter 6"
-                    aria-label="PREVIOUS: p2s学习笔记（四）：chapter 5与chapter 6"
+                    aria-label="上一篇: p2s学习笔记（四）：chapter 5与chapter 6"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -416,10 +416,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/15/web-crawler/"
                     data-tooltip="爬虫学习笔记"
-                    aria-label="NEXT: 爬虫学习笔记"
+                    aria-label="下一篇: 爬虫学习笔记"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -442,8 +442,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -455,8 +455,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -468,8 +468,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -517,11 +517,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/30/p2s-learning-notes-4/"
                     data-tooltip="p2s学习笔记（四）：chapter 5与chapter 6"
-                    aria-label="PREVIOUS: p2s学习笔记（四）：chapter 5与chapter 6"
+                    aria-label="上一篇: p2s学习笔记（四）：chapter 5与chapter 6"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -531,10 +531,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/15/web-crawler/"
                     data-tooltip="爬虫学习笔记"
-                    aria-label="NEXT: 爬虫学习笔记"
+                    aria-label="下一篇: 爬虫学习笔记"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -557,8 +557,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -570,8 +570,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -583,8 +583,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -617,9 +617,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                        aria-label="Share on Facebook"
+                        aria-label="分享到 Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
             
@@ -630,9 +630,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                        aria-label="Share on Twitter"
+                        aria-label="分享到 Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
             
@@ -643,9 +643,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"
-                        aria-label="Share on Weibo"
+                        aria-label="分享到微博"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>分享到微博</span>
                     </a>
                 </li>
             
@@ -668,18 +668,18 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
             <h4 id="about-card-name">LPF05</h4>
         
-            <div id="about-card-bio"><p>author.bio</p>
+            <div id="about-card-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>人之所以能，是相信能</p>
 
             </div>
         
@@ -722,6 +722,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

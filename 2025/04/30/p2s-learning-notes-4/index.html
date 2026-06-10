@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-cn">
     
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <title>p2s学习笔记（四）：chapter 5与chapter 6 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
+        <meta name="keywords" content="Deep Learning,Python,Machine Learning,Transformer,Reinforcement Learning,AGI,LPF05,lpf05,">
     
     
         <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_5与chapter_6chapter_5：循环for循环for循环和循环范围\n特点\n 基于提供的范围，重复执行特定次数的操作\n\nrange默认参数\n\nrange(a,b,c)\n\n\na为起始值，b为终值+1，c为步长\na如果不写，默认为0\nc不写默认为1\n\n\n\nfor循环嵌套12345a = 5b = 5for i in range(a):    for j in range(b):        print(a,b)\n\nwhile循环\n特点\n 未知执行次数，依靠条件判断是否继续执行\n\n在范围已知与未知时都可用while循环\n\n\nbreak 与 continue 语句假死循环\n特点\n 与环境交互后，在特定条件下终止的循环\n\n简单示例\n 12345678910def readUntilDone():linesEntered = 0while True:    response = input(&quot;输入一个字符串（输入 done 则退出）: &quot;)    if response == &quot;done&quot;:        break    print(&quot;你输入了: &quot;, response)    linesEntered += 1print(&quot;Bye!&quot;)return linesEntered\n\nchapter_6：字符串字符串文字\n引号\n\n单引号\n双引号\n三引号\n\n 1234&quot; &quot;&#x27; &#x27;&#x27;&#x27;&#x27; &#x27;&#x27;&#x27;&quot;&quot;&quot; &quot;&quot;&quot;\n\n转义序列\n\n\\n    换行符\n\\t    制表符\n&quot;    双引号\n\\\\   反斜线\n\n\n在多行文本中可用\\来排除换行\n 12345print(&quot;&quot;&quot;你可以在字符串后面使用 反斜杠 `\\`  来排除后面的换行。\\比如这里是第二行文字，但是你会看到它会紧跟在上一行句号后面。\\这种做法在 CIL 里面经常使用（多个 Flag 并排保持美观），\\但是在编程中的应用比较少。\\&quot;&quot;&quot;)\n\n多行字符串作为注释\n 1234567&quot;&quot;&quot;Python 本身是没有多行注释的，但是你可以用多行字符串实现同样的操作，还记得我们之前学过的“表达式“吗？它的原理就是 Python 会运行它，但是马上扔掉！（垃圾回收机制）&quot;&quot;&quot;\n\nrepr()函数\n\n转义字符显示\n\n 123456789str = data\\nwhaleprint(repr(str))&#x27;&#x27;&#x27;有repr()显示data\\nwhale#无repr()显示datawhale&#x27;&#x27;&#x27;\n\n字符串常量\n字母\n 123import stringprint(string.ascii_letters)#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n小写字母\n 12print(string.ascii_lowercase)#abcdefghijklmnopqrstuvwxyz\n\n大写字母\n 12print(string.ascii_uppercase) #ABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n数字\n 12print(string.digits)#0123456789\n\n特殊字符\n 12print(string.punctuation)#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~\n\n可打印字符\n 123print(string.printable)#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~ \n\n空白字符\n 1print(string.whitespace)\n\n空白字符不转义\n 12print(repr(string.whitespace))#\\t\\n\\r\\x0b\\x0c\n\n字符串运算\n简单运算\n 1234print(&quot;abc&quot; + &quot;def&quot;)print(&quot;abc&quot; * 3)#abcdef#abcabcabc\n\nin运算\n 12345print(&quot;ring&quot; in &quot;strings&quot;) # Trueprint(&quot;wow&quot; in &quot;amazing!&quot;) # Falseprint(&quot;Yes&quot; in &quot;yes!&quot;) # Falseprint(&quot;&quot; in &quot;No way!&quot;) # Trueprint(&quot;聪明&quot; in &quot;聪明办法学 Python&quot;) # True\n\n字符串索引和切片\n\n字符串可作为迭代对象\n\n\n\n字符串循环\nin循环\n 12for c in s:print(c)\n\nenumerate函数\n 12345678910111213for idx, c in enumerate(s):print(idx, c)&#x27;&#x27;&#x27;0 D1 a2 t3 a4 w5 h6 a7 l8 e&#x27;&#x27;&#x27;\n\nzip函数\n zip(a,b)可以在一次循环中，分别从 a 和 b 里同时取出一个元素\n 12345678910111213for a, b in zip(s, reverseString(s)):print(a, b)&#x27;&#x27;&#x27;D ea lt aa hw wh aa tl ae D&#x27;&#x27;&#x27;\n\nsplit函数来循环\n 1234567891011121314# class_name.split() 本身会产生一个新的叫做“列表”的东西，但是它不存储任何内容class_name = &quot;learn python the smart way 2nd edition&quot;for word in class_name.split():    print(word)&#x27;&#x27;&#x27;learnpythonthesmartway2ndedition&#x27;&#x27;&#x27;\n\nsplitlines函数来循环\n 1234567891011121314151617# class_info.splitlines() 也会产生一个列表，但不存储任何内容class_info = &quot;&quot;&quot;\\聪明办法学 Python 第二版是 Datawhale 基于第一版教程的一次大幅更新。我们的课程简称为 P2S，有两个含义：Learn Python The Smart Way V2.Prepare To Be Smart. 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&quot;&quot;&quot;for line in class_info.splitlines():    if (line.startswith(&quot;Prepare To Be Smart&quot;)):        print(line)&#x27;&#x27;&#x27;Prepare To Be Smart， 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&#x27;&#x27;&#x27;\n\n字符串内置函数与方法字符串函数\nstr() 和 len()\n\nstr 函数将其他类型转化为字符串\n\n\nlen 函数获得迭代对象长度\n\n\nchr() 和 ord()\n\nchr 函数将ascii码转化为对应字符\n\n\nord 函数将字符转化为对应ascii码\n\n\nast.literal_eval()\n\n安全地执行字符串中的Python表达式，而不会执行任何可能存在的恶意代码。\n\n\n\n字符串方法\nisalnum()\n\nisalpha()\n\nisdigit()\n\nislower()\n\nisspace()\n\nisupper()\n\nstrip()\n\n可以将字符串首尾的空格删除\n\n\ncount()\n\nstartwith()\n 123print(&quot;Dogs and cats!&quot;.startswith(&quot;Do&quot;))print(&quot;Dogs and cats!&quot;.startswith(&quot;Don&#x27;t&quot;))#True False\n\nendwith()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))#True False\n\nfind()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))# 5 -1\n\nindex()\n123print(&quot;Dogs and cats!&quot;.index(&quot;and&quot;))print(&quot;Dogs and cats!&quot;.index(&quot;or&quot;))# 5\n\nwith语句\n\n\n","dateCreated":"2025-04-30T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-30T00:00:00+08:00","description":"","headline":"p2s学习笔记（四）：chapter 5与chapter 6","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/","keywords":"Datawhale, Python, 编程基础, 循环"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_5与chapter_6chapter_5：循环for循环for循环和循环范围\n特点\n 基于提供的范围，重复执行特定次数的操作\n\nrange默认参数\n\nrange(a,b,c)\n\n\na为起始值，b为终值+1，c为步长\na如果不写，默认为0\nc不写默认为1\n\n\n\nfor循环嵌套12345a = 5b = 5for i in range(a):    for j in range(b):        print(a,b)\n\nwhile循环\n特点\n 未知执行次数，依靠条件判断是否继续执行\n\n在范围已知与未知时都可用while循环\n\n\nbreak 与 continue 语句假死循环\n特点\n 与环境交互后，在特定条件下终止的循环\n\n简单示例\n 12345678910def readUntilDone():linesEntered = 0while True:    response = input(&quot;输入一个字符串（输入 done 则退出）: &quot;)    if response == &quot;done&quot;:        break    print(&quot;你输入了: &quot;, response)    linesEntered += 1print(&quot;Bye!&quot;)return linesEntered\n\nchapter_6：字符串字符串文字\n引号\n\n单引号\n双引号\n三引号\n\n 1234&quot; &quot;&#x27; &#x27;&#x27;&#x27;&#x27; &#x27;&#x27;&#x27;&quot;&quot;&quot; &quot;&quot;&quot;\n\n转义序列\n\n\\n    换行符\n\\t    制表符\n&quot;    双引号\n\\\\   反斜线\n\n\n在多行文本中可用\\来排除换行\n 12345print(&quot;&quot;&quot;你可以在字符串后面使用 反斜杠 `\\`  来排除后面的换行。\\比如这里是第二行文字，但是你会看到它会紧跟在上一行句号后面。\\这种做法在 CIL 里面经常使用（多个 Flag 并排保持美观），\\但是在编程中的应用比较少。\\&quot;&quot;&quot;)\n\n多行字符串作为注释\n 1234567&quot;&quot;&quot;Python 本身是没有多行注释的，但是你可以用多行字符串实现同样的操作，还记得我们之前学过的“表达式“吗？它的原理就是 Python 会运行它，但是马上扔掉！（垃圾回收机制）&quot;&quot;&quot;\n\nrepr()函数\n\n转义字符显示\n\n 123456789str = data\\nwhaleprint(repr(str))&#x27;&#x27;&#x27;有repr()显示data\\nwhale#无repr()显示datawhale&#x27;&#x27;&#x27;\n\n字符串常量\n字母\n 123import stringprint(string.ascii_letters)#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n小写字母\n 12print(string.ascii_lowercase)#abcdefghijklmnopqrstuvwxyz\n\n大写字母\n 12print(string.ascii_uppercase) #ABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n数字\n 12print(string.digits)#0123456789\n\n特殊字符\n 12print(string.punctuation)#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~\n\n可打印字符\n 123print(string.printable)#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~ \n\n空白字符\n 1print(string.whitespace)\n\n空白字符不转义\n 12print(repr(string.whitespace))#\\t\\n\\r\\x0b\\x0c\n\n字符串运算\n简单运算\n 1234print(&quot;abc&quot; + &quot;def&quot;)print(&quot;abc&quot; * 3)#abcdef#abcabcabc\n\nin运算\n 12345print(&quot;ring&quot; in &quot;strings&quot;) # Trueprint(&quot;wow&quot; in &quot;amazing!&quot;) # Falseprint(&quot;Yes&quot; in &quot;yes!&quot;) # Falseprint(&quot;&quot; in &quot;No way!&quot;) # Trueprint(&quot;聪明&quot; in &quot;聪明办法学 Python&quot;) # True\n\n字符串索引和切片\n\n字符串可作为迭代对象\n\n\n\n字符串循环\nin循环\n 12for c in s:print(c)\n\nenumerate函数\n 12345678910111213for idx, c in enumerate(s):print(idx, c)&#x27;&#x27;&#x27;0 D1 a2 t3 a4 w5 h6 a7 l8 e&#x27;&#x27;&#x27;\n\nzip函数\n zip(a,b)可以在一次循环中，分别从 a 和 b 里同时取出一个元素\n 12345678910111213for a, b in zip(s, reverseString(s)):print(a, b)&#x27;&#x27;&#x27;D ea lt aa hw wh aa tl ae D&#x27;&#x27;&#x27;\n\nsplit函数来循环\n 1234567891011121314# class_name.split() 本身会产生一个新的叫做“列表”的东西，但是它不存储任何内容class_name = &quot;learn python the smart way 2nd edition&quot;for word in class_name.split():    print(word)&#x27;&#x27;&#x27;learnpythonthesmartway2ndedition&#x27;&#x27;&#x27;\n\nsplitlines函数来循环\n 1234567891011121314151617# class_info.splitlines() 也会产生一个列表，但不存储任何内容class_info = &quot;&quot;&quot;\\聪明办法学 Python 第二版是 Datawhale 基于第一版教程的一次大幅更新。我们的课程简称为 P2S，有两个含义：Learn Python The Smart Way V2.Prepare To Be Smart. 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&quot;&quot;&quot;for line in class_info.splitlines():    if (line.startswith(&quot;Prepare To Be Smart&quot;)):        print(line)&#x27;&#x27;&#x27;Prepare To Be Smart， 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&#x27;&#x27;&#x27;\n\n字符串内置函数与方法字符串函数\nstr() 和 len()\n\nstr 函数将其他类型转化为字符串\n\n\nlen 函数获得迭代对象长度\n\n\nchr() 和 ord()\n\nchr 函数将ascii码转化为对应字符\n\n\nord 函数将字符转化为对应ascii码\n\n\nast.literal_eval()\n\n安全地执行字符串中的Python表达式，而不会执行任何可能存在的恶意代码。\n\n\n\n字符串方法\nisalnum()\n\nisalpha()\n\nisdigit()\n\nislower()\n\nisspace()\n\nisupper()\n\nstrip()\n\n可以将字符串首尾的空格删除\n\n\ncount()\n\nstartwith()\n 123print(&quot;Dogs and cats!&quot;.startswith(&quot;Do&quot;))print(&quot;Dogs and cats!&quot;.startswith(&quot;Don&#x27;t&quot;))#True False\n\nendwith()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))#True False\n\nfind()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))# 5 -1\n\nindex()\n123print(&quot;Dogs and cats!&quot;.index(&quot;and&quot;))print(&quot;Dogs and cats!&quot;.index(&quot;or&quot;))# 5\n\nwith语句\n\n\n","dateCreated":"2025-04-30T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-30T00:00:00+08:00","description":"","headline":"p2s学习笔记（四）：chapter 5与chapter 6","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/","keywords":"Python, Datawhale, 编程基础, 循环"}</script>
     <meta name="description" content="datawhale p2s 学习chapter_5与chapter_6chapter_5：循环for循环for循环和循环范围 特点  基于提供的范围，重复执行特定次数的操作  range默认参数  range(a,b,c)   a为起始值，b为终值+1，c为步长 a如果不写，默认为0 c不写默认为1    for循环嵌套12345a &#x3D; 5b &#x3D; 5for i in range(a):    fo">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="p2s学习笔记（四）：chapter 5与chapter 6">
@@ -86,11 +86,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Open the link: /#about"
+                aria-label="打开链接: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
         </a>
     
@@ -109,13 +109,13 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="Read more about the author"
+                    aria-label="阅读有关作者的更多信息"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
                 </a>
                 <h4 class="sidebar-profile-name">LPF05</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+                    <h5 class="sidebar-profile-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </h5>
                 
             </div>
@@ -130,10 +130,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Home"
+                            title="首页"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
+                        <span class="sidebar-button-desc">首页</span>
                     </a>
             </li>
             
@@ -144,10 +144,10 @@
                             href="/all-categories"
                             
                             rel="noopener"
-                            title="Categories"
+                            title="分类"
                         >
                         <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
+                        <span class="sidebar-button-desc">分类</span>
                     </a>
             </li>
             
@@ -158,10 +158,10 @@
                             href="/all-tags"
                             
                             rel="noopener"
-                            title="Tags"
+                            title="标签"
                         >
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
+                        <span class="sidebar-button-desc">标签</span>
                     </a>
             </li>
             
@@ -172,10 +172,10 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archives"
+                            title="归档"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
+                        <span class="sidebar-button-desc">归档</span>
                     </a>
             </li>
             
@@ -186,10 +186,10 @@
                             href="/about"
                             
                             rel="noopener"
-                            title="About"
+                            title="关于"
                         >
                         <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
+                        <span class="sidebar-button-desc">关于</span>
                     </a>
             </li>
             
@@ -200,10 +200,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Search"
+                            title="搜索"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
+                        <span class="sidebar-button-desc">搜索</span>
                     </a>
             </li>
             
@@ -269,11 +269,11 @@
         <div class="post-meta">
     <time datetime="2025-04-30T00:00:00+08:00">
 	
-		    4月 30, 2025
+		    2025 年 4 月 30 日
     	
     </time>
     
-        <span>in </span>
+        <span>发布在 </span>
         
     <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
@@ -469,7 +469,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">标签</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/Datawhale/" rel="tag">Datawhale</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%BE%AA%E7%8E%AF/" rel="tag">循环</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
 
@@ -486,11 +486,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/05/01/frontend/"
                     data-tooltip="前端学习笔记"
-                    aria-label="PREVIOUS: 前端学习笔记"
+                    aria-label="上一篇: 前端学习笔记"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -500,10 +500,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/20/p2s-learning-notes-3/"
                     data-tooltip="p2s学习笔记（三）：chapter 4与选学01"
-                    aria-label="NEXT: p2s学习笔记（三）：chapter 4与选学01"
+                    aria-label="下一篇: p2s学习笔记（三）：chapter 4与选学01"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -526,8 +526,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -539,8 +539,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -552,8 +552,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -601,11 +601,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/05/01/frontend/"
                     data-tooltip="前端学习笔记"
-                    aria-label="PREVIOUS: 前端学习笔记"
+                    aria-label="上一篇: 前端学习笔记"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -615,10 +615,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/20/p2s-learning-notes-3/"
                     data-tooltip="p2s学习笔记（三）：chapter 4与选学01"
-                    aria-label="NEXT: p2s学习笔记（三）：chapter 4与选学01"
+                    aria-label="下一篇: p2s学习笔记（三）：chapter 4与选学01"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -641,8 +641,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -654,8 +654,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -667,8 +667,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -701,9 +701,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                        aria-label="Share on Facebook"
+                        aria-label="分享到 Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
             
@@ -714,9 +714,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                        aria-label="Share on Twitter"
+                        aria-label="分享到 Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
             
@@ -727,9 +727,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"
-                        aria-label="Share on Weibo"
+                        aria-label="分享到微博"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>分享到微博</span>
                     </a>
                 </li>
             
@@ -752,18 +752,18 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
             <h4 id="about-card-name">LPF05</h4>
         
-            <div id="about-card-bio"><p>author.bio</p>
+            <div id="about-card-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>人之所以能，是相信能</p>
 
             </div>
         
@@ -806,6 +806,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

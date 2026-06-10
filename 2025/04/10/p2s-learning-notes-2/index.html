@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-cn">
     
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <title>p2s学习笔记（二）：chapter 2与chapter 3 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
+        <meta name="keywords" content="Deep Learning,Python,Machine Learning,Transformer,Reinforcement Learning,AGI,LPF05,lpf05,">
     
     
         <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_2与chapter_3chapter_2：数据类型和操作常用内置类型\n整数 int\n离散\n\n\n浮点数 float\n双精度\n\n\n布尔值 bool\nTrue or False\n\n\n类型 type\n即int float等类型\n\n\n字符串 string\n5~9为数组类型\n\n\n列表 list\n元组 tuple\n集合 set\n字典 Dictionary (映射map)\n复数 complex\n函数 function\n模块 module\n\n常用内置常数\nTrue\n真\n\n\nFalse\n假\n\n\nNone\n空\n\n\npi\n数学常数 π &#x3D; 3.141592...，精确到可用精度\n\n\ne\n数学常数 e &#x3D; 2.718281...，精确到可用精度\n\n\ntau\n数学常数 τ &#x3D; 6.283185...，精确到可用精度\n\n\ninf\n浮点正无穷大，等价于 float(&#39;inf&#39;)，负无穷大使用 -math.inf\n\n\n\n常用内置运算符\n算术：+, -, *, @, &#x2F;, &#x2F;&#x2F;, **, %, - (一元算符), + (一元算符)\n关系：&lt;, &lt;&#x3D;, &gt;&#x3D;, &gt;, &#x3D;&#x3D;, !&#x3D;\n赋值： +&#x3D;, -&#x3D;, *&#x3D;, &#x2F;&#x3D;, &#x2F;&#x2F;&#x3D;, **&#x3D;, %&#x3D;\n逻辑：and, or, not\n\n\n除法类型\n&#x2F; 指的是浮点数除法，它的结果是一个浮点数&#x2F;&#x2F; 指的是整除除法，它的计算结果是整数，舍弃余数\n\n模运算% 代表模运算（取余），结果为商的余数a mod b ⟺ a−(a∣b)×b\n\n\n类型影响语义12345print(3 * 2)  #6print(3 * &quot;p2s&quot;)  #p2sp2sp2sprint(3 + 2)  #5print(&quot;Data&quot; + &quot;whale&quot;)  #Datawhaleprint(3 + &quot;p2s&quot;)  #3p2s\n\n运算符优先级\n\n\n运算符\n描述\n\n\n\n(expressions...),[expressions...], {key: value...}, {expressions...}\n绑定或加圆括号的表达式，列表显示，字典显示，集合显示\n\n\nx[index], x[index:index], x(arguments...), x.attribute\n抽取，切片，调用，属性引用\n\n\nawait x\nawait 表达式\n\n\n**\n乘方\n\n\n+x, -x, ~x\n正，负，按位非 NOT\n\n\n*, @, &#x2F;, &#x2F;&#x2F;, %\n乘，矩阵乘，除，整除，取余\n\n\n+, -\n加和减\n\n\n&lt;&lt;, &gt;&gt;\n移位\n\n\n&amp;\n按位与 AND\n\n\n^\n按位异或 XOR\n\n\n|\n按位或 OR\n\n\nin, not in, is, is not, &lt;, &lt;&#x3D;, &gt;, &gt;&#x3D;, !&#x3D;, &#x3D;&#x3D;\n比较运算，包括成员检测和标识号检测\n\n\nnot x\n布尔逻辑非 NOT\n\n\nand\n布尔逻辑与 AND\n\n\nor\n布尔逻辑或 OR\n\n\nif -- else\n条件表达式\n\n\nlambda\nlambda 表达式\n\n\n:&#x3D;\n赋值表达式\n\n\n短路求值\n\n\nX\nY\nX and Y\nX or Y\nnot X\nnot Y\n\n\n\nTrue\nTrue\nTrue\nTrue\nFalse\nFalse\n\n\nTrue\nFalse\nFalse\nTrue\nFalse\nTrue\n\n\nFalse\nFalse\nFalse\nFalse\nTrue\nTrue\n\n\nFalse\nTrue\nFalse\nTrue\nTrue\nFalse\n\n\n12345678def yes():    return Truedef no():    return Falsedef crash():    return 1/0 # 会崩溃！\n\n1234print(no() and crash()) # 成功运行！print(crash() and no()) # 崩溃了！print (yes() and crash()) # 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃#输出False\n\n1234print(yes() or crash()) # 成功运行print(crash() or yes()) # 崩溃了print(no() or crash())  # 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃#输出True\n\ntype() vs isinstance()\nisinstance() 比 type() 更具有 稳健性（Robustness）\n这种做法更加符合 面向对象编程 中 继承（inheritance）的思想\n\nchapter_3：变量与函数变量\n变量的规则\n\n变量是一个标签，它所指代的是一段数据\n使用 &#x3D; 来对这段数据的区域进行赋值\n新值会覆盖旧值\n新值的数据类型不一定与旧值相同\n\n\n变量命名规则：\n\n必须以字母或下划线（_）开头\n命名可由字母、数字和下划线组成\n大小写敏感\n尽量避免使用保留字命名\n\n\n保留字\nFalse、None、True、and、as、assert、break、class、continue、def、del、elif、else、except、finally、for、from、global、if、import、in、is、lambda、nonlocal、not、or、pass、raise、return、try、while、with、yield\n\n更新变量\n12x = 5x += 2 # 等价于 x = x + 2\n多变量赋值\n12a = b = c = 2a, b, c = 1, 2, 6\n\n函数\n函数由两个部分组成：header 和 body\n\nheader 用于定义函数接口（函数 名称 与 参数）\nbody 包含函数所需要执行的操作\n\n\nheader\n\nheader 用于定义函数的名称和参数\n\n\n当函数被调用时，参数将会作为变量被提供给函数的 body 部分\n可以提供多个参数（用 , 分隔），也可以不提供参数\nheader 以 : 结尾，代表后面会跟着 body 部分\n\n\nbody\n\nbody 包含函数执行的语句（statement）\n\n\n语句需要缩进（由 Code Style Guide 决定）\n当语句不再缩进，函数部分结束\n一般会使用 return 语句让函数返回其结果，但不是必须的\n\n\n函数示例\n123def double(x):print(&quot;I&#x27;m in double!&quot;)return 2 * x\n\n\n我们使用函数名来调用函数\n函数名后紧跟一对括号\n括号中是我们设定的参数的值，一个不多，一个不少（这很重要）\n函数会返回设定的 return 语句的值\n如果参数数目没有匹配会Oops\n\n12345678def f(x, y, z):return x + y + zdef g():return 42print(g(2)) # 崩溃！print(f(1, 2)) # 也会崩溃\n多返回值\n\n可设置多返回值\n\n1return 1,2,3 \n\n语句与表达式\n表达式\n\n它本身是值\n它的计算结果是值\n\n\n语句\n\n它不是值\n它不能打印\n但它能执行一些操作\n\n\n\n内置函数\nbool(),float()等python内置类型转换函数\nabs(),max(),min(),pow(),round()等python内置math库\n\n变量作用域\n每个变量都有属于自己的作用范围，在范围内生效\n\n局部作用域\n\n局部生效，只存在于函数内部，与其他函数中的同名变量无关，优先级大于全局\n\n\n全局作用域\n\n全局生效\n\n\n\n返回语句 vs 输出语句\n返回立即结束(函数内或全局)\n输出不结束，且不会赋值于其他变量\n\n嵌套函数 or 组合函数\n嵌套函数，最先运行最内层的函数。\n\n递归\n\n\n组合函数，一般用于分治或模块化\n\n分治\n\n\n\n","dateCreated":"2025-04-10T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-10T00:00:00+08:00","description":"","headline":"p2s学习笔记（二）：chapter 2与chapter 3","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/","keywords":"Datawhale, Python, 编程基础, 数据类型"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_2与chapter_3chapter_2：数据类型和操作常用内置类型\n整数 int\n离散\n\n\n浮点数 float\n双精度\n\n\n布尔值 bool\nTrue or False\n\n\n类型 type\n即int float等类型\n\n\n字符串 string\n5~9为数组类型\n\n\n列表 list\n元组 tuple\n集合 set\n字典 Dictionary (映射map)\n复数 complex\n函数 function\n模块 module\n\n常用内置常数\nTrue\n真\n\n\nFalse\n假\n\n\nNone\n空\n\n\npi\n数学常数 π &#x3D; 3.141592...，精确到可用精度\n\n\ne\n数学常数 e &#x3D; 2.718281...，精确到可用精度\n\n\ntau\n数学常数 τ &#x3D; 6.283185...，精确到可用精度\n\n\ninf\n浮点正无穷大，等价于 float(&#39;inf&#39;)，负无穷大使用 -math.inf\n\n\n\n常用内置运算符\n算术：+, -, *, @, &#x2F;, &#x2F;&#x2F;, **, %, - (一元算符), + (一元算符)\n关系：&lt;, &lt;&#x3D;, &gt;&#x3D;, &gt;, &#x3D;&#x3D;, !&#x3D;\n赋值： +&#x3D;, -&#x3D;, *&#x3D;, &#x2F;&#x3D;, &#x2F;&#x2F;&#x3D;, **&#x3D;, %&#x3D;\n逻辑：and, or, not\n\n\n除法类型\n&#x2F; 指的是浮点数除法，它的结果是一个浮点数&#x2F;&#x2F; 指的是整除除法，它的计算结果是整数，舍弃余数\n\n模运算% 代表模运算（取余），结果为商的余数a mod b ⟺ a−(a∣b)×b\n\n\n类型影响语义12345print(3 * 2)  #6print(3 * &quot;p2s&quot;)  #p2sp2sp2sprint(3 + 2)  #5print(&quot;Data&quot; + &quot;whale&quot;)  #Datawhaleprint(3 + &quot;p2s&quot;)  #3p2s\n\n运算符优先级\n\n\n运算符\n描述\n\n\n\n(expressions...),[expressions...], {key: value...}, {expressions...}\n绑定或加圆括号的表达式，列表显示，字典显示，集合显示\n\n\nx[index], x[index:index], x(arguments...), x.attribute\n抽取，切片，调用，属性引用\n\n\nawait x\nawait 表达式\n\n\n**\n乘方\n\n\n+x, -x, ~x\n正，负，按位非 NOT\n\n\n*, @, &#x2F;, &#x2F;&#x2F;, %\n乘，矩阵乘，除，整除，取余\n\n\n+, -\n加和减\n\n\n&lt;&lt;, &gt;&gt;\n移位\n\n\n&amp;\n按位与 AND\n\n\n^\n按位异或 XOR\n\n\n|\n按位或 OR\n\n\nin, not in, is, is not, &lt;, &lt;&#x3D;, &gt;, &gt;&#x3D;, !&#x3D;, &#x3D;&#x3D;\n比较运算，包括成员检测和标识号检测\n\n\nnot x\n布尔逻辑非 NOT\n\n\nand\n布尔逻辑与 AND\n\n\nor\n布尔逻辑或 OR\n\n\nif -- else\n条件表达式\n\n\nlambda\nlambda 表达式\n\n\n:&#x3D;\n赋值表达式\n\n\n短路求值\n\n\nX\nY\nX and Y\nX or Y\nnot X\nnot Y\n\n\n\nTrue\nTrue\nTrue\nTrue\nFalse\nFalse\n\n\nTrue\nFalse\nFalse\nTrue\nFalse\nTrue\n\n\nFalse\nFalse\nFalse\nFalse\nTrue\nTrue\n\n\nFalse\nTrue\nFalse\nTrue\nTrue\nFalse\n\n\n12345678def yes():    return Truedef no():    return Falsedef crash():    return 1/0 # 会崩溃！\n\n1234print(no() and crash()) # 成功运行！print(crash() and no()) # 崩溃了！print (yes() and crash()) # 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃#输出False\n\n1234print(yes() or crash()) # 成功运行print(crash() or yes()) # 崩溃了print(no() or crash())  # 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃#输出True\n\ntype() vs isinstance()\nisinstance() 比 type() 更具有 稳健性（Robustness）\n这种做法更加符合 面向对象编程 中 继承（inheritance）的思想\n\nchapter_3：变量与函数变量\n变量的规则\n\n变量是一个标签，它所指代的是一段数据\n使用 &#x3D; 来对这段数据的区域进行赋值\n新值会覆盖旧值\n新值的数据类型不一定与旧值相同\n\n\n变量命名规则：\n\n必须以字母或下划线（_）开头\n命名可由字母、数字和下划线组成\n大小写敏感\n尽量避免使用保留字命名\n\n\n保留字\nFalse、None、True、and、as、assert、break、class、continue、def、del、elif、else、except、finally、for、from、global、if、import、in、is、lambda、nonlocal、not、or、pass、raise、return、try、while、with、yield\n\n更新变量\n12x = 5x += 2 # 等价于 x = x + 2\n多变量赋值\n12a = b = c = 2a, b, c = 1, 2, 6\n\n函数\n函数由两个部分组成：header 和 body\n\nheader 用于定义函数接口（函数 名称 与 参数）\nbody 包含函数所需要执行的操作\n\n\nheader\n\nheader 用于定义函数的名称和参数\n\n\n当函数被调用时，参数将会作为变量被提供给函数的 body 部分\n可以提供多个参数（用 , 分隔），也可以不提供参数\nheader 以 : 结尾，代表后面会跟着 body 部分\n\n\nbody\n\nbody 包含函数执行的语句（statement）\n\n\n语句需要缩进（由 Code Style Guide 决定）\n当语句不再缩进，函数部分结束\n一般会使用 return 语句让函数返回其结果，但不是必须的\n\n\n函数示例\n123def double(x):print(&quot;I&#x27;m in double!&quot;)return 2 * x\n\n\n我们使用函数名来调用函数\n函数名后紧跟一对括号\n括号中是我们设定的参数的值，一个不多，一个不少（这很重要）\n函数会返回设定的 return 语句的值\n如果参数数目没有匹配会Oops\n\n12345678def f(x, y, z):return x + y + zdef g():return 42print(g(2)) # 崩溃！print(f(1, 2)) # 也会崩溃\n多返回值\n\n可设置多返回值\n\n1return 1,2,3 \n\n语句与表达式\n表达式\n\n它本身是值\n它的计算结果是值\n\n\n语句\n\n它不是值\n它不能打印\n但它能执行一些操作\n\n\n\n内置函数\nbool(),float()等python内置类型转换函数\nabs(),max(),min(),pow(),round()等python内置math库\n\n变量作用域\n每个变量都有属于自己的作用范围，在范围内生效\n\n局部作用域\n\n局部生效，只存在于函数内部，与其他函数中的同名变量无关，优先级大于全局\n\n\n全局作用域\n\n全局生效\n\n\n\n返回语句 vs 输出语句\n返回立即结束(函数内或全局)\n输出不结束，且不会赋值于其他变量\n\n嵌套函数 or 组合函数\n嵌套函数，最先运行最内层的函数。\n\n递归\n\n\n组合函数，一般用于分治或模块化\n\n分治\n\n\n\n","dateCreated":"2025-04-10T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-10T00:00:00+08:00","description":"","headline":"p2s学习笔记（二）：chapter 2与chapter 3","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/","keywords":"Python, Datawhale, 编程基础, 数据类型"}</script>
     <meta name="description" content="datawhale p2s 学习chapter_2与chapter_3chapter_2：数据类型和操作常用内置类型 整数 int 离散   浮点数 float 双精度   布尔值 bool True or False   类型 type 即int float等类型   字符串 string 5~9为数组类型   列表 list 元组 tuple 集合 set 字典 Dictionary (映射m">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="p2s学习笔记（二）：chapter 2与chapter 3">
@@ -86,11 +86,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Open the link: /#about"
+                aria-label="打开链接: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
         </a>
     
@@ -109,13 +109,13 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="Read more about the author"
+                    aria-label="阅读有关作者的更多信息"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
                 </a>
                 <h4 class="sidebar-profile-name">LPF05</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+                    <h5 class="sidebar-profile-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </h5>
                 
             </div>
@@ -130,10 +130,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Home"
+                            title="首页"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
+                        <span class="sidebar-button-desc">首页</span>
                     </a>
             </li>
             
@@ -144,10 +144,10 @@
                             href="/all-categories"
                             
                             rel="noopener"
-                            title="Categories"
+                            title="分类"
                         >
                         <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
+                        <span class="sidebar-button-desc">分类</span>
                     </a>
             </li>
             
@@ -158,10 +158,10 @@
                             href="/all-tags"
                             
                             rel="noopener"
-                            title="Tags"
+                            title="标签"
                         >
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
+                        <span class="sidebar-button-desc">标签</span>
                     </a>
             </li>
             
@@ -172,10 +172,10 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archives"
+                            title="归档"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
+                        <span class="sidebar-button-desc">归档</span>
                     </a>
             </li>
             
@@ -186,10 +186,10 @@
                             href="/about"
                             
                             rel="noopener"
-                            title="About"
+                            title="关于"
                         >
                         <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
+                        <span class="sidebar-button-desc">关于</span>
                     </a>
             </li>
             
@@ -200,10 +200,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Search"
+                            title="搜索"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
+                        <span class="sidebar-button-desc">搜索</span>
                     </a>
             </li>
             
@@ -269,11 +269,11 @@
         <div class="post-meta">
     <time datetime="2025-04-10T00:00:00+08:00">
 	
-		    4月 10, 2025
+		    2025 年 4 月 10 日
     	
     </time>
     
-        <span>in </span>
+        <span>发布在 </span>
         
     <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
@@ -622,7 +622,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">标签</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/Datawhale/" rel="tag">Datawhale</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" rel="tag">数据类型</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
 
@@ -639,11 +639,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/15/web-crawler/"
                     data-tooltip="爬虫学习笔记"
-                    aria-label="PREVIOUS: 爬虫学习笔记"
+                    aria-label="上一篇: 爬虫学习笔记"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -653,10 +653,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/01/p2s-learning-notes-1/"
                     data-tooltip="p2s学习笔记（一）：chapter 0与chapter 1"
-                    aria-label="NEXT: p2s学习笔记（一）：chapter 0与chapter 1"
+                    aria-label="下一篇: p2s学习笔记（一）：chapter 0与chapter 1"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -679,8 +679,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -692,8 +692,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -705,8 +705,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -754,11 +754,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/15/web-crawler/"
                     data-tooltip="爬虫学习笔记"
-                    aria-label="PREVIOUS: 爬虫学习笔记"
+                    aria-label="上一篇: 爬虫学习笔记"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -768,10 +768,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/01/p2s-learning-notes-1/"
                     data-tooltip="p2s学习笔记（一）：chapter 0与chapter 1"
-                    aria-label="NEXT: p2s学习笔记（一）：chapter 0与chapter 1"
+                    aria-label="下一篇: p2s学习笔记（一）：chapter 0与chapter 1"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -794,8 +794,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -807,8 +807,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -820,8 +820,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -854,9 +854,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                        aria-label="Share on Facebook"
+                        aria-label="分享到 Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
             
@@ -867,9 +867,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                        aria-label="Share on Twitter"
+                        aria-label="分享到 Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
             
@@ -880,9 +880,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
-                        aria-label="Share on Weibo"
+                        aria-label="分享到微博"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>分享到微博</span>
                     </a>
                 </li>
             
@@ -905,18 +905,18 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
             <h4 id="about-card-name">LPF05</h4>
         
-            <div id="about-card-bio"><p>author.bio</p>
+            <div id="about-card-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>人之所以能，是相信能</p>
 
             </div>
         
@@ -959,6 +959,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

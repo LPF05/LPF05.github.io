@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-cn">
     
 <head>
     <meta charset="UTF-8">
@@ -9,7 +9,7 @@
     <title>p2s学习笔记（一）：chapter 0与chapter 1 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
     
-        <meta name="keywords" content="Deep Learning,NLP,Python,Machine Learning,Transformer,Reinforcement Learning,LPF05,lpf05,">
+        <meta name="keywords" content="Deep Learning,Python,Machine Learning,Transformer,Reinforcement Learning,AGI,LPF05,lpf05,">
     
     
         <link rel="icon" href="https://LPF05.github.io/assets/images/favicon.jpg">
@@ -19,7 +19,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_0与chapter_1chapter_0：安装conda 安装配置\n\n修改powershell执行策略(仅win10+非家庭版本需要)\n\n进入windows powershell后输入：\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned\nA\n并在Anaconda Powershell Prompt中输入：\nconda init\n\n更换镜像源\n\npip换源在Anaconda Powershell Prompt中\npip config set global.index-url &lt;url&gt;\n\nconda换源在复制镜像站源文本后输入执行以下内容：\nconda config --set show_channel_urls yes\nnotepad .condarc\nconda clean -i\n或者仅输入以下内容\nconda config --add channels &lt;url&gt;\n\n\n\nconda虚拟环境构建\n\n创建环境\nconda create -n &lt;env_name&gt; python=x.xx(x.xx为python版本号)\n\n激活环境\nconda activate &lt;env_name&gt;\n\n退出环境\nconda deactivate\n\n克隆环境\nconda create -n &lt;env_name_new&gt; --clone &lt;env_name_old&gt;\n\n删除环境\nconda remove -n &lt;env_name&gt; --all\n\n在环境中安装额外的包\nconda install -n &lt;your_env_name&gt; [package]\n\n在环境中删除某个包\nconda remove --name &lt;your_env_name&gt; [package]\n\n\n\n\npip 安装配置\npip安装说明\n在terminal中输入 python get-pip.py 即安装完成。\n\npip使用说明\n\n安装第三方库或包\npip install &lt;Library/package&gt;\n\n卸载第三方库或包\npip uninstall &lt;Library/package&gt;\n\n验证写在结果\npip list查看list中是否有已卸载的第三方库，如没有，即卸载成功\n\n\n\n\nVSCode插件清单\nPython\nJupyter\nOffice Viewer(Markdown Editor)\nBlack Formatter\nCode Runner\nChinese (Simplified) (简体中文) Language Pack for Visual Studio Code\n\n云端环境\n百度飞桨 AI Studio https://aistudio.baidu.com/aistudio/index\nMo（智海平台）https://momodel.cn/workspace\n阿里天池 PAI DSW https://tianchi.aliyun.com/notebook-ai\nKaggle https://www.kaggle.com/code\nGoogle Colab https://colab.research.google.com/\nSagemaker Studio Lab https://studiolab.sagemaker.aws/\n\nchapter_1：启航\nHello,World\n1print(&quot;Hello,World&quot;) \n注释\n\n单行注释，使用 # 开头\n\n多行注释，使用 &#39;&#39;&#39; 或 &quot;&quot;&quot; 包裹起来(单引号（&#39;）与双引号（&quot;）在 Python 中并无太大区别)\n123456789101112131415#单行注释&#x27;&#x27;&#x27;多1234567890行1234567890注1234567890释1234567890&#x27;&#x27;&#x27;&quot;&quot;&quot;多1234567890行1234567890注1234567890释1234567890&quot;&quot;&quot;\n作用：解释和说明， # magic comment 除外。\n\n\n\n输出\n\nprint()作用是将填入的内容显示在 Console 中，默认每次输入后会换行\n\nend参数控制结尾\n12print(&quot;Data&quot;, end=&quot;*&quot;)print(&quot;whale&quot;)\nsep参数控制分隔\n1print(&quot;Data&quot;, &quot;whale&quot;, sep=&quot;*&quot;)\n输出中可以有运算\n12print(&quot;p2s&quot;*2,&quot;data&quot;*3, sep=&quot;/&quot;*4)print(&quot;Data&quot;+&quot;whale&quot;+&quot;P2S&quot;)\nf-strings:\n1print(f&quot;一个简单的数学问题：\\&quot;&#123;x&#125; + &#123;y&#125; = ?\\&quot;，答案是 &#123;x+y&#125;！&quot;)\n多行输出\n1234567print(&quot;&quot;&quot;Python is powerful... and fast;plays well with others;runs everywhere;is friendly &amp; easy to learn;is Open.&quot;&quot;&quot;)\n\n\nError错误\n\n语法错误 Syntax Errors,编译时出错\n1print(&quot;哦不!) # Error! 缺少结尾引号\n“运行时”错误 Runtime Errors &#x3D;&#x3D; Crash,运行过程中出错\n1print(1/0) # Error! 0 被作为除数\n逻辑错误 Logical Errors,不是想要的结果\n1print(&quot;2+2=5&quot;)\n\n\n输入与导入\n\ninput() 可以接收 Console 的输入，并以字符串的形式返回，可以给定个字符串参数，它会先输出到 Console，再接收输入\n1234x = input(&quot;输入一个数字&quot;)x = int(x)x = int(input(&quot;输入一个数字：&quot;))print(x, &quot;的一半等于&quot;, x/2)\n一行多个输入值，可以在结尾加上 split()，默认分隔参数是空格，可以更改，如：split(&quot;,&quot;)\n12a, b = input().split(&quot;*&quot;)print(f&quot;a = &#123;a&#125;, b = &#123;b&#125;&quot;)\nimport 来导入库\n12import mathprint(math.factorial(20))\n\n\n浮点数误差：二进制运算导致，不可避免，只可减少。\n\n\n","dateCreated":"2025-04-01T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-01T00:00:00+08:00","description":"","headline":"p2s学习笔记（一）：chapter 0与chapter 1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/","keywords":"Datawhale, Python, 编程入门, conda"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_0与chapter_1chapter_0：安装conda 安装配置\n\n修改powershell执行策略(仅win10+非家庭版本需要)\n\n进入windows powershell后输入：\nSet-ExecutionPolicy -Scope CurrentUser RemoteSigned\nA\n并在Anaconda Powershell Prompt中输入：\nconda init\n\n更换镜像源\n\npip换源在Anaconda Powershell Prompt中\npip config set global.index-url &lt;url&gt;\n\nconda换源在复制镜像站源文本后输入执行以下内容：\nconda config --set show_channel_urls yes\nnotepad .condarc\nconda clean -i\n或者仅输入以下内容\nconda config --add channels &lt;url&gt;\n\n\n\nconda虚拟环境构建\n\n创建环境\nconda create -n &lt;env_name&gt; python=x.xx(x.xx为python版本号)\n\n激活环境\nconda activate &lt;env_name&gt;\n\n退出环境\nconda deactivate\n\n克隆环境\nconda create -n &lt;env_name_new&gt; --clone &lt;env_name_old&gt;\n\n删除环境\nconda remove -n &lt;env_name&gt; --all\n\n在环境中安装额外的包\nconda install -n &lt;your_env_name&gt; [package]\n\n在环境中删除某个包\nconda remove --name &lt;your_env_name&gt; [package]\n\n\n\n\npip 安装配置\npip安装说明\n在terminal中输入 python get-pip.py 即安装完成。\n\npip使用说明\n\n安装第三方库或包\npip install &lt;Library/package&gt;\n\n卸载第三方库或包\npip uninstall &lt;Library/package&gt;\n\n验证写在结果\npip list查看list中是否有已卸载的第三方库，如没有，即卸载成功\n\n\n\n\nVSCode插件清单\nPython\nJupyter\nOffice Viewer(Markdown Editor)\nBlack Formatter\nCode Runner\nChinese (Simplified) (简体中文) Language Pack for Visual Studio Code\n\n云端环境\n百度飞桨 AI Studio https://aistudio.baidu.com/aistudio/index\nMo（智海平台）https://momodel.cn/workspace\n阿里天池 PAI DSW https://tianchi.aliyun.com/notebook-ai\nKaggle https://www.kaggle.com/code\nGoogle Colab https://colab.research.google.com/\nSagemaker Studio Lab https://studiolab.sagemaker.aws/\n\nchapter_1：启航\nHello,World\n1print(&quot;Hello,World&quot;) \n注释\n\n单行注释，使用 # 开头\n\n多行注释，使用 &#39;&#39;&#39; 或 &quot;&quot;&quot; 包裹起来(单引号（&#39;）与双引号（&quot;）在 Python 中并无太大区别)\n123456789101112131415#单行注释&#x27;&#x27;&#x27;多1234567890行1234567890注1234567890释1234567890&#x27;&#x27;&#x27;&quot;&quot;&quot;多1234567890行1234567890注1234567890释1234567890&quot;&quot;&quot;\n作用：解释和说明， # magic comment 除外。\n\n\n\n输出\n\nprint()作用是将填入的内容显示在 Console 中，默认每次输入后会换行\n\nend参数控制结尾\n12print(&quot;Data&quot;, end=&quot;*&quot;)print(&quot;whale&quot;)\nsep参数控制分隔\n1print(&quot;Data&quot;, &quot;whale&quot;, sep=&quot;*&quot;)\n输出中可以有运算\n12print(&quot;p2s&quot;*2,&quot;data&quot;*3, sep=&quot;/&quot;*4)print(&quot;Data&quot;+&quot;whale&quot;+&quot;P2S&quot;)\nf-strings:\n1print(f&quot;一个简单的数学问题：\\&quot;&#123;x&#125; + &#123;y&#125; = ?\\&quot;，答案是 &#123;x+y&#125;！&quot;)\n多行输出\n1234567print(&quot;&quot;&quot;Python is powerful... and fast;plays well with others;runs everywhere;is friendly &amp; easy to learn;is Open.&quot;&quot;&quot;)\n\n\nError错误\n\n语法错误 Syntax Errors,编译时出错\n1print(&quot;哦不!) # Error! 缺少结尾引号\n“运行时”错误 Runtime Errors &#x3D;&#x3D; Crash,运行过程中出错\n1print(1/0) # Error! 0 被作为除数\n逻辑错误 Logical Errors,不是想要的结果\n1print(&quot;2+2=5&quot;)\n\n\n输入与导入\n\ninput() 可以接收 Console 的输入，并以字符串的形式返回，可以给定个字符串参数，它会先输出到 Console，再接收输入\n1234x = input(&quot;输入一个数字&quot;)x = int(x)x = int(input(&quot;输入一个数字：&quot;))print(x, &quot;的一半等于&quot;, x/2)\n一行多个输入值，可以在结尾加上 split()，默认分隔参数是空格，可以更改，如：split(&quot;,&quot;)\n12a, b = input().split(&quot;*&quot;)print(f&quot;a = &#123;a&#125;, b = &#123;b&#125;&quot;)\nimport 来导入库\n12import mathprint(math.factorial(20))\n\n\n浮点数误差：二进制运算导致，不可避免，只可减少。\n\n\n","dateCreated":"2025-04-01T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-01T00:00:00+08:00","description":"","headline":"p2s学习笔记（一）：chapter 0与chapter 1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/","keywords":"Python, Datawhale, 编程入门, conda"}</script>
     <meta name="description" content="datawhale p2s 学习chapter_0与chapter_1chapter_0：安装conda 安装配置  修改powershell执行策略(仅win10+非家庭版本需要)  进入windows powershell后输入： Set-ExecutionPolicy -Scope CurrentUser RemoteSigned A 并在Anaconda Powershell Prompt">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="p2s学习笔记（一）：chapter 0与chapter 1">
@@ -86,11 +86,11 @@
             <a
                 class="header-right-picture "
                 href="#about"
-                aria-label="Open the link: /#about"
+                aria-label="打开链接: /#about"
             >
         
         
-            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img class="header-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
         </a>
     
@@ -109,13 +109,13 @@
             <div class="sidebar-profile">
                 <a
                     href="/#about"
-                    aria-label="Read more about the author"
+                    aria-label="阅读有关作者的更多信息"
                 >
-                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+                    <img class="sidebar-profile-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
                 </a>
                 <h4 class="sidebar-profile-name">LPF05</h4>
                 
-                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+                    <h5 class="sidebar-profile-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </h5>
                 
             </div>
@@ -130,10 +130,10 @@
                             href="/"
                             
                             rel="noopener"
-                            title="Home"
+                            title="首页"
                         >
                         <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
+                        <span class="sidebar-button-desc">首页</span>
                     </a>
             </li>
             
@@ -144,10 +144,10 @@
                             href="/all-categories"
                             
                             rel="noopener"
-                            title="Categories"
+                            title="分类"
                         >
                         <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Categories</span>
+                        <span class="sidebar-button-desc">分类</span>
                     </a>
             </li>
             
@@ -158,10 +158,10 @@
                             href="/all-tags"
                             
                             rel="noopener"
-                            title="Tags"
+                            title="标签"
                         >
                         <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
+                        <span class="sidebar-button-desc">标签</span>
                     </a>
             </li>
             
@@ -172,10 +172,10 @@
                             href="/all-archives"
                             
                             rel="noopener"
-                            title="Archives"
+                            title="归档"
                         >
                         <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archives</span>
+                        <span class="sidebar-button-desc">归档</span>
                     </a>
             </li>
             
@@ -186,10 +186,10 @@
                             href="/about"
                             
                             rel="noopener"
-                            title="About"
+                            title="关于"
                         >
                         <i class="sidebar-button-icon fa fa-user" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">About</span>
+                        <span class="sidebar-button-desc">关于</span>
                     </a>
             </li>
             
@@ -200,10 +200,10 @@
                             href="#search"
                             
                             rel="noopener"
-                            title="Search"
+                            title="搜索"
                         >
                         <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Search</span>
+                        <span class="sidebar-button-desc">搜索</span>
                     </a>
             </li>
             
@@ -269,11 +269,11 @@
         <div class="post-meta">
     <time datetime="2025-04-01T00:00:00+08:00">
 	
-		    4月 01, 2025
+		    2025 年 4 月 1 日
     	
     </time>
     
-        <span>in </span>
+        <span>发布在 </span>
         
     <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
@@ -432,7 +432,7 @@
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                <span class="text-color-light text-small">标签</span><br/>
                 
     <a class="tag tag--primary tag--small t-none-link" href="/tags/Datawhale/" rel="tag">Datawhale</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/conda/" rel="tag">conda</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8/" rel="tag">编程入门</a>
 
@@ -449,11 +449,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/10/p2s-learning-notes-2/"
                     data-tooltip="p2s学习笔记（二）：chapter 2与chapter 3"
-                    aria-label="PREVIOUS: p2s学习笔记（二）：chapter 2与chapter 3"
+                    aria-label="上一篇: p2s学习笔记（二）：chapter 2与chapter 3"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -463,10 +463,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/03/20/liaoxuefeng-python-notes/"
                     data-tooltip="跟学廖雪峰Python教程新学新知"
-                    aria-label="NEXT: 跟学廖雪峰Python教程新学新知"
+                    aria-label="下一篇: 跟学廖雪峰Python教程新学新知"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -489,8 +489,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -502,8 +502,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -515,8 +515,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -564,11 +564,11 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/04/10/p2s-learning-notes-2/"
                     data-tooltip="p2s学习笔记（二）：chapter 2与chapter 3"
-                    aria-label="PREVIOUS: p2s学习笔记（二）：chapter 2与chapter 3"
+                    aria-label="上一篇: p2s学习笔记（二）：chapter 2与chapter 3"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
-                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                        <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                     </a>
             </li>
             <li class="post-action">
@@ -578,10 +578,10 @@
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2025/03/20/liaoxuefeng-python-notes/"
                     data-tooltip="跟学廖雪峰Python教程新学新知"
-                    aria-label="NEXT: 跟学廖雪峰Python教程新学新知"
+                    aria-label="下一篇: 跟学廖雪峰Python教程新学新知"
                 >
                     
-                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
             </li>
@@ -604,8 +604,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                    title="Share on Facebook"
-                    aria-label="Share on Facebook"
+                    title="分享到 Facebook"
+                    aria-label="分享到 Facebook"
                 >
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
@@ -617,8 +617,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                    title="Share on Twitter"
-                    aria-label="Share on Twitter"
+                    title="分享到 Twitter"
+                    aria-label="分享到 Twitter"
                 >
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
@@ -630,8 +630,8 @@
                 <a
                     class="post-action-btn btn btn--default"
                     target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                    title="Share on Weibo"
-                    aria-label="Share on Weibo"
+                    title="分享到微博"
+                    aria-label="分享到微博"
                 >
                     <i class="fab fa-weibo" aria-hidden="true"></i>
                 </a>
@@ -664,9 +664,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                        aria-label="Share on Facebook"
+                        aria-label="分享到 Facebook"
                     >
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
             
@@ -677,9 +677,9 @@
                         class="share-option-btn"
                         target="new"
                         href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                        aria-label="Share on Twitter"
+                        aria-label="分享到 Twitter"
                     >
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
             
@@ -690,9 +690,9 @@
                         class="share-option-btn"
                         target="new"
                         href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
-                        aria-label="Share on Weibo"
+                        aria-label="分享到微博"
                     >
-                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Share on Weibo</span>
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>分享到微博</span>
                     </a>
                 </li>
             
@@ -715,18 +715,18 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="Author&#39;s picture"/>
+            <img id="about-card-picture" src="/assets/images/the_night_of_dream.jpg" alt="作者的图片"/>
         
             <h4 id="about-card-name">LPF05</h4>
         
-            <div id="about-card-bio"><p>author.bio</p>
+            <div id="about-card-bio"><p>欢迎来到我的博客 🌹🌹</p>
 </div>
         
         
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>author.job</p>
+                <p>人之所以能，是相信能</p>
 
             </div>
         
@@ -769,6 +769,6 @@
             all[i].SourceElement().parentNode.className += ' has-jax';
     });
 </script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
