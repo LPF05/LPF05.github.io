@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>Python类的实现中有关__setattr__原理问题 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -19,7 +20,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"python类的实现中有关__settar__原理问题具体解决思路问题代码段:\n1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        # 允许设置名为 &#x27;_attributes&#x27; 的属性，这是实现所必需的          if name == &#x27;_attributes&#x27;:            super().__setattr__(name, value)            # 对于其他属性，添加它们到 _attributes 字典中        else:            self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性          if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35# 访问属性  print(obj.name)  # 输出: Alice  print(obj.age)  # 输出: 35\n\n在这段代码中，我发现特殊方法__setattr__中有段未知代码 super().__setattr__(name, value)，我要对其功能进行一个测试。\n\n在代码测试中加入_attributes的value。\n123456789101112131415161718192021222324import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attrubites = 10# 访问属性  print(obj.name)  print(obj.age)print(obj._attributes)&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 32, in &lt;module&gt;        print(obj.name)            ^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 15, in __getattr__        if name in self._attributes:        ^^^^^^^^^^^^^^^^^^^^^^^^    TypeError: argument of type &#x27;int&#x27; is not iterable&#x27;&#x27;&#x27;\n\n123456789101112import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attributes = 10# 访问属性  print(obj._attributes)  # 输出:10\n\n由此得知，super().__setattr__(name, value)这段代码的功能是使 _attributes的key可以覆盖原属性dict。\n\n删掉这段代码，测试其是否为重要组成部分。\n1234567891011121314151617181920212223242526272829303132333435363738394041424344class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性        if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 19, in &lt;module&gt;        obj = CustomAttributes()            ^^^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 3, in __init__        self._attributes = &#123;&#125;        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 6, in __setattr__        self._attributes[name] = value        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    [Previous line repeated 743 more times]RecursionError: maximum recursion depth exceeded&#x27;&#x27;&#x27;\n\n由此得知，去除掉这段代码会导致触发无限递归，当 __init__ 方法在创建 CustomAttributes 实例时被调用时，它尝试设置 _attributes 字典。这触发了 __setattr__ 方法的调用。在 __setattr__ 方法内部，当尝试访问 self._attributes 时，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性。然后，__getattr__ 方法又尝试检查 name 是否在 self._attributes 中，这再次触发了 __getattr__ 的调用，从而形成了无限递归。\n\n\n总结\n由两个实验得之:uper().__setattr__(name, value)允许你绕过当前类中的 __setattr__方法，并直接调用其父类的 __setattr__方法。\n在 __init__方法创建实例时被调用时，会调用 __setattr__方法去设置实例的属性，当在 __setattr__方法内部尝试访问，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性，从而造成递归循环。\n\n","dateCreated":"2025-05-10T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-05-10T00:00:00+08:00","description":"","headline":"Python类的实现中有关__setattr__原理问题","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/10/python-setattr-principle/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/05/10/python-setattr-principle/","keywords":"Python, 面向对象, 魔术方法"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"python类的实现中有关__settar__原理问题具体解决思路问题代码段:\n1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        # 允许设置名为 &#x27;_attributes&#x27; 的属性，这是实现所必需的          if name == &#x27;_attributes&#x27;:            super().__setattr__(name, value)            # 对于其他属性，添加它们到 _attributes 字典中        else:            self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性          if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35# 访问属性  print(obj.name)  # 输出: Alice  print(obj.age)  # 输出: 35\n\n在这段代码中，我发现特殊方法__setattr__中有段未知代码 super().__setattr__(name, value)，我要对其功能进行一个测试。\n\n在代码测试中加入_attributes的value。\n123456789101112131415161718192021222324import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attrubites = 10# 访问属性  print(obj.name)  print(obj.age)print(obj._attributes)&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 32, in &lt;module&gt;        print(obj.name)            ^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 15, in __getattr__        if name in self._attributes:        ^^^^^^^^^^^^^^^^^^^^^^^^    TypeError: argument of type &#x27;int&#x27; is not iterable&#x27;&#x27;&#x27;\n\n123456789101112import CustomAttributesobj = CustomAttributes()# 设置属性  obj.name = &#x27;Alice&#x27;obj.age = 35obj._attributes = 10# 访问属性  print(obj._attributes)  # 输出:10\n\n由此得知，super().__setattr__(name, value)这段代码的功能是使 _attributes的key可以覆盖原属性dict。\n\n删掉这段代码，测试其是否为重要组成部分。\n1234567891011121314151617181920212223242526272829303132333435363738394041424344class CustomAttributes:    def __init__(self):        self._attributes = &#123;&#125;    def __setattr__(self, name, value):        self._attributes[name] = value    def __getattr__(self, name):        # 尝试从 _attributes 字典中获取属性        if name in self._attributes:            return self._attributes[name]            # 如果属性不存在，则调用默认的 __getattr__ 实现        else:            raise AttributeError(f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;&#123;name&#125;&#x27;&quot;)        # 创建一个 CustomAttributes 实例obj = CustomAttributes()&#x27;&#x27;&#x27;输出:Traceback (most recent call last):    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 19, in &lt;module&gt;        obj = CustomAttributes()            ^^^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 3, in __init__        self._attributes = &#123;&#125;        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 6, in __setattr__        self._attributes[name] = value        ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    File &quot;C:\\Users\\GOD\\Desktop\\301.py&quot;, line 10, in __getattr__        if name in self._attributes:                ^^^^^^^^^^^^^^^^    [Previous line repeated 743 more times]RecursionError: maximum recursion depth exceeded&#x27;&#x27;&#x27;\n\n由此得知，去除掉这段代码会导致触发无限递归，当 __init__ 方法在创建 CustomAttributes 实例时被调用时，它尝试设置 _attributes 字典。这触发了 __setattr__ 方法的调用。在 __setattr__ 方法内部，当尝试访问 self._attributes 时，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性。然后，__getattr__ 方法又尝试检查 name 是否在 self._attributes 中，这再次触发了 __getattr__ 的调用，从而形成了无限递归。\n\n\n总结\n由两个实验得之:uper().__setattr__(name, value)允许你绕过当前类中的 __setattr__方法，并直接调用其父类的 __setattr__方法。\n在 __init__方法创建实例时被调用时，会调用 __setattr__方法去设置实例的属性，当在 __setattr__方法内部尝试访问，由于 _attributes 字典尚未完全初始化，Python 会调用 __getattr__ 方法来获取该属性，从而造成递归循环。\n\n","dateCreated":"2025-05-10T00:00:00+08:00","dateModified":"2026-06-10T20:49:50+08:00","datePublished":"2025-05-10T00:00:00+08:00","description":"","headline":"Python类的实现中有关__setattr__原理问题","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/10/python-setattr-principle/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/05/10/python-setattr-principle/","keywords":"Python, 编程基础"}</script>
     <meta name="description" content="python类的实现中有关__settar__原理问题具体解决思路问题代码段: 1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes &#x3D; &#123;&#125;    def __setattr__(">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Python类的实现中有关__setattr__原理问题">
@@ -28,11 +29,10 @@
 <meta property="og:description" content="python类的实现中有关__settar__原理问题具体解决思路问题代码段: 1234567891011121314151617181920212223242526272829303132class CustomAttributes:    def __init__(self):        self._attributes &#x3D; &#123;&#125;    def __setattr__(">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-09T16:17:03.633Z">
+<meta property="article:modified_time" content="2026-06-10T12:49:50.117Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="Python">
-<meta property="article:tag" content="面向对象">
-<meta property="article:tag" content="魔术方法">
+<meta property="article:tag" content="编程基础">
 <meta name="twitter:card" content="summary">
     
     
@@ -49,6 +49,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -69,7 +85,7 @@
         
     
 
-<header id="header" data-behavior="4">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -102,7 +118,7 @@
         
     
 
-<nav id="sidebar" data-behavior="4">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -210,22 +226,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -250,7 +250,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="4"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -319,7 +319,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95/" rel="tag">魔术方法</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
 
             </div>
         
@@ -346,9 +346,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2025/05/01/frontend/"
-                    data-tooltip="前端学习笔记"
-                    aria-label="下一篇: 前端学习笔记"
+                    href="/2025/04/30/p2s-learning-notes-4/"
+                    data-tooltip="p2s学习笔记（四）：chapter 5与chapter 6"
+                    aria-label="下一篇: p2s学习笔记（四）：chapter 5与chapter 6"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
@@ -438,7 +438,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -461,9 +461,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2025/05/01/frontend/"
-                    data-tooltip="前端学习笔记"
-                    aria-label="下一篇: 前端学习笔记"
+                    href="/2025/04/30/p2s-learning-notes-4/"
+                    data-tooltip="p2s学习笔记（四）：chapter 5与chapter 6"
+                    aria-label="下一篇: p2s学习笔记（四）：chapter 5与chapter 6"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
@@ -538,7 +538,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -611,7 +611,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -625,7 +625,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -639,21 +785,136 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+    </body>
 </html>

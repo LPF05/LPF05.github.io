@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>商品推荐学习-天池极客挑赛安泰杯 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -19,7 +20,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"商品推荐学习-天池极客挑赛安泰杯改1. 项目介绍本次比赛基于某国家在若干日内的用户购买数据，数据集分为A、B两部分，A为训练数据，B为预测数据（去除其最后一条购买数据）。要求参赛选手预测B部分用户被移除的最后一条行为数据。\n2. 商品推荐类别学习\n推荐系统到底在做什么：核心目标 推荐系统的本质是「连接用户和物品」，解决“信息过载”问题：\n\n对用户：推荐你可能喜欢的商品&#x2F;内容（比如淘宝首页的“猜你喜欢”）；\n对平台：提升用户留存、转化（比如速卖通让用户买到想买的，多下单）。\n\n 对应到本次赛题：就是“根据用户历史购买记录，猜他下一个（最后一个）会买什么商品”。\n\n推荐算法有很多，但核心可分为3类：协同过滤（Collaborative Filtering）、内容推荐（Content-Based）、混合推荐（Hybrid）。\n\n协同过滤（Collaborative Filtering）：不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”），\n内容推荐（Content-Based）：基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）。\n混合推荐（Hybrid）：结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）。\n\n\n\n协同过滤\n协同过滤（CF）是推荐系统的核心算法家族，核心思想是利用用户或物品的“行为相似性”做推荐，不依赖物品&#x2F;用户的具体属性。根据“相似性计算的对象”和“实现方式”，协同过滤主要分为两大核心分支，再加上衍生的混合&#x2F;改进类型，整体分类如下：\n\n核心分支：基于记忆的协同过滤（Memory-Based）\n最经典、最易实现的协同过滤类型，直接“记忆”用户&#x2F;物品的历史行为，通过统计方法计算相似度，不需要训练复杂模型。\n\n1. 用户协同过滤（User-Based CF）\n“找和你兴趣相似的人，把他们买过的商品推荐给你”\n\n\n步骤：\n\n计算用户与用户之间的相似度（比如杰卡德相似度）；\n给目标用户找Top N个最相似的“邻居用户”；\n收集邻居用户买过但目标用户没买过的商品，按相似度加权打分，排序推荐。\n\n\n赛题中的对应\n\n目标用户：测试集用户；\n邻居用户：训练集用户；\n优点：逻辑简单、易落地，适合用户数不算特别多的场景；\n缺点：用户数多的时候（如千万级），计算用户相似度会很慢，且有缺点是“用户冷启动”，即新用户没有行为，无法推荐。\n\n\n\n2. 物品协同过滤（Item-Based CF）—— 电商常用\n“你买过A商品，推荐和A相似的其他商品”\n\n\n步骤：\n\n计算物品与物品之间的相似度（比如两个商品被多少共同用户购买过）；\n找出目标用户买过的所有商品的“相似商品”；\n对这些相似商品加权打分（买过的商品相似度越高，得分越高），排序推荐。\n\n\n举例：你买了“无线耳机”，系统推荐“耳机保护套”“蓝牙音箱”——因为这两个商品和“无线耳机”的购买用户重合度高（买耳机的人常买保护套&#x2F;音箱）。\n\n优缺点\n\n优点：物品相似度相对稳定（比如耳机和保护套的关联性不会轻易变），可以提前预计算，推荐速度快；可解释性强（“基于你购买的X推荐”）；\n缺点：物品数特别多的时候（比如上亿商品），预计算物品相似度会占用大量内存（“物品冷启动”：新商品没有行为，无法推荐）。\n\n\n\n和用户协同过滤的核心区别\n\n\n维度\n用户协同过滤（Baseline用）\n物品协同过滤（电商常用）\n\n\n\n相似性计算对象\n用户 vs 用户\n物品 vs 物品\n\n\n核心逻辑\n人以群分，推荐“群友”的商品\n物以类聚，推荐“同类”商品\n\n\n计算复杂度\n随用户数增加而上升\n随物品数增加而上升\n\n\n适合场景\n用户少、物品多（如赛题）\n用户多、物品少（如淘宝）\n\n\n冷启动问题\n新用户难推荐\n新商品难推荐\n\n\n二、核心分支：基于模型的协同过滤（Model-Based）当数据量很大（比如千万级用户&#x2F;亿级商品），或数据稀疏（大部分用户只买过少数商品）时，基于记忆的CF效果会下降——这时候需要用“模型”来挖掘隐藏的用户偏好，核心是把推荐问题转化为机器学习&#x2F;深度学习问题。\n1. 矩阵分解（Matrix Factorization, MF）—— 最经典的模型CF核心逻辑\n问题：用户-商品的购买行为可以表示为一个“稀疏矩阵”（行&#x3D;用户，列&#x3D;商品，值&#x3D;是否购买&#x2F;购买次数），但大部分值都是空的（用户没买过该商品）；\n解决方案：把这个稀疏矩阵分解为两个稠密矩阵——用户特征矩阵（行&#x3D;用户，列&#x3D;隐因子，比如“喜欢运动”“偏好低价”）和商品特征矩阵（行&#x3D;商品，列&#x3D;隐因子）；\n推荐：用户对商品的偏好得分 &#x3D; 用户特征向量 × 商品特征向量（点积），按得分排序推荐。\n\n举例\n用户A的特征向量：[0.9（喜欢运动）, 0.2（偏好高价）]；\n商品B的特征向量：[0.8（运动类）, 0.3（高价）]；\n偏好得分：0.9×0.8 + 0.2×0.3 &#x3D; 0.78（得分高，推荐）。\n\n常见变种\nSVD（奇异值分解）：最早用于推荐系统的矩阵分解算法；\nFFM（场感知因子分解机）：考虑商品属性的“场”（比如类目、店铺），效果更好；\nNCF（神经协同过滤）：用神经网络替代传统矩阵分解的点积运算，拟合能力更强（结合了深度学习）。\n\n优缺点\n优点：能挖掘用户&#x2F;商品的“隐藏偏好”，解决数据稀疏问题；推荐效果比基于记忆的CF更好；\n缺点：需要训练模型，实现比基于记忆的CF复杂；可解释性差（不知道隐因子具体代表什么）。\n\n2. 其他模型类CF\n概率模型：比如贝叶斯网络、LDA（隐含狄利克雷分配），把用户偏好建模为概率分布，适合处理“多类别偏好”场景；\n基于邻居的模型：比如KNN的改进版（K近邻协同过滤），结合了基于记忆的“邻居思想”和模型的“泛化能力”，解决稀疏数据下的邻居查找问题；\n深度学习模型：除了NCF，还有CNN（捕捉商品的局部特征）、RNN&#x2F;LSTM（捕捉用户行为的时序特征）、Transformer（捕捉长序列行为依赖），适合复杂场景（比如你的赛题需要预测“最后一条购买商品”，时序模型特别适配）。\n\n三、混合&#x2F;改进型协同过滤纯粹的协同过滤（无论是基于记忆还是模型）都有局限（比如冷启动、可解释性差），所以实际应用中大多用“混合&#x2F;改进型”，核心是结合多种CF的优点，或融入其他类型的特征。\n1. 用户-物品混合CF\n逻辑：同时计算“用户相似度”和“物品相似度”，把两个相似度加权融合，得到最终的推荐得分；\n举例：推荐得分 &#x3D; 0.4×用户协同过滤得分 + 0.6×物品协同过滤得分；\n优点：兼顾“用户兴趣”和“商品关联”，效果更稳定。\n\n2. 结合内容特征的CF（CF+Content）\n逻辑：把商品属性（类目、店铺、价格）、用户属性（年龄、性别，赛题没给）融入协同过滤；\n举例：计算物品相似度时，不仅看“共同购买用户数”，还看“是否同类目”“价格区间是否接近”；\n优点：解决冷启动问题（新商品有属性就能计算相似度）；推荐更精准（结合了属性偏好）。\n\n3. 时序协同过滤（Temporal CF）\n逻辑：考虑用户行为的“时间顺序”（比如近期购买的商品比半年前的更能反映当前偏好）；\n举例：计算用户相似度时，近期购买的商品权重更高；用LSTM&#x2F;Transformer模型捕捉“购买序列”的依赖关系（比如买了手机→买手机壳→买耳机）；\n适用场景：你的赛题！因为要预测“最后一条购买商品”，时序特征是核心，时序CF比普通CF效果好得多。\n\n四、总结：协同过滤分类速查表\n\n\n大类\n子类\n核心特点\n适用场景\n实现难度\n\n\n\n基于记忆的CF\n用户协同过滤\n找相似用户，推荐其商品\n用户少、物品多（如赛题）\n低\n\n\n\n物品协同过滤\n找相似商品，推荐给买过该商品的用户\n用户多、物品少（如淘宝）\n低-中\n\n\n基于模型的CF\n矩阵分解（MF&#x2F;NCF）\n挖掘隐因子，解决数据稀疏\n数据量大、稀疏（如千万级用户）\n中-高\n\n\n\n概率模型（贝叶斯&#x2F;LDA）\n建模偏好分布，适合多类别偏好\n内容类推荐（新闻、视频）\n中-高\n\n\n\n深度学习模型（LSTM&#x2F;Transformer）\n捕捉时序&#x2F;长依赖特征\n序列推荐（预测下一个购买&#x2F;观看）\n高\n\n\n混合&#x2F;改进型CF\nCF+内容特征\n结合属性，解决冷启动\n新商品&#x2F;新用户多的场景\n中\n\n\n\n时序CF\n考虑时间顺序，适合序列预测\n赛题（预测最后一条购买）\n中-高\n\n\n对你的赛题的启发\n你的Baseline是“基于记忆的用户协同过滤”，属于入门级实现；\n要提升效果，优先尝试“时序CF”（结合购买顺序）或“CF+商品属性”（融入类目&#x2F;店铺），实现难度不高，效果提升明显；\n如果你想利用深度学习背景，直接上“神经协同过滤（NCF）”或“Transformer序列推荐模型”，大概率能超越大部分基于传统CF的方案。\n\n\n\n\n算法类别\n核心思想\n优点\n缺点\n典型应用场景\n\n\n\n协同过滤（Collaborative Filtering）\n不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”）\n无需领域知识、冷启动时（无属性）可用\n可解释性差、稀疏数据下效果不好\n电商推荐、视频推荐\n\n\n内容推荐（Content-Based）\n基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）\n可解释性强、无冷启动问题（有属性就好）\n推荐多样性差（只会推同类）、依赖属性质量\n新闻推荐、商品详情页推荐\n\n\n混合推荐（Hybrid）\n结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）\n兼顾准确性和多样性、鲁棒性强\n实现复杂\n成熟电商平台（淘宝&#x2F;京东）、短视频平台\n\n\n3. 赛题为什么用协同过滤做Baseline？\n数据适配：赛题给了大量“用户-商品”购买行为数据，刚好满足协同过滤的输入需求；\n实现简单：无需复杂的特征工程（比如不用深度挖掘商品属性），零基础也能快速落地；\n效果有保障：协同过滤是推荐系统的“基石算法”，在购买行为数据充足时，基础效果不会差。\n\n二、Baseline核心：用户协同过滤（User-Based CF）深度解析我们的Baseline用的是「用户协同过滤」，属于协同过滤的两大分支之一（另一分支是「物品协同过滤」，后面会讲区别）。\n1. 用户协同过滤的核心逻辑（3步走）一句话总结：找和你“兴趣相似”的人，把他们买过但你没买过的商品推荐给你。\n对应到赛题的具体步骤（和Baseline代码完全对应）：\n12graph LR    A[步骤1：找相似用户] --&gt; B[步骤2：收集候选商品] --&gt; C[步骤3：排序推荐]\n\n步骤1：找相似用户（Baseline的核心耗时步骤）\n问题：怎么判断“两个用户兴趣相似”？\n答案：看他们的购买行为重合度——买的商品越像，兴趣越相似。\nBaseline的实现：\n候选用户筛选：先找“和测试用户买过至少一个相同商品”的训练用户（减少计算量）；\n相似度计算：用「改进的杰卡德相似度」（带热门惩罚）量化相似程度。\n\n\n\n步骤2：收集候选商品\n候选池 &#x3D; 测试用户自己买过的商品 + 所有相似用户买过的商品；\n去重：避免重复推荐同一商品（但Baseline后续补全时可能重复，不影响）。\n\n步骤3：排序推荐\n打分规则：商品在“相似用户”中出现次数越多、相似用户的相似度越高，得分越高；\n排序：按得分降序取前30个，不足则用用户自己买过的商品补全。\n\n2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）相似度是用户协同过滤的“灵魂”——它决定了“相似用户”找得准不准，进而影响推荐效果。\n（1）基础杰卡德相似度（Jaccard Similarity）最经典的集合相似度计算方法，公式：$$\\text{Jaccard}(A,B) &#x3D; \\frac{|A \\cap B|}{|A \\cup B|}$$\n\n解释：A是用户A的购买商品集合，B是用户B的购买商品集合；\n分子：两个用户都买过的商品数（交集）；\n分母：两个用户总共买过的商品数（并集）；\n范围：0~1，值越大越相似。\n\n（2）Baseline为什么不用基础杰卡德，而用改进版？\n问题：基础杰卡德有个漏洞——“热门商品干扰”。\n举例：商品X是爆款，10000个用户都买过；用户A和用户B都买了X，但其他商品完全不同。\n基础杰卡德会认为A和B相似（因为交集有X），但实际他们兴趣完全不同。\n\n\n解决方案：加「热门惩罚」——热门商品（买的人多）对相似度的贡献降低。\nBaseline的改进公式：$$\\text{改进杰卡德}(A,B) &#x3D; \\frac{\\sum_{x \\in A \\cap B} \\frac{1}{\\log(1+\\text{买过}x\\text{的用户数})}}{\\sqrt{|A| \\times |B|}}$$\n核心变化：\n分子：不再是“交集商品数”，而是“交集商品的加权和”——热门商品的权重低（比如爆款X的权重接近0）；\n分母：用“两个用户商品数的平方根乘积”替代“并集”，计算更简单，效果相近。\n\n\n\n\n\n3. 用户协同过滤 vs 物品协同过滤（补充知识，帮你拓展）很多人会混淆这两个分支，用表格清晰区分：\n\n\n\n维度\n用户协同过滤（Baseline用的）\n物品协同过滤（Item-Based CF）\n\n\n\n核心逻辑\n找相似用户，推荐相似用户的商品\n找相似商品，推荐给买过该商品的用户\n\n\n相似度计算对象\n用户 vs 用户\n物品 vs 物品\n\n\n适合场景\n用户少、物品多（比如赛题：48万用户，187万商品）\n用户多、物品少（比如短视频平台：亿级用户，百万级视频）\n\n\n计算复杂度\n随用户数增加而增加\n随物品数增加而增加\n\n\n可解释性\n差（“和你相似的人买了这个”）\n强（“买过A的人还买了B”）\n\n\n\n赛题为什么不用物品协同过滤？\n物品数（187万）远大于用户数（48万），计算“物品相似度”（187万×187万）会内存爆炸，而用户协同过滤计算量可控。\n\n\n\n三、Baseline算法的局限性（为什么需要优化？）虽然Baseline能跑通，但作为零基础入门的实现，它做了很多“简化假设”，导致推荐精准度（尤其是MRR指标需要的“前10位命中率”）不够高：\n1. 简化假设1：忽略“复购”和“时序”\nBaseline认为“用户买过1次和买过10次某商品”对偏好的表达是一样的（商品去重）；\n但实际：复购次数越多，用户对该商品&#x2F;类目越偏好；近期购买的商品（irank&#x3D;1）比半年前买的（irank&#x3D;7）更能反映当前兴趣。\n\n2. 简化假设2：忽略“商品属性”\nBaseline只看商品ID，不看商品的类目、店铺、价格；\n但实际：用户可能忠于“类目”（比如只买运动鞋）或“店铺”（比如只买某品牌店），哪怕没买过该店铺的某款具体商品，也大概率会买。\n\n3. 简化假设3：打分逻辑粗糙\nBaseline只累加相似用户的权重，没有突出“用户自身的核心偏好”；\n比如：用户自己买过8次类目X的商品，相似用户推荐类目Y的商品，Baseline可能把Y排在前面，但实际X的优先级应该更高。\n\n四、从零基础到进阶：后续优化方向（结合你的深度学习背景）了解了Baseline的核心逻辑后，你可以基于自己的深度学习基础，逐步提升效果：\n1. 先做“简单优化”（无需深度学习，纯工程改进）\n优化1：加入复购权重——用户复购的商品，在相似度计算和推荐打分时加权；\n优化2：加入时序权重——近期购买的商品（irank小）权重更高；\n优化3：融合商品属性——加入“类目相似度”“店铺相似度”，多维度计算用户相似度。\n\n2. 再做“进阶优化”（结合机器学习&#x2F;深度学习）\n方向1：矩阵分解（MF）——将“用户-商品”购买矩阵分解为用户向量和商品向量，用向量相似度替代杰卡德相似度（解决稀疏数据问题）；\n方向2：序列推荐模型——用深度学习捕捉用户购买的“时序关联”（比如LSTM、Transformer），因为赛题要预测“最后一条购买商品”，时序特征至关重要；\n方向3：混合推荐——先用水准分解得到用户&#x2F;商品向量，再结合商品属性和协同过滤得分，做加权融合（兼顾准确性和多样性）。\n\n五、总结：零基础入门推荐系统的关键\n先理解“协同过滤”的核心思想（行为相似性），这是推荐系统的基石；\n搞懂Baseline的每一步实现：数据加载→字典构建→相似度计算→相似用户查找→推荐生成，每一步都对应“用户协同过滤”的核心逻辑；\n结合赛题指标（MRR）优化：MRR要求“正确商品排得越前越好”，所以后续优化要重点提升“前10位命中率”（比如强化用户近期&#x2F;复购偏好、引入时序关联）；\n利用你的深度学习背景：序列推荐模型（如GRU4Rec、Transformer4Rec）在赛题中大概率能大幅超越Baseline，这是你的核心优势。\n\n如果后续想深入某一块（比如矩阵分解的实现、序列推荐模型的搭建），可以随时告诉我，我会结合赛题数据帮你拆解！\n\n基于用户的协同过滤\n基于物品的协同过滤\n基于矩阵分解的协同过滤\n基于深度学习的协同过滤\n\n","dateCreated":"2025-05-15T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-05-15T00:00:00+08:00","description":"","headline":"商品推荐学习-天池极客挑赛安泰杯","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/15/product-recommendation-tianchi/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/05/15/product-recommendation-tianchi/","keywords":"推荐系统, 竞赛, 天池, 数据挖掘"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"商品推荐学习-天池极客挑赛安泰杯改1. 项目介绍本次比赛基于某国家在若干日内的用户购买数据，数据集分为A、B两部分，A为训练数据，B为预测数据（去除其最后一条购买数据）。要求参赛选手预测B部分用户被移除的最后一条行为数据。\n2. 商品推荐类别学习\n推荐系统到底在做什么：核心目标 推荐系统的本质是「连接用户和物品」，解决“信息过载”问题：\n\n对用户：推荐你可能喜欢的商品&#x2F;内容（比如淘宝首页的“猜你喜欢”）；\n对平台：提升用户留存、转化（比如速卖通让用户买到想买的，多下单）。\n\n 对应到本次赛题：就是“根据用户历史购买记录，猜他下一个（最后一个）会买什么商品”。\n\n推荐算法有很多，但核心可分为3类：协同过滤（Collaborative Filtering）、内容推荐（Content-Based）、混合推荐（Hybrid）。\n\n协同过滤（Collaborative Filtering）：不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”），\n内容推荐（Content-Based）：基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）。\n混合推荐（Hybrid）：结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）。\n\n\n\n协同过滤\n协同过滤（CF）是推荐系统的核心算法家族，核心思想是利用用户或物品的“行为相似性”做推荐，不依赖物品&#x2F;用户的具体属性。根据“相似性计算的对象”和“实现方式”，协同过滤主要分为两大核心分支，再加上衍生的混合&#x2F;改进类型，整体分类如下：\n\n核心分支：基于记忆的协同过滤（Memory-Based）\n最经典、最易实现的协同过滤类型，直接“记忆”用户&#x2F;物品的历史行为，通过统计方法计算相似度，不需要训练复杂模型。\n\n1. 用户协同过滤（User-Based CF）\n“找和你兴趣相似的人，把他们买过的商品推荐给你”\n\n\n步骤：\n\n计算用户与用户之间的相似度（比如杰卡德相似度）；\n给目标用户找Top N个最相似的“邻居用户”；\n收集邻居用户买过但目标用户没买过的商品，按相似度加权打分，排序推荐。\n\n\n赛题中的对应\n\n目标用户：测试集用户；\n邻居用户：训练集用户；\n优点：逻辑简单、易落地，适合用户数不算特别多的场景；\n缺点：用户数多的时候（如千万级），计算用户相似度会很慢，且有缺点是“用户冷启动”，即新用户没有行为，无法推荐。\n\n\n\n2. 物品协同过滤（Item-Based CF）—— 电商常用\n“你买过A商品，推荐和A相似的其他商品”\n\n\n步骤：\n\n计算物品与物品之间的相似度（比如两个商品被多少共同用户购买过）；\n找出目标用户买过的所有商品的“相似商品”；\n对这些相似商品加权打分（买过的商品相似度越高，得分越高），排序推荐。\n\n\n举例：你买了“无线耳机”，系统推荐“耳机保护套”“蓝牙音箱”——因为这两个商品和“无线耳机”的购买用户重合度高（买耳机的人常买保护套&#x2F;音箱）。\n\n优缺点\n\n优点：物品相似度相对稳定（比如耳机和保护套的关联性不会轻易变），可以提前预计算，推荐速度快；可解释性强（“基于你购买的X推荐”）；\n缺点：物品数特别多的时候（比如上亿商品），预计算物品相似度会占用大量内存（“物品冷启动”：新商品没有行为，无法推荐）。\n\n\n\n和用户协同过滤的核心区别\n\n\n维度\n用户协同过滤（Baseline用）\n物品协同过滤（电商常用）\n\n\n\n相似性计算对象\n用户 vs 用户\n物品 vs 物品\n\n\n核心逻辑\n人以群分，推荐“群友”的商品\n物以类聚，推荐“同类”商品\n\n\n计算复杂度\n随用户数增加而上升\n随物品数增加而上升\n\n\n适合场景\n用户少、物品多（如赛题）\n用户多、物品少（如淘宝）\n\n\n冷启动问题\n新用户难推荐\n新商品难推荐\n\n\n二、核心分支：基于模型的协同过滤（Model-Based）当数据量很大（比如千万级用户&#x2F;亿级商品），或数据稀疏（大部分用户只买过少数商品）时，基于记忆的CF效果会下降——这时候需要用“模型”来挖掘隐藏的用户偏好，核心是把推荐问题转化为机器学习&#x2F;深度学习问题。\n1. 矩阵分解（Matrix Factorization, MF）—— 最经典的模型CF核心逻辑\n问题：用户-商品的购买行为可以表示为一个“稀疏矩阵”（行&#x3D;用户，列&#x3D;商品，值&#x3D;是否购买&#x2F;购买次数），但大部分值都是空的（用户没买过该商品）；\n解决方案：把这个稀疏矩阵分解为两个稠密矩阵——用户特征矩阵（行&#x3D;用户，列&#x3D;隐因子，比如“喜欢运动”“偏好低价”）和商品特征矩阵（行&#x3D;商品，列&#x3D;隐因子）；\n推荐：用户对商品的偏好得分 &#x3D; 用户特征向量 × 商品特征向量（点积），按得分排序推荐。\n\n举例\n用户A的特征向量：[0.9（喜欢运动）, 0.2（偏好高价）]；\n商品B的特征向量：[0.8（运动类）, 0.3（高价）]；\n偏好得分：0.9×0.8 + 0.2×0.3 &#x3D; 0.78（得分高，推荐）。\n\n常见变种\nSVD（奇异值分解）：最早用于推荐系统的矩阵分解算法；\nFFM（场感知因子分解机）：考虑商品属性的“场”（比如类目、店铺），效果更好；\nNCF（神经协同过滤）：用神经网络替代传统矩阵分解的点积运算，拟合能力更强（结合了深度学习）。\n\n优缺点\n优点：能挖掘用户&#x2F;商品的“隐藏偏好”，解决数据稀疏问题；推荐效果比基于记忆的CF更好；\n缺点：需要训练模型，实现比基于记忆的CF复杂；可解释性差（不知道隐因子具体代表什么）。\n\n2. 其他模型类CF\n概率模型：比如贝叶斯网络、LDA（隐含狄利克雷分配），把用户偏好建模为概率分布，适合处理“多类别偏好”场景；\n基于邻居的模型：比如KNN的改进版（K近邻协同过滤），结合了基于记忆的“邻居思想”和模型的“泛化能力”，解决稀疏数据下的邻居查找问题；\n深度学习模型：除了NCF，还有CNN（捕捉商品的局部特征）、RNN&#x2F;LSTM（捕捉用户行为的时序特征）、Transformer（捕捉长序列行为依赖），适合复杂场景（比如你的赛题需要预测“最后一条购买商品”，时序模型特别适配）。\n\n三、混合&#x2F;改进型协同过滤纯粹的协同过滤（无论是基于记忆还是模型）都有局限（比如冷启动、可解释性差），所以实际应用中大多用“混合&#x2F;改进型”，核心是结合多种CF的优点，或融入其他类型的特征。\n1. 用户-物品混合CF\n逻辑：同时计算“用户相似度”和“物品相似度”，把两个相似度加权融合，得到最终的推荐得分；\n举例：推荐得分 &#x3D; 0.4×用户协同过滤得分 + 0.6×物品协同过滤得分；\n优点：兼顾“用户兴趣”和“商品关联”，效果更稳定。\n\n2. 结合内容特征的CF（CF+Content）\n逻辑：把商品属性（类目、店铺、价格）、用户属性（年龄、性别，赛题没给）融入协同过滤；\n举例：计算物品相似度时，不仅看“共同购买用户数”，还看“是否同类目”“价格区间是否接近”；\n优点：解决冷启动问题（新商品有属性就能计算相似度）；推荐更精准（结合了属性偏好）。\n\n3. 时序协同过滤（Temporal CF）\n逻辑：考虑用户行为的“时间顺序”（比如近期购买的商品比半年前的更能反映当前偏好）；\n举例：计算用户相似度时，近期购买的商品权重更高；用LSTM&#x2F;Transformer模型捕捉“购买序列”的依赖关系（比如买了手机→买手机壳→买耳机）；\n适用场景：你的赛题！因为要预测“最后一条购买商品”，时序特征是核心，时序CF比普通CF效果好得多。\n\n四、总结：协同过滤分类速查表\n\n\n大类\n子类\n核心特点\n适用场景\n实现难度\n\n\n\n基于记忆的CF\n用户协同过滤\n找相似用户，推荐其商品\n用户少、物品多（如赛题）\n低\n\n\n\n物品协同过滤\n找相似商品，推荐给买过该商品的用户\n用户多、物品少（如淘宝）\n低-中\n\n\n基于模型的CF\n矩阵分解（MF&#x2F;NCF）\n挖掘隐因子，解决数据稀疏\n数据量大、稀疏（如千万级用户）\n中-高\n\n\n\n概率模型（贝叶斯&#x2F;LDA）\n建模偏好分布，适合多类别偏好\n内容类推荐（新闻、视频）\n中-高\n\n\n\n深度学习模型（LSTM&#x2F;Transformer）\n捕捉时序&#x2F;长依赖特征\n序列推荐（预测下一个购买&#x2F;观看）\n高\n\n\n混合&#x2F;改进型CF\nCF+内容特征\n结合属性，解决冷启动\n新商品&#x2F;新用户多的场景\n中\n\n\n\n时序CF\n考虑时间顺序，适合序列预测\n赛题（预测最后一条购买）\n中-高\n\n\n对你的赛题的启发\n你的Baseline是“基于记忆的用户协同过滤”，属于入门级实现；\n要提升效果，优先尝试“时序CF”（结合购买顺序）或“CF+商品属性”（融入类目&#x2F;店铺），实现难度不高，效果提升明显；\n如果你想利用深度学习背景，直接上“神经协同过滤（NCF）”或“Transformer序列推荐模型”，大概率能超越大部分基于传统CF的方案。\n\n\n\n\n算法类别\n核心思想\n优点\n缺点\n典型应用场景\n\n\n\n协同过滤（Collaborative Filtering）\n不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”）\n无需领域知识、冷启动时（无属性）可用\n可解释性差、稀疏数据下效果不好\n电商推荐、视频推荐\n\n\n内容推荐（Content-Based）\n基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）\n可解释性强、无冷启动问题（有属性就好）\n推荐多样性差（只会推同类）、依赖属性质量\n新闻推荐、商品详情页推荐\n\n\n混合推荐（Hybrid）\n结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）\n兼顾准确性和多样性、鲁棒性强\n实现复杂\n成熟电商平台（淘宝&#x2F;京东）、短视频平台\n\n\n3. 赛题为什么用协同过滤做Baseline？\n数据适配：赛题给了大量“用户-商品”购买行为数据，刚好满足协同过滤的输入需求；\n实现简单：无需复杂的特征工程（比如不用深度挖掘商品属性），零基础也能快速落地；\n效果有保障：协同过滤是推荐系统的“基石算法”，在购买行为数据充足时，基础效果不会差。\n\n二、Baseline核心：用户协同过滤（User-Based CF）深度解析我们的Baseline用的是「用户协同过滤」，属于协同过滤的两大分支之一（另一分支是「物品协同过滤」，后面会讲区别）。\n1. 用户协同过滤的核心逻辑（3步走）一句话总结：找和你“兴趣相似”的人，把他们买过但你没买过的商品推荐给你。\n对应到赛题的具体步骤（和Baseline代码完全对应）：\n12graph LR    A[步骤1：找相似用户] --&gt; B[步骤2：收集候选商品] --&gt; C[步骤3：排序推荐]\n\n步骤1：找相似用户（Baseline的核心耗时步骤）\n问题：怎么判断“两个用户兴趣相似”？\n答案：看他们的购买行为重合度——买的商品越像，兴趣越相似。\nBaseline的实现：\n候选用户筛选：先找“和测试用户买过至少一个相同商品”的训练用户（减少计算量）；\n相似度计算：用「改进的杰卡德相似度」（带热门惩罚）量化相似程度。\n\n\n\n步骤2：收集候选商品\n候选池 &#x3D; 测试用户自己买过的商品 + 所有相似用户买过的商品；\n去重：避免重复推荐同一商品（但Baseline后续补全时可能重复，不影响）。\n\n步骤3：排序推荐\n打分规则：商品在“相似用户”中出现次数越多、相似用户的相似度越高，得分越高；\n排序：按得分降序取前30个，不足则用用户自己买过的商品补全。\n\n2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）相似度是用户协同过滤的“灵魂”——它决定了“相似用户”找得准不准，进而影响推荐效果。\n（1）基础杰卡德相似度（Jaccard Similarity）最经典的集合相似度计算方法，公式：$$\n\\text{Jaccard}(A,B) = \\frac{|A \\cap B|}{|A \\cup B|}\n$$\n\n解释：A是用户A的购买商品集合，B是用户B的购买商品集合；\n分子：两个用户都买过的商品数（交集）；\n分母：两个用户总共买过的商品数（并集）；\n范围：0~1，值越大越相似。\n\n（2）Baseline为什么不用基础杰卡德，而用改进版？\n问题：基础杰卡德有个漏洞——“热门商品干扰”。\n举例：商品X是爆款，10000个用户都买过；用户A和用户B都买了X，但其他商品完全不同。\n基础杰卡德会认为A和B相似（因为交集有X），但实际他们兴趣完全不同。\n\n\n解决方案：加「热门惩罚」——热门商品（买的人多）对相似度的贡献降低。\nBaseline的改进公式：$$\n    \\text{改进杰卡德}(A,B) = \\frac{\\sum_{x \\in A \\cap B} \\frac{1}{\\log(1+\\text{买过}x\\text{的用户数})}}{\\sqrt{|A| \\times |B|}}\n    $$\n核心变化：\n分子：不再是“交集商品数”，而是“交集商品的加权和”——热门商品的权重低（比如爆款X的权重接近0）；\n分母：用“两个用户商品数的平方根乘积”替代“并集”，计算更简单，效果相近。\n\n\n\n\n\n3. 用户协同过滤 vs 物品协同过滤（补充知识，帮你拓展）很多人会混淆这两个分支，用表格清晰区分：\n\n\n\n维度\n用户协同过滤（Baseline用的）\n物品协同过滤（Item-Based CF）\n\n\n\n核心逻辑\n找相似用户，推荐相似用户的商品\n找相似商品，推荐给买过该商品的用户\n\n\n相似度计算对象\n用户 vs 用户\n物品 vs 物品\n\n\n适合场景\n用户少、物品多（比如赛题：48万用户，187万商品）\n用户多、物品少（比如短视频平台：亿级用户，百万级视频）\n\n\n计算复杂度\n随用户数增加而增加\n随物品数增加而增加\n\n\n可解释性\n差（“和你相似的人买了这个”）\n强（“买过A的人还买了B”）\n\n\n\n赛题为什么不用物品协同过滤？\n物品数（187万）远大于用户数（48万），计算“物品相似度”（187万×187万）会内存爆炸，而用户协同过滤计算量可控。\n\n\n\n三、Baseline算法的局限性（为什么需要优化？）虽然Baseline能跑通，但作为零基础入门的实现，它做了很多“简化假设”，导致推荐精准度（尤其是MRR指标需要的“前10位命中率”）不够高：\n1. 简化假设1：忽略“复购”和“时序”\nBaseline认为“用户买过1次和买过10次某商品”对偏好的表达是一样的（商品去重）；\n但实际：复购次数越多，用户对该商品&#x2F;类目越偏好；近期购买的商品（irank&#x3D;1）比半年前买的（irank&#x3D;7）更能反映当前兴趣。\n\n2. 简化假设2：忽略“商品属性”\nBaseline只看商品ID，不看商品的类目、店铺、价格；\n但实际：用户可能忠于“类目”（比如只买运动鞋）或“店铺”（比如只买某品牌店），哪怕没买过该店铺的某款具体商品，也大概率会买。\n\n3. 简化假设3：打分逻辑粗糙\nBaseline只累加相似用户的权重，没有突出“用户自身的核心偏好”；\n比如：用户自己买过8次类目X的商品，相似用户推荐类目Y的商品，Baseline可能把Y排在前面，但实际X的优先级应该更高。\n\n四、从零基础到进阶：后续优化方向（结合你的深度学习背景）了解了Baseline的核心逻辑后，你可以基于自己的深度学习基础，逐步提升效果：\n1. 先做“简单优化”（无需深度学习，纯工程改进）\n优化1：加入复购权重——用户复购的商品，在相似度计算和推荐打分时加权；\n优化2：加入时序权重——近期购买的商品（irank小）权重更高；\n优化3：融合商品属性——加入“类目相似度”“店铺相似度”，多维度计算用户相似度。\n\n2. 再做“进阶优化”（结合机器学习&#x2F;深度学习）\n方向1：矩阵分解（MF）——将“用户-商品”购买矩阵分解为用户向量和商品向量，用向量相似度替代杰卡德相似度（解决稀疏数据问题）；\n方向2：序列推荐模型——用深度学习捕捉用户购买的“时序关联”（比如LSTM、Transformer），因为赛题要预测“最后一条购买商品”，时序特征至关重要；\n方向3：混合推荐——先用水准分解得到用户&#x2F;商品向量，再结合商品属性和协同过滤得分，做加权融合（兼顾准确性和多样性）。\n\n五、总结：零基础入门推荐系统的关键\n先理解“协同过滤”的核心思想（行为相似性），这是推荐系统的基石；\n搞懂Baseline的每一步实现：数据加载→字典构建→相似度计算→相似用户查找→推荐生成，每一步都对应“用户协同过滤”的核心逻辑；\n结合赛题指标（MRR）优化：MRR要求“正确商品排得越前越好”，所以后续优化要重点提升“前10位命中率”（比如强化用户近期&#x2F;复购偏好、引入时序关联）；\n利用你的深度学习背景：序列推荐模型（如GRU4Rec、Transformer4Rec）在赛题中大概率能大幅超越Baseline，这是你的核心优势。\n\n如果后续想深入某一块（比如矩阵分解的实现、序列推荐模型的搭建），可以随时告诉我，我会结合赛题数据帮你拆解！\n\n基于用户的协同过滤\n基于物品的协同过滤\n基于矩阵分解的协同过滤\n基于深度学习的协同过滤\n\n","dateCreated":"2025-05-15T00:00:00+08:00","dateModified":"2026-06-10T20:50:03+08:00","datePublished":"2025-05-15T00:00:00+08:00","description":"","headline":"商品推荐学习-天池极客挑赛安泰杯","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/15/product-recommendation-tianchi/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/05/15/product-recommendation-tianchi/","keywords":"推荐系统"}</script>
     <meta name="description" content="商品推荐学习-天池极客挑赛安泰杯改1. 项目介绍本次比赛基于某国家在若干日内的用户购买数据，数据集分为A、B两部分，A为训练数据，B为预测数据（去除其最后一条购买数据）。要求参赛选手预测B部分用户被移除的最后一条行为数据。 2. 商品推荐类别学习 推荐系统到底在做什么：核心目标 推荐系统的本质是「连接用户和物品」，解决“信息过载”问题：  对用户：推荐你可能喜欢的商品&#x2F;内容（比如淘宝首页">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="商品推荐学习-天池极客挑赛安泰杯">
@@ -28,12 +29,9 @@
 <meta property="og:description" content="商品推荐学习-天池极客挑赛安泰杯改1. 项目介绍本次比赛基于某国家在若干日内的用户购买数据，数据集分为A、B两部分，A为训练数据，B为预测数据（去除其最后一条购买数据）。要求参赛选手预测B部分用户被移除的最后一条行为数据。 2. 商品推荐类别学习 推荐系统到底在做什么：核心目标 推荐系统的本质是「连接用户和物品」，解决“信息过载”问题：  对用户：推荐你可能喜欢的商品&#x2F;内容（比如淘宝首页">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-09T16:17:03.640Z">
+<meta property="article:modified_time" content="2026-06-10T12:50:03.158Z">
 <meta property="article:author" content="LPF05">
-<meta property="article:tag" content="天池">
 <meta property="article:tag" content="推荐系统">
-<meta property="article:tag" content="数据挖掘">
-<meta property="article:tag" content="竞赛">
 <meta name="twitter:card" content="summary">
     
     
@@ -50,6 +48,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -70,7 +84,7 @@
         
     
 
-<header id="header" data-behavior="4">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -103,7 +117,7 @@
         
     
 
-<nav id="sidebar" data-behavior="4">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -211,22 +225,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -251,7 +249,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="4"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -550,7 +548,9 @@
 <li>排序：按得分降序取前30个，不足则用用户自己买过的商品补全。</li>
 </ul>
 <h3 id="2-关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）"><a href="#2-关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）" class="headerlink" title="2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）"></a>2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）</h3><p>相似度是用户协同过滤的“灵魂”——它决定了“相似用户”找得准不准，进而影响推荐效果。</p>
-<h4 id="（1）基础杰卡德相似度（Jaccard-Similarity）"><a href="#（1）基础杰卡德相似度（Jaccard-Similarity）" class="headerlink" title="（1）基础杰卡德相似度（Jaccard Similarity）"></a>（1）基础杰卡德相似度（Jaccard Similarity）</h4><p>最经典的集合相似度计算方法，公式：<br>$$<br>\text{Jaccard}(A,B) &#x3D; \frac{|A \cap B|}{|A \cup B|}<br>$$</p>
+<h4 id="（1）基础杰卡德相似度（Jaccard-Similarity）"><a href="#（1）基础杰卡德相似度（Jaccard-Similarity）" class="headerlink" title="（1）基础杰卡德相似度（Jaccard Similarity）"></a>（1）基础杰卡德相似度（Jaccard Similarity）</h4><p>最经典的集合相似度计算方法，公式：<br>$$
+\text{Jaccard}(A,B) = \frac{|A \cap B|}{|A \cup B|}
+$$</p>
 <ul>
 <li>解释：A是用户A的购买商品集合，B是用户B的购买商品集合；</li>
 <li>分子：两个用户都买过的商品数（交集）；</li>
@@ -564,7 +564,9 @@
 </ul>
 </li>
 <li>解决方案：加「热门惩罚」——热门商品（买的人多）对相似度的贡献降低。<ul>
-<li>Baseline的改进公式：<br>$$<br>\text{改进杰卡德}(A,B) &#x3D; \frac{\sum_{x \in A \cap B} \frac{1}{\log(1+\text{买过}x\text{的用户数})}}{\sqrt{|A| \times |B|}}<br>$$</li>
+<li>Baseline的改进公式：<br>$$
+    \text{改进杰卡德}(A,B) = \frac{\sum_{x \in A \cap B} \frac{1}{\log(1+\text{买过}x\text{的用户数})}}{\sqrt{|A| \times |B|}}
+    $$</li>
 <li>核心变化：<ul>
 <li>分子：不再是“交集商品数”，而是“交集商品的加权和”——热门商品的权重低（比如爆款X的权重接近0）；</li>
 <li>分母：用“两个用户商品数的平方根乘积”替代“并集”，计算更简单，效果相近。</li>
@@ -662,7 +664,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%A4%A9%E6%B1%A0/" rel="tag">天池</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/" rel="tag">数据挖掘</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%AB%9E%E8%B5%9B/" rel="tag">竞赛</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" rel="tag">推荐系统</a>
 
             </div>
         
@@ -781,7 +783,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -881,7 +883,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -954,7 +956,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -968,7 +970,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -982,21 +1130,150 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+        <script>
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                    processEscapes: true
+                },
+                options: {
+                    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                }
+            };
+        </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+    </body>
 </html>

@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>跟学廖雪峰Python教程新学新知 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -19,7 +20,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"廖雪峰python教程新学新知python基础\nr&#39;&#39; 表示&#39;&#39;内部的字符串默认不转义。  \n\nord()函数获取字符的整数表示，chr()函数把编码转换为对应的字符。  \n\nbytes类型的数据用带b前缀的单引号或双引号表示: x = b&#39;ABC&#39;。\n\nencode(&#39;编码类型&#39;)方法可以编码为指定的bytes,decode(&#39;编码类型&#39;)方法将bytes转换为str。  \n\ndecode(&#39;编码类型&#39;, errors=&#39;ignore&#39;)中，传入errors=&#39;ignore&#39;忽略错误的字节。  \n\n保存文件时指定编码类型以及增加运行头文件。  \n 123456789101112    #!/usr/bin/env python3    # -*- coding: utf-8 -*-    ```  7. 输出格式化有三种方法：      - % 运算符 :同c语言      ```python    &gt;&gt;&gt; &#x27;Hello, %s&#x27; % &#x27;world&#x27;    &#x27;Hello, world&#x27;    &gt;&gt;&gt; &#x27;Hi, %s, you have $%d.&#x27; % (&#x27;Michael&#x27;, 1000000)    &#x27;Hi, Michael, you have $1000000.&#x27;\n\n\nformat函数 :传入的参数依次替换字符串内的占位符{0}、{1}……\n\n 12&gt;&gt;&gt; &#x27;Hello, &#123;0&#125;, 成绩提升了 &#123;1:.1f&#125;%&#x27;.format(&#x27;小明&#x27;, 17.125)&#x27;Hello, 小明, 成绩提升了 17.1%&#x27;\n\n\nf-string\n\n 小明的成绩从去年的72分提升到了今年的85分，请计算小明成绩提升的百分点，并用字符串格式化显示出&#39;xx.x%&#39;，只保留小数点后1位：\n 1234s1 = 72s2 = 85r = (s2-s1)/s1print(&#x27;%004.1f%%&#x27; % r)\n\ntuple元素不可变，但tuple中的list可变。  \n\n模式匹配可匹配复杂语句和列表。  \n 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586    age = 15    match age:        case x if x &lt; 10:            print(f&#x27;&lt; 10 years old: &#123;x&#125;&#x27;)        case 10:            print(&#x27;10 years old.&#x27;)        case 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18:            print(&#x27;11~18 years old.&#x27;)        case 19:            print(&#x27;19 years old.&#x27;)        case _:            print(&#x27;not sure.&#x27;)    args = [&#x27;gcc&#x27;, &#x27;hello.c&#x27;, &#x27;world.c&#x27;]    # args = [&#x27;clean&#x27;]    # args = [&#x27;gcc&#x27;]    match args:        # 如果仅出现gcc，报错:        case [&#x27;gcc&#x27;]:            print(&#x27;gcc: missing source file(s).&#x27;)        # 出现gcc，且至少指定了一个文件:        case [&#x27;gcc&#x27;, file1, *files]:            print(&#x27;gcc compile: &#x27; + file1 + &#x27;, &#x27; + &#x27;, &#x27;.join(files))        # 仅出现clean:        case [&#x27;clean&#x27;]:            print(&#x27;clean&#x27;)        case _:            print(&#x27;invalid command.&#x27;)    ```  10. dict创建有三种方法:`d = &#123;&#x27;a&#x27;: 6,&#125;`,`d = dict(a=6)`,`d=&#123;&#125; d[&#x27;a&#x27;]=6`。  11. `.get()`函数，第一个参数是`key`，第二个参数是key无效时返回的`value`，默认是`None`。  12. set创建: `s = set([1,2,3,])`。  13. `set.add(), set.remove(), s1&amp;s2, s1|s2`，set是数学中的集合。  ## 函数1. hex()函数转换16进制。  2. 函数名是一个指向函数对象的引用，可以把函数赋给一个变量。  3. 函数返回值是一个单一值，当有多个值返回时，实际上是返回一个tuple。  4. 默认参数必须指向不变对象。      ```python    def add_end(L=[]):    L.append(&#x27;END&#x27;)    return L    &gt;&gt;&gt; add_end([1, 2, 3])    [1, 2, 3, &#x27;END&#x27;]    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;]    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;, &#x27;END&#x27;]    ```      修改后      ```python    def add_end(L=None):    if L is None:        L = []    L.append(&#x27;END&#x27;)    return L    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;]    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;]    ```  5. 可变参数`*argv`，可传入数量是任意的，在list或tuple前面加一个*号，把list或tuple的元素变成可变参数传进去。  6. 关键字参数`**kw`，传入的是dict内容，`**dict`可以将dict中内容传入函数，同时`**kw`获得的参数则是`**dict`的一份拷贝。  7. 命名关键词参数特殊分隔符`*`，`*`后面的参数被视为命名关键字参数。其作用是限制关键字参数。      ```python    def person(name, age, *, city, job):    print(name, age, city, job)\n\n 如果函数定义中已经有了一个可变参数，后面的命名关键字参数就不再需要一个特殊分隔符*了。  \n 12def person(name, age, *args, city, job):print(name, age, args, city, job)\n\n定义函数可以组合使用这5种参数:必选参数、默认参数、可变参数、关键字参数和命名关键字参数。参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。  \n\n对于任意函数，都可以通过类似func(*args, **kw)的形式调用它，无论它的参数是如何定义的。  \n\n对于递归来说，不需要展开思考的它的中间过程，这违背了递归的初心。按照递归的思路，只需要考虑n和n-1的关系就好，至于n-2,n-3...完全没必要考虑。\n\n\n高级特性\n代码越少，开发效率越高。  \n\nenumerate函数可以把一个list变成 索引-元素 对。  \n\n在一个列表生成式中，for前面的if ... else是表达式(所以必须有else)，而for后面的if是过滤条件，不能带else。  \n 1234&gt;&gt;&gt; [x for x in range(1, 11) if x % 2 == 0][2, 4, 6, 8, 10]&gt;&gt;&gt; [x if x % 2 == 0 else -x for x in range(1, 11)][-1, 2, -3, 4, -5, 6, -7, 8, -9, 10]\n\n创建一个generator有两种办法：\n\n只要把一个列表生成式的[]改成()，就创建了一个generator。  \n  123456&gt;&gt;&gt; L = [x * x for x in range(10)]&gt;&gt;&gt; L[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]&gt;&gt;&gt; g = (x * x for x in range(10))&gt;&gt;&gt; g&lt;generator object &lt;genexpr&gt; at 0x1022ef630&gt;\n\n如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator函数，调用一个generator函数将返回一个generator。  \n  12345678910def fib(max):    n, a, b = 0, 0, 1    while n &lt; max:        yield b        a, b = b, a + b        n = n + 1    return &#x27;done&#x27;&gt;&gt;&gt; f = fib(6)&gt;&gt;&gt; f&lt;generator object fib at 0x104feaaa0&gt;\n\n\ngenerator函数和普通函数的执行流程不一样。普通函数是顺序执行，遇到return语句或者最后一行函数语句就返回。而变成generator的函数，在每次调用next()的时候执行，遇到yield语句返回，再次执行时从上次返回的yield语句处继续执行。  \n 12345678910111213141516171819202122def odd():    print(&#x27;step 1&#x27;)    yield 1    print(&#x27;step 2&#x27;)    yield(3)    print(&#x27;step 3&#x27;)    yield(5)&gt;&gt;&gt; o = odd()&gt;&gt;&gt; next(o)step 11&gt;&gt;&gt; next(o)step 23&gt;&gt;&gt; next(o)step 35&gt;&gt;&gt; next(o)Traceback (most recent call last):File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;StopIteration\n\n调用generator函数会创建一个generator对象，多次调用generator函数会创建多个相互独立的generator。  \n 1234567891011121314151617181920212223242526272829303132333435    接上    &gt;&gt;&gt; next(odd())    step 1    1    &gt;&gt;&gt; next(odd())    step 1    1    &gt;&gt;&gt; next(odd())    step 1    1    ```  7. 解杨辉三角，有三种解法(至少会一种，且理解第一种解法)：    ```python    def triangles():        L = [1]        while True:            yield L            L = [sum(i) for i in zip([0]+L, L+[0])]    def triangles():        ret = [1]        while True:            yield ret            for i in range(1, len(ret)):                ret[i] = pre[i] + pre[i - 1]            ret.append(1)            pre = ret[:]    def YangHui (num = 10):        LL = [[1]]        for i in range(1,num):            LL.append([(0 if j== 0 else LL[i-1][j-1])+ (0 if j ==len(LL[i-1]) else LL[i-1][j]) for j in range(i+1)])        return LL\n\n通函数调用直接返回结果：  \n 123&gt;&gt;&gt; r = abs(6)&gt;&gt;&gt; r6\n\n generator函数的调用实际返回一个generator对象：\n 123&gt;&gt;&gt; g = fib(6)&gt;&gt;&gt; g&lt;generator object fib at 0x1022ef948&gt;\n\n 一般用for循环来调用generator:\n 123456&gt;&gt;&gt; g = (x * x for x in range(10))&gt;&gt;&gt; for n in g:...     print(n)&gt;&gt;&gt; for n in fib(6):...     print(n)\n\n可以直接作用于for循环的对象统称为可迭代对象：Iterable, 包括集合数据类型、generator可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator  \n\n可以用isinstance()函数判断是否是Iterable或Iterator。  \n\n生成器都是Iterator对象，但list、dict、str虽然是Iterable，却不是Iterator。  \n\nPython的Iterator对象表示的是一个数据流，Iterator对象可以被next()函数调用并不断返回下一个数据，直到没有数据时抛出StopIteration错误。可以把这个数据流看做是一个有序序列，但我们却不能提前知道序列的长度，只能不断通过next()函数实现按需计算下一个数据，所以Iterator的计算是惰性的，只有在需要返回下一个数据时它才会计算。Iterator甚至可以表示一个无限大的数据流，如全体自然数。总结：  \n\n凡是可作用于for循环的对象都是Iterable类型；\n\n凡是可作用于next()函数的对象都是Iterator类型，它们表示一个惰性计算的序列；\n\n集合数据类型是Iterable但不是Iterator，可以通过iter()函数获得一个Iterator对象。\n\n\n\n\n函数式编程\n一个函数可以接收另一个函数作为参数，这种函数称之为高阶函数。  \n 12345678910111213141516171819    def add(x, y, f):        return f(x) + f(y)    推导过程：    x = -5    y = 6    f = abs    f(x) + f(y) ==&gt; abs(-5) + abs(6) ==&gt; 11    return 11    ```  2. `map(f,Iterable)`函数接受两个参数，一个是`函数f`，一个是`Iterable`。  作用是将`函数f`作用到`Iterable`中的每个元素上，返回类型是`Iterator`。  3. `reduce(g,Iterable)`函数接受两个参数，一个是`函数g`，一个是`Iterable`。  作用是将`函数g`作用到`Iterable`中的每个元素上并把结果继续和序列的下一个元素做累积计算，返回类型是`Iterator`。      ```python    reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)\n\nfilter(h,Iterable)函数接受两个参数，一个是函数h，一个是Iterable。作用是将函数f作用到Iterable中的每个元素上,然后根据返回值是True还是False决定保留还是丢弃该元素。返回类型是Iterator。  \n\nfilter()函数应用于求素数的埃氏筛法。  \n 12345678910111213141516def _odd_iter():    n = 1    while True:        n = n + 2        yield ndef _not_divisible(n):    return lambda x: x % n &gt; 0def primes():    yield 2    it = _odd_iter() # 初始序列    while True:        n = next(it) # 返回序列的第一个数        yield n        it = filter(_not_divisible(n), it) # 构造新序列    \n\nsorted()函数也是一个高阶函数，它还可以接收一个key函数来实现自定义的排序。\n 12&gt;&gt;&gt; sorted([36, 5, -12, 9, -21], key=abs)[5, 9, -12, -21, 36]\n\n返回函数，把函数作为一个函数的返回值。\n 123456789101112131415161718192021222324252627282930313233343536373839    def lazy_sum(*args):        def sum():            ax = 0            for n in args:                ax = ax + n            return ax        return sum    &gt;&gt;&gt; f = lazy_sum(1, 3, 5, 7, 9)    &gt;&gt;&gt; f    &lt;function lazy_sum.&lt;locals&gt;.sum at 0x101c6ed90&gt;    &gt;&gt;&gt; f()    25    ```  8. 调用lazy_sum()时，每次调用都会返回一个新的函数，即使传入相同的参数。  9. 闭包：一个函数的相关参数和变量都保存在返回的函数中，称为闭包结构。  10. 返回函数不要引用任何循环变量，或者后续会发生变化的变量。      ```python    def count():        fs = []        for i in range(1, 4):            def f():                return i*i            fs.append(f)        return fs    f1, f2, f3 = count()    &gt;&gt;&gt; f1()    9    &gt;&gt;&gt; f2()    9    &gt;&gt;&gt; f3()    9\n\n 返的函数引用了变量i，但它并非立刻执行。等到3个函数都返回时，它们所引用的变量i已经变成了3，因此最终结果为9。  \n 如果一定要引用循环变量，再创建一个函数，用该函数的参数绑定循环变量当前的值，无论该循环变量后续如何更改，已绑定到函数参数的值不变：\n 1234567891011121314151617def count():    def f(j):        def g():            return j*j        return g    fs = []    for i in range(1, 4):        fs.append(f(i)) # f(i)立刻被执行，因此i的当前值被传入f()    return fs&gt;&gt;&gt; f1, f2, f3 = count()&gt;&gt;&gt; f1()1&gt;&gt;&gt; f2()4&gt;&gt;&gt; f3()9\n\n函数内部引用并修改全局变量需要global引用。函数内部引用并修改父函数的局部变量需要nonlocal引用。使用闭包时，对外层变量赋值前，需要先使用nonlocal声明该变量不是当前函数的局部变量。  \n\n在代码运行期间动态增加功能的方式，称之为“装饰器”（Decorator）。  \n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364    def log(func):        def wrapper(*args, **kw):            print(&#x27;call %s():&#x27; % func.__name__)            return func(*args, **kw)        return wrapper        @log    def now():        print(&#x27;2015-3-25&#x27;)        &gt;&gt;&gt; now()    call now():    2015-3-25        # 等价于now = log(now)    ```      如果decorator本身需要传入参数，则：      ```python    def log(text):        def decorator(func):            def wrapper(*args, **kw):                print(&#x27;%s %s():&#x27; % (text, func.__name__))                return func(*args, **kw)            return wrapper        return decorator    @log(&#x27;execute&#x27;)    def now():        print(&#x27;2015-3-25&#x27;)        &gt;&gt;&gt; now()    execute now():    2015-3-25    # 等价于now = log(&#x27;execute&#x27;)(now)    ```  13. 经过`decorator`装饰之后的函数，它们的`__name__`已经从原来的`&#x27;now&#x27;`变成了`&#x27;wrapper&#x27;`。  如需还原其__name__，则：      ```python    &#x27;&#x27;&#x27;不带参数&#x27;&#x27;&#x27;    import functools    def log(func):        @functools.wraps(func)        def wrapper(*args, **kw):            print(&#x27;call %s():&#x27; % func.__name__)            return func(*args, **kw)        return wrapper    &#x27;&#x27;&#x27;带参数&#x27;&#x27;&#x27;    import functools    def log(text):        def decorator(func):            @functools.wraps(func)            def wrapper(*args, **kw):                print(&#x27;%s %s():&#x27; % (text, func.__name__))                return func(*args, **kw)            return wrapper        return decorator\n\nfunctools.partial创建一个偏函数，把一个函数的某些参数给固定住（也就是设置默认值），返回一个新的函数。  \n12345678910&gt;&gt;&gt; import functools&gt;&gt;&gt; int2 = functools.partial(int, base=2)&gt;&gt;&gt; int2(&#x27;1000000&#x27;)64&gt;&gt;&gt; int2(&#x27;1010101&#x27;)85# 相当于# kw = &#123; &#x27;base&#x27;: 2 &#125;# int(&#x27;10010&#x27;, **kw)\n\n面向对象编程\n数据封装、继承和多态是面向对象的三大特点。  \n\n隐藏对象的内部状态，只通过对象的方法进行访问修改，称为数据封装。  \n\n实例的变量名如果以__开头，就变成了一个私有变量（private），只有内部可以访问，外部不能访问。  \n\n变量名类似__xxx__的，也就是以双下划线开头，并且以双下划线结尾的，是特殊变量，特殊变量是可以直接访问的，不是private变量。  \n\n以一个下划线开头的实例变量名，如_name，是约定俗成的private变量，无强制限制访问。\n\nPython解释器对外把__xxx变量改成了_ClassName__xxx，所以,可以private变量也可访问，但不同版本的Python解释器可能会把__xxx改成不同的变量名。  \n\n多态允许你使用相同的接口（方法名）来执行不同类型的操作。  \n 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162    class Animal:          def speak(self):              pass          class Dog(Animal):          def speak(self):              return &quot;Woof!&quot;          class Cat(Animal):          def speak(self):              return &quot;Meow!&quot;          def let_animal_speak(animal):          print(animal.speak())          # 创建Dog和Cat对象      dog = Dog()      cat = Cat()          # 使用相同的接口调用不同对象的方法      let_animal_speak(dog)  # 输出: Woof!      let_animal_speak(cat)  # 输出: Meow!    ```  8. `types`模块中有`type`类型常量:    - .FunctionType: 表示用户定义的函数类型。    - .MethodType: 表示类的方法类型。    - .BuiltinFunctionType: 表示内建函数类型。    - .BuiltinMethodType: 表示内建方法类型。    - .ModuleType: 表示模块类型。    - .ClassType: 在Python 2中表示旧式类类型，但在Python 3中已不存在，因为所有类都是新式类。    - .GeneratorType: 表示生成器类型。    - .GetSetDescriptorType: 表示获取器/设置器描述符类型。    - .MemberDescriptorType: 表示成员描述符类型。    - .SimpleNamespace: 表示一个简单的命名空间，类似于一个动态创建的类，可以用来存储任意数量和类型的属性。9. 如果要获得一个对象的所有属性和方法，可以使用`dir()`函数。  10. 调用`len()`函数，其内部自动去调用该对象的`__len__`方法。  11. getattr()、setattr()以及hasattr()可以直接操作一个对象的状态。      ```python    &gt;&gt;&gt; class MyObject(object):    ...     def __init__(self):    ...         self.x = 9    ...     def power(self):    ...         return self.x * self.x    ...    &gt;&gt;&gt; obj = MyObject()    &gt;&gt;&gt; setattr(obj, &#x27;y&#x27;, 19) # 设置一个属性&#x27;y&#x27;    &gt;&gt;&gt; getattr(obj, &#x27;z&#x27;, 404) # 获取属性&#x27;z&#x27;，如果不存在，返回默认值404    &gt;&gt;&gt; getattr(obj, &#x27;power&#x27;) # 获取属性&#x27;power&#x27;    &lt;bound method MyObject.power of &lt;__main__.MyObject object at 0x10077a6a0&gt;&gt;    &gt;&gt;&gt; fn = getattr(obj, &#x27;power&#x27;) # 获取属性&#x27;power&#x27;并赋值到变量fn    &gt;&gt;&gt; fn # fn指向obj.power    &lt;bound method MyObject.power of &lt;__main__.MyObject object at 0x10077a6a0&gt;&gt;    &gt;&gt;&gt; fn() # 调用fn()与调用obj.power()是一样的    81\n\n为了统计学生人数，可以给Student类增加一个类属性，每创建一个实例，该属性自动增加：\nclass Student(object):\n    count = 0\n\n    def __init__(self, name):\n        self.name = name\n        self.count += 1\n\n\n\n面向对象高级编程\n给实例绑定方法用instance.method = MethodType(instance, method)，给类或全体实例绑定方法用class。  \n\nPython允许在定义class的时候，定义一个特殊的__slots__变量，来限制该class实例能添加的属性，一般用tuple定义允许绑定的属性名称。__slots__定义的属性仅对当前类实例起作用，对继承的子类无效。\n\n\n","dateCreated":"2025-03-20T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-03-20T00:00:00+08:00","description":"","headline":"跟学廖雪峰Python教程新学新知","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/","keywords":"Python, 编程基础, 教程笔记"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"廖雪峰python教程新学新知python基础\nr&#39;&#39; 表示&#39;&#39;内部的字符串默认不转义。  \n\nord()函数获取字符的整数表示，chr()函数把编码转换为对应的字符。  \n\nbytes类型的数据用带b前缀的单引号或双引号表示: x = b&#39;ABC&#39;。\n\nencode(&#39;编码类型&#39;)方法可以编码为指定的bytes,decode(&#39;编码类型&#39;)方法将bytes转换为str。  \n\ndecode(&#39;编码类型&#39;, errors=&#39;ignore&#39;)中，传入errors=&#39;ignore&#39;忽略错误的字节。  \n\n保存文件时指定编码类型以及增加运行头文件。  \n 123456789101112    #!/usr/bin/env python3    # -*- coding: utf-8 -*-    ```  7. 输出格式化有三种方法：      - % 运算符 :同c语言      ```python    &gt;&gt;&gt; &#x27;Hello, %s&#x27; % &#x27;world&#x27;    &#x27;Hello, world&#x27;    &gt;&gt;&gt; &#x27;Hi, %s, you have $%d.&#x27; % (&#x27;Michael&#x27;, 1000000)    &#x27;Hi, Michael, you have $1000000.&#x27;\n\n\nformat函数 :传入的参数依次替换字符串内的占位符{0}、{1}……\n\n 12&gt;&gt;&gt; &#x27;Hello, &#123;0&#125;, 成绩提升了 &#123;1:.1f&#125;%&#x27;.format(&#x27;小明&#x27;, 17.125)&#x27;Hello, 小明, 成绩提升了 17.1%&#x27;\n\n\nf-string\n\n 小明的成绩从去年的72分提升到了今年的85分，请计算小明成绩提升的百分点，并用字符串格式化显示出&#39;xx.x%&#39;，只保留小数点后1位：\n 1234s1 = 72s2 = 85r = (s2-s1)/s1print(&#x27;%004.1f%%&#x27; % r)\n\ntuple元素不可变，但tuple中的list可变。  \n\n模式匹配可匹配复杂语句和列表。  \n 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586    age = 15    match age:        case x if x &lt; 10:            print(f&#x27;&lt; 10 years old: &#123;x&#125;&#x27;)        case 10:            print(&#x27;10 years old.&#x27;)        case 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18:            print(&#x27;11~18 years old.&#x27;)        case 19:            print(&#x27;19 years old.&#x27;)        case _:            print(&#x27;not sure.&#x27;)    args = [&#x27;gcc&#x27;, &#x27;hello.c&#x27;, &#x27;world.c&#x27;]    # args = [&#x27;clean&#x27;]    # args = [&#x27;gcc&#x27;]    match args:        # 如果仅出现gcc，报错:        case [&#x27;gcc&#x27;]:            print(&#x27;gcc: missing source file(s).&#x27;)        # 出现gcc，且至少指定了一个文件:        case [&#x27;gcc&#x27;, file1, *files]:            print(&#x27;gcc compile: &#x27; + file1 + &#x27;, &#x27; + &#x27;, &#x27;.join(files))        # 仅出现clean:        case [&#x27;clean&#x27;]:            print(&#x27;clean&#x27;)        case _:            print(&#x27;invalid command.&#x27;)    ```  10. dict创建有三种方法:`d = &#123;&#x27;a&#x27;: 6,&#125;`,`d = dict(a=6)`,`d=&#123;&#125; d[&#x27;a&#x27;]=6`。  11. `.get()`函数，第一个参数是`key`，第二个参数是key无效时返回的`value`，默认是`None`。  12. set创建: `s = set([1,2,3,])`。  13. `set.add(), set.remove(), s1&amp;s2, s1|s2`，set是数学中的集合。  ## 函数1. hex()函数转换16进制。  2. 函数名是一个指向函数对象的引用，可以把函数赋给一个变量。  3. 函数返回值是一个单一值，当有多个值返回时，实际上是返回一个tuple。  4. 默认参数必须指向不变对象。      ```python    def add_end(L=[]):    L.append(&#x27;END&#x27;)    return L    &gt;&gt;&gt; add_end([1, 2, 3])    [1, 2, 3, &#x27;END&#x27;]    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;]    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;, &#x27;END&#x27;]    ```      修改后      ```python    def add_end(L=None):    if L is None:        L = []    L.append(&#x27;END&#x27;)    return L    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;]    &gt;&gt;&gt; add_end()    [&#x27;END&#x27;]    ```  5. 可变参数`*argv`，可传入数量是任意的，在list或tuple前面加一个*号，把list或tuple的元素变成可变参数传进去。  6. 关键字参数`**kw`，传入的是dict内容，`**dict`可以将dict中内容传入函数，同时`**kw`获得的参数则是`**dict`的一份拷贝。  7. 命名关键词参数特殊分隔符`*`，`*`后面的参数被视为命名关键字参数。其作用是限制关键字参数。      ```python    def person(name, age, *, city, job):    print(name, age, city, job)\n\n 如果函数定义中已经有了一个可变参数，后面的命名关键字参数就不再需要一个特殊分隔符*了。  \n 12def person(name, age, *args, city, job):print(name, age, args, city, job)\n\n定义函数可以组合使用这5种参数:必选参数、默认参数、可变参数、关键字参数和命名关键字参数。参数定义的顺序必须是：必选参数、默认参数、可变参数、命名关键字参数和关键字参数。  \n\n对于任意函数，都可以通过类似func(*args, **kw)的形式调用它，无论它的参数是如何定义的。  \n\n对于递归来说，不需要展开思考的它的中间过程，这违背了递归的初心。按照递归的思路，只需要考虑n和n-1的关系就好，至于n-2,n-3...完全没必要考虑。\n\n\n高级特性\n代码越少，开发效率越高。  \n\nenumerate函数可以把一个list变成 索引-元素 对。  \n\n在一个列表生成式中，for前面的if ... else是表达式(所以必须有else)，而for后面的if是过滤条件，不能带else。  \n 1234&gt;&gt;&gt; [x for x in range(1, 11) if x % 2 == 0][2, 4, 6, 8, 10]&gt;&gt;&gt; [x if x % 2 == 0 else -x for x in range(1, 11)][-1, 2, -3, 4, -5, 6, -7, 8, -9, 10]\n\n创建一个generator有两种办法：\n\n只要把一个列表生成式的[]改成()，就创建了一个generator。  \n  123456&gt;&gt;&gt; L = [x * x for x in range(10)]&gt;&gt;&gt; L[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]&gt;&gt;&gt; g = (x * x for x in range(10))&gt;&gt;&gt; g&lt;generator object &lt;genexpr&gt; at 0x1022ef630&gt;\n\n如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator函数，调用一个generator函数将返回一个generator。  \n  12345678910def fib(max):    n, a, b = 0, 0, 1    while n &lt; max:        yield b        a, b = b, a + b        n = n + 1    return &#x27;done&#x27;&gt;&gt;&gt; f = fib(6)&gt;&gt;&gt; f&lt;generator object fib at 0x104feaaa0&gt;\n\n\ngenerator函数和普通函数的执行流程不一样。普通函数是顺序执行，遇到return语句或者最后一行函数语句就返回。而变成generator的函数，在每次调用next()的时候执行，遇到yield语句返回，再次执行时从上次返回的yield语句处继续执行。  \n 12345678910111213141516171819202122def odd():    print(&#x27;step 1&#x27;)    yield 1    print(&#x27;step 2&#x27;)    yield(3)    print(&#x27;step 3&#x27;)    yield(5)&gt;&gt;&gt; o = odd()&gt;&gt;&gt; next(o)step 11&gt;&gt;&gt; next(o)step 23&gt;&gt;&gt; next(o)step 35&gt;&gt;&gt; next(o)Traceback (most recent call last):File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;StopIteration\n\n调用generator函数会创建一个generator对象，多次调用generator函数会创建多个相互独立的generator。  \n 1234567891011121314151617181920212223242526272829303132333435    接上    &gt;&gt;&gt; next(odd())    step 1    1    &gt;&gt;&gt; next(odd())    step 1    1    &gt;&gt;&gt; next(odd())    step 1    1    ```  7. 解杨辉三角，有三种解法(至少会一种，且理解第一种解法)：    ```python    def triangles():        L = [1]        while True:            yield L            L = [sum(i) for i in zip([0]+L, L+[0])]    def triangles():        ret = [1]        while True:            yield ret            for i in range(1, len(ret)):                ret[i] = pre[i] + pre[i - 1]            ret.append(1)            pre = ret[:]    def YangHui (num = 10):        LL = [[1]]        for i in range(1,num):            LL.append([(0 if j== 0 else LL[i-1][j-1])+ (0 if j ==len(LL[i-1]) else LL[i-1][j]) for j in range(i+1)])        return LL\n\n通函数调用直接返回结果：  \n 123&gt;&gt;&gt; r = abs(6)&gt;&gt;&gt; r6\n\n generator函数的调用实际返回一个generator对象：\n 123&gt;&gt;&gt; g = fib(6)&gt;&gt;&gt; g&lt;generator object fib at 0x1022ef948&gt;\n\n 一般用for循环来调用generator:\n 123456&gt;&gt;&gt; g = (x * x for x in range(10))&gt;&gt;&gt; for n in g:...     print(n)&gt;&gt;&gt; for n in fib(6):...     print(n)\n\n可以直接作用于for循环的对象统称为可迭代对象：Iterable, 包括集合数据类型、generator可以被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator  \n\n可以用isinstance()函数判断是否是Iterable或Iterator。  \n\n生成器都是Iterator对象，但list、dict、str虽然是Iterable，却不是Iterator。  \n\nPython的Iterator对象表示的是一个数据流，Iterator对象可以被next()函数调用并不断返回下一个数据，直到没有数据时抛出StopIteration错误。可以把这个数据流看做是一个有序序列，但我们却不能提前知道序列的长度，只能不断通过next()函数实现按需计算下一个数据，所以Iterator的计算是惰性的，只有在需要返回下一个数据时它才会计算。Iterator甚至可以表示一个无限大的数据流，如全体自然数。总结：  \n\n凡是可作用于for循环的对象都是Iterable类型；\n\n凡是可作用于next()函数的对象都是Iterator类型，它们表示一个惰性计算的序列；\n\n集合数据类型是Iterable但不是Iterator，可以通过iter()函数获得一个Iterator对象。\n\n\n\n\n函数式编程\n一个函数可以接收另一个函数作为参数，这种函数称之为高阶函数。  \n 12345678910111213141516171819    def add(x, y, f):        return f(x) + f(y)    推导过程：    x = -5    y = 6    f = abs    f(x) + f(y) ==&gt; abs(-5) + abs(6) ==&gt; 11    return 11    ```  2. `map(f,Iterable)`函数接受两个参数，一个是`函数f`，一个是`Iterable`。  作用是将`函数f`作用到`Iterable`中的每个元素上，返回类型是`Iterator`。  3. `reduce(g,Iterable)`函数接受两个参数，一个是`函数g`，一个是`Iterable`。  作用是将`函数g`作用到`Iterable`中的每个元素上并把结果继续和序列的下一个元素做累积计算，返回类型是`Iterator`。      ```python    reduce(f, [x1, x2, x3, x4]) = f(f(f(x1, x2), x3), x4)\n\nfilter(h,Iterable)函数接受两个参数，一个是函数h，一个是Iterable。作用是将函数f作用到Iterable中的每个元素上,然后根据返回值是True还是False决定保留还是丢弃该元素。返回类型是Iterator。  \n\nfilter()函数应用于求素数的埃氏筛法。  \n 12345678910111213141516def _odd_iter():    n = 1    while True:        n = n + 2        yield ndef _not_divisible(n):    return lambda x: x % n &gt; 0def primes():    yield 2    it = _odd_iter() # 初始序列    while True:        n = next(it) # 返回序列的第一个数        yield n        it = filter(_not_divisible(n), it) # 构造新序列    \n\nsorted()函数也是一个高阶函数，它还可以接收一个key函数来实现自定义的排序。\n 12&gt;&gt;&gt; sorted([36, 5, -12, 9, -21], key=abs)[5, 9, -12, -21, 36]\n\n返回函数，把函数作为一个函数的返回值。\n 123456789101112131415161718192021222324252627282930313233343536373839    def lazy_sum(*args):        def sum():            ax = 0            for n in args:                ax = ax + n            return ax        return sum    &gt;&gt;&gt; f = lazy_sum(1, 3, 5, 7, 9)    &gt;&gt;&gt; f    &lt;function lazy_sum.&lt;locals&gt;.sum at 0x101c6ed90&gt;    &gt;&gt;&gt; f()    25    ```  8. 调用lazy_sum()时，每次调用都会返回一个新的函数，即使传入相同的参数。  9. 闭包：一个函数的相关参数和变量都保存在返回的函数中，称为闭包结构。  10. 返回函数不要引用任何循环变量，或者后续会发生变化的变量。      ```python    def count():        fs = []        for i in range(1, 4):            def f():                return i*i            fs.append(f)        return fs    f1, f2, f3 = count()    &gt;&gt;&gt; f1()    9    &gt;&gt;&gt; f2()    9    &gt;&gt;&gt; f3()    9\n\n 返的函数引用了变量i，但它并非立刻执行。等到3个函数都返回时，它们所引用的变量i已经变成了3，因此最终结果为9。  \n 如果一定要引用循环变量，再创建一个函数，用该函数的参数绑定循环变量当前的值，无论该循环变量后续如何更改，已绑定到函数参数的值不变：\n 1234567891011121314151617def count():    def f(j):        def g():            return j*j        return g    fs = []    for i in range(1, 4):        fs.append(f(i)) # f(i)立刻被执行，因此i的当前值被传入f()    return fs&gt;&gt;&gt; f1, f2, f3 = count()&gt;&gt;&gt; f1()1&gt;&gt;&gt; f2()4&gt;&gt;&gt; f3()9\n\n函数内部引用并修改全局变量需要global引用。函数内部引用并修改父函数的局部变量需要nonlocal引用。使用闭包时，对外层变量赋值前，需要先使用nonlocal声明该变量不是当前函数的局部变量。  \n\n在代码运行期间动态增加功能的方式，称之为“装饰器”（Decorator）。  \n12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364    def log(func):        def wrapper(*args, **kw):            print(&#x27;call %s():&#x27; % func.__name__)            return func(*args, **kw)        return wrapper        @log    def now():        print(&#x27;2015-3-25&#x27;)        &gt;&gt;&gt; now()    call now():    2015-3-25        # 等价于now = log(now)    ```      如果decorator本身需要传入参数，则：      ```python    def log(text):        def decorator(func):            def wrapper(*args, **kw):                print(&#x27;%s %s():&#x27; % (text, func.__name__))                return func(*args, **kw)            return wrapper        return decorator    @log(&#x27;execute&#x27;)    def now():        print(&#x27;2015-3-25&#x27;)        &gt;&gt;&gt; now()    execute now():    2015-3-25    # 等价于now = log(&#x27;execute&#x27;)(now)    ```  13. 经过`decorator`装饰之后的函数，它们的`__name__`已经从原来的`&#x27;now&#x27;`变成了`&#x27;wrapper&#x27;`。  如需还原其__name__，则：      ```python    &#x27;&#x27;&#x27;不带参数&#x27;&#x27;&#x27;    import functools    def log(func):        @functools.wraps(func)        def wrapper(*args, **kw):            print(&#x27;call %s():&#x27; % func.__name__)            return func(*args, **kw)        return wrapper    &#x27;&#x27;&#x27;带参数&#x27;&#x27;&#x27;    import functools    def log(text):        def decorator(func):            @functools.wraps(func)            def wrapper(*args, **kw):                print(&#x27;%s %s():&#x27; % (text, func.__name__))                return func(*args, **kw)            return wrapper        return decorator\n\nfunctools.partial创建一个偏函数，把一个函数的某些参数给固定住（也就是设置默认值），返回一个新的函数。  \n12345678910&gt;&gt;&gt; import functools&gt;&gt;&gt; int2 = functools.partial(int, base=2)&gt;&gt;&gt; int2(&#x27;1000000&#x27;)64&gt;&gt;&gt; int2(&#x27;1010101&#x27;)85# 相当于# kw = &#123; &#x27;base&#x27;: 2 &#125;# int(&#x27;10010&#x27;, **kw)\n\n面向对象编程\n数据封装、继承和多态是面向对象的三大特点。  \n\n隐藏对象的内部状态，只通过对象的方法进行访问修改，称为数据封装。  \n\n实例的变量名如果以__开头，就变成了一个私有变量（private），只有内部可以访问，外部不能访问。  \n\n变量名类似__xxx__的，也就是以双下划线开头，并且以双下划线结尾的，是特殊变量，特殊变量是可以直接访问的，不是private变量。  \n\n以一个下划线开头的实例变量名，如_name，是约定俗成的private变量，无强制限制访问。\n\nPython解释器对外把__xxx变量改成了_ClassName__xxx，所以,可以private变量也可访问，但不同版本的Python解释器可能会把__xxx改成不同的变量名。  \n\n多态允许你使用相同的接口（方法名）来执行不同类型的操作。  \n 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162    class Animal:          def speak(self):              pass          class Dog(Animal):          def speak(self):              return &quot;Woof!&quot;          class Cat(Animal):          def speak(self):              return &quot;Meow!&quot;          def let_animal_speak(animal):          print(animal.speak())          # 创建Dog和Cat对象      dog = Dog()      cat = Cat()          # 使用相同的接口调用不同对象的方法      let_animal_speak(dog)  # 输出: Woof!      let_animal_speak(cat)  # 输出: Meow!    ```  8. `types`模块中有`type`类型常量:    - .FunctionType: 表示用户定义的函数类型。    - .MethodType: 表示类的方法类型。    - .BuiltinFunctionType: 表示内建函数类型。    - .BuiltinMethodType: 表示内建方法类型。    - .ModuleType: 表示模块类型。    - .ClassType: 在Python 2中表示旧式类类型，但在Python 3中已不存在，因为所有类都是新式类。    - .GeneratorType: 表示生成器类型。    - .GetSetDescriptorType: 表示获取器/设置器描述符类型。    - .MemberDescriptorType: 表示成员描述符类型。    - .SimpleNamespace: 表示一个简单的命名空间，类似于一个动态创建的类，可以用来存储任意数量和类型的属性。9. 如果要获得一个对象的所有属性和方法，可以使用`dir()`函数。  10. 调用`len()`函数，其内部自动去调用该对象的`__len__`方法。  11. getattr()、setattr()以及hasattr()可以直接操作一个对象的状态。      ```python    &gt;&gt;&gt; class MyObject(object):    ...     def __init__(self):    ...         self.x = 9    ...     def power(self):    ...         return self.x * self.x    ...    &gt;&gt;&gt; obj = MyObject()    &gt;&gt;&gt; setattr(obj, &#x27;y&#x27;, 19) # 设置一个属性&#x27;y&#x27;    &gt;&gt;&gt; getattr(obj, &#x27;z&#x27;, 404) # 获取属性&#x27;z&#x27;，如果不存在，返回默认值404    &gt;&gt;&gt; getattr(obj, &#x27;power&#x27;) # 获取属性&#x27;power&#x27;    &lt;bound method MyObject.power of &lt;__main__.MyObject object at 0x10077a6a0&gt;&gt;    &gt;&gt;&gt; fn = getattr(obj, &#x27;power&#x27;) # 获取属性&#x27;power&#x27;并赋值到变量fn    &gt;&gt;&gt; fn # fn指向obj.power    &lt;bound method MyObject.power of &lt;__main__.MyObject object at 0x10077a6a0&gt;&gt;    &gt;&gt;&gt; fn() # 调用fn()与调用obj.power()是一样的    81\n\n为了统计学生人数，可以给Student类增加一个类属性，每创建一个实例，该属性自动增加：\nclass Student(object):\n    count = 0\n\n    def __init__(self, name):\n        self.name = name\n        self.count += 1\n\n\n\n面向对象高级编程\n给实例绑定方法用instance.method = MethodType(instance, method)，给类或全体实例绑定方法用class。  \n\nPython允许在定义class的时候，定义一个特殊的__slots__变量，来限制该class实例能添加的属性，一般用tuple定义允许绑定的属性名称。__slots__定义的属性仅对当前类实例起作用，对继承的子类无效。\n\n\n","dateCreated":"2025-03-20T00:00:00+08:00","dateModified":"2026-06-10T20:49:15+08:00","datePublished":"2025-03-20T00:00:00+08:00","description":"","headline":"跟学廖雪峰Python教程新学新知","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/","keywords":"Python, 编程基础"}</script>
     <meta name="description" content="廖雪峰python教程新学新知python基础 r&#39;&#39; 表示&#39;&#39;内部的字符串默认不转义。    ord()函数获取字符的整数表示，chr()函数把编码转换为对应的字符。    bytes类型的数据用带b前缀的单引号或双引号表示: x &#x3D; b&#39;ABC&#39;。  encode(&#39;编码类型&#39;)方法可以编码为指定的bytes,decode(&amp;#3">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="跟学廖雪峰Python教程新学新知">
@@ -28,10 +29,9 @@
 <meta property="og:description" content="廖雪峰python教程新学新知python基础 r&#39;&#39; 表示&#39;&#39;内部的字符串默认不转义。    ord()函数获取字符的整数表示，chr()函数把编码转换为对应的字符。    bytes类型的数据用带b前缀的单引号或双引号表示: x &#x3D; b&#39;ABC&#39;。  encode(&#39;编码类型&#39;)方法可以编码为指定的bytes,decode(&amp;#3">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-09T16:17:03.653Z">
+<meta property="article:modified_time" content="2026-06-10T12:49:15.052Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="Python">
-<meta property="article:tag" content="教程笔记">
 <meta property="article:tag" content="编程基础">
 <meta name="twitter:card" content="summary">
     
@@ -49,6 +49,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -69,7 +85,7 @@
         
     
 
-<header id="header" data-behavior="4">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -102,7 +118,7 @@
         
     
 
-<nav id="sidebar" data-behavior="4">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -210,22 +226,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -250,7 +250,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="4"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -445,7 +445,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%95%99%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">教程笔记</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
 
             </div>
         
@@ -564,7 +564,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -664,7 +664,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -737,7 +737,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -751,7 +751,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -765,21 +911,136 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+    </body>
 </html>

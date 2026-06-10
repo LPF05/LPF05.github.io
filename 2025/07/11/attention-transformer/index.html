@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>Attention与Transformer - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -19,21 +20,20 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"Attention&amp;Transformer3blue1brown&amp;豆包GPT&amp;Transformer\n$\\text{GPT} &#x3D; \\text{Generative} + \\text{Pre-trained} + \\text{Transformer} $.\n\n$ \\text{Embedding} \\rightarrow (\\text{Attention} \\rightarrow \\text{MLP})_{repeat} \\rightarrow \\text{Unembedding}$\n\ntoken -&gt; vector&#x2F;tensor(embedding) -Attention&gt; update Value (fashion model or ML model) -MLP&gt; problem update vector\n\nAttention -&gt; MLP(升维+降维) repeat 作用有\n\n提炼特征，即浅层捕获局部模式，深层捕获全局语义；\n通过非线性变换及信息交互，增强表达能力；\n构建层次化理解，即词-&gt;短语-&gt;句子-&gt;篇章....\n\n\nAttention+MLP的详解：\n\n升维：拓展语义表达空间，用高维神经元捕捉特定语义特征；\n激活函数：引入语义非线性，抑制噪音，增强特征；\n降维：语义压缩与整合，将分散语义压缩并整合，保留最核心的语义关系，变成了更抽象的语义表达；\nAttention：在token间建立联系，动态聚合，形成上下文感知表示；并将MLP提取的局部语义与全局上下文相结合，对语义进行修正（语义增强+语义校准）。\n\n\nTransformer的每一层都在前一层的基础上进行更复杂的语义处理，从浅层捕获局部语法和基础语义到中层构建实体关系和简单推理，再到深层处理复杂语义和篇章级推理，形成了特征提取-&gt;上下文关联-&gt;更高级特征提取-&gt;更高级上下文关联的循环，深化模型对语言的理解。\n\n从数学角度看，这种结构等价于在函数空间中进行层次化的近似：\n\nMLP：在局部空间中拟合复杂的非线性函数；\nAttention：在全局空间中建立不同局部函数之间的联系；\n交替堆叠：逐步逼近真实的语言生成概率分布。\n\n\nTransfomer核心架构即Transformer Block，即Self-Attention+MLP。\n\n可以得知embedding嵌入词向量时，某个维度方向将代表的某种语义联系。例如cats-cat的方向就接近于复数向量方向，woman-man就接近于女性化身份向量方向；同时点积的大小即可以表示两个向量之间的关联程度。\n\nPrompt作为初始上下文存在，而用户的第一个问题则是作为第一段对话存在。\n\nGPT中Attention网络数据流量则为上下文长度。\n\nunembedding得到的输出结果是logits，即softmax函数的输入，probablity则是输出；常见的Temperature其实是softmax的参数，即$\\frac{e^{x&#x2F;T}}{\\sum_{n&#x3D;0}^{N-1} e^{x&#x2F;T}}$中的参数$T$。\n\n\nTransformer&amp;Attention\n核心思想：Query-Key-Value三元组，Qurey是理解对象（需要什么信息？），Key是候选关联对象（提供什么信息？），Value是关联具体信息（语义&#x2F;提供的具体信息内容）。\n\n注意力计算过程：Q、K相似度计算-&gt;权重归一化-&gt;Value加权求和；\n\n注意力计算公式SDPA： $$ \\text{Attention}(Q, K, V) &#x3D; \\text{softmax}\\left( \\frac{QK^T}{\\sqrt{d_k}} \\right) V $$\n 公式解释：先计算Query与Key相似度（关联度），将结果缩放使数值稳定，接下来用softmax归一化，将相似度转成概率权重，最后对权重矩阵和Value相乘，得到输出。每个Query位置融合了Key-Value的信息。\n\nQ与K的相似度计算结果依赖于其本身带有语义的嵌入向量的语义，Attention的作用只不过实在其本身语义基础上进行微调理解，嵌入质量决定了QK的语义底子，例如BERT的预训练词嵌入、ViT的图像Patch嵌入才能精确的编码上下文语义，而普通的Word2Vec仅仅是普通的降维，并没有保留其深层语义；嵌入直接定义了输入的基础语义表示，是 Q&#x2F;K 的根本材料。\n\n注意力的Query因注意力机制不同而不同，自注意力的Query来自于其本身；交叉注意力的Query来自于另一个序列，例如翻译模型的Query会指向源语言；多头注意力则是将Query分为多个子空间，每个注意力头处理Query的不同部分；在检索和记忆模块中，Query则是预定义固定的。\n\n注意力在计算的时候要做到后面的此不影响前面的词，即QK矩阵的主对角线Key侧的值在softmax之前应赋值为$-\\infty$（因果掩码）；其本质是因果性约束的要求，即保证预测的合理性和训练的一致性。\n\n在Transformer等场景多次堆叠注意力时，会引入残差连接保证底层的具体信息不会被高层抽象完全覆盖，避免丢失细节。\n\n注意力权重矩阵的大小为上下文长度的平方；注意力模式即QK点积得到的相似度矩阵，其经过缩放与softmax处理则成为注意力权重矩阵。\n\nQ、K、V矩阵是由输入特征矩阵X与相应的可学习参数矩阵点积得，而并非参数矩阵。\n\nV矩阵升维*降维在数学上等效于一个V参数矩阵，但在实际计算中，二者并不等效，因为是降维-&gt;加权-&gt;升维代替V参数矩阵。\n\n注意力更新的嵌入表示是V与注意力模式点积得到的向量，即$ Attention(Q,K,V) $；gpt中的注意力参数矩阵等更新是通过自监督更新的，即用下一个词更新上一个词。\n\n一句话解释注意力机制：通过不断对自己提问 “该关注谁的信息”，倾听每个对象的回应以衡量关联，再把这些回应按重要性整合，最终重新理解自己在整体中的位置与含义。\n\n单头注意力是在单一特征空间中建模联系，而多头注意力则是在多子空间中并行建模；单头注意力难以同时建模不同类型的关联，受限与单一空间的信息瓶颈。\n\nQ、K、V 参数矩阵的学习过程是一个通过梯度引导的自组织分化过程。尽管所有参数最初都是随机初始化的，但通过反向传播的误差信号反馈，它们会自动演化出明确的分工。\n\n单头注意力流程图：\n\nQKV参数矩阵之所以能学到自己的角色是因为前向运算不同，可参考上图，之所QK能区分自己的角色，是因为有$\\frac{\\partial \\text{loss}}{\\partial Q} &#x3D; K \\cdot \\text{权重梯度}$；Q和K随着训练会被驱动分化并且互补强化，并会让QK分别落在需求子空间和标识子空间中去，所以角色区分是注意力机制高效工作的必然结果：运算逻辑要求分工，梯度推动分工，训练强化分工。\n\n\n","dateCreated":"2025-07-11T00:00:00+08:00","dateModified":"2026-06-10T08:21:06+08:00","datePublished":"2025-07-11T00:00:00+08:00","description":"","headline":"Attention与Transformer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/07/11/attention-transformer/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/07/11/attention-transformer/","keywords":"深度学习, NLP, Transformer, 注意力机制"}</script>
-    <meta name="description" content="Attention&amp;Transformer3blue1brown&amp;豆包GPT&amp;Transformer $\text{GPT} &#x3D; \text{Generative} + \text{Pre-trained} + \text{Transformer} $.  $ \text{Embedding} \rightarrow (\text{Attention} \righ">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"Attention&amp;Transformer3blue1brown&amp;豆包GPT&amp;Transformer\n$\\text{GPT} = \\text{Generative} + \\text{Pre-trained} + \\text{Transformer} $.\n\n$ \\text{Embedding} \\rightarrow (\\text{Attention} \\rightarrow \\text{MLP})_{repeat} \\rightarrow \\text{Unembedding}$\n\ntoken -&gt; vector&#x2F;tensor(embedding) -Attention&gt; update Value (fashion model or ML model) -MLP&gt; problem update vector\n\nAttention -&gt; MLP(升维+降维) repeat 作用有\n\n提炼特征，即浅层捕获局部模式，深层捕获全局语义；\n通过非线性变换及信息交互，增强表达能力；\n构建层次化理解，即词-&gt;短语-&gt;句子-&gt;篇章....\n\n\nAttention+MLP的详解：\n\n升维：拓展语义表达空间，用高维神经元捕捉特定语义特征；\n激活函数：引入语义非线性，抑制噪音，增强特征；\n降维：语义压缩与整合，将分散语义压缩并整合，保留最核心的语义关系，变成了更抽象的语义表达；\nAttention：在token间建立联系，动态聚合，形成上下文感知表示；并将MLP提取的局部语义与全局上下文相结合，对语义进行修正（语义增强+语义校准）。\n\n\nTransformer的每一层都在前一层的基础上进行更复杂的语义处理，从浅层捕获局部语法和基础语义到中层构建实体关系和简单推理，再到深层处理复杂语义和篇章级推理，形成了特征提取-&gt;上下文关联-&gt;更高级特征提取-&gt;更高级上下文关联的循环，深化模型对语言的理解。\n\n从数学角度看，这种结构等价于在函数空间中进行层次化的近似：\n\nMLP：在局部空间中拟合复杂的非线性函数；\nAttention：在全局空间中建立不同局部函数之间的联系；\n交替堆叠：逐步逼近真实的语言生成概率分布。\n\n\nTransfomer核心架构即Transformer Block，即Self-Attention+MLP。\n\n可以得知embedding嵌入词向量时，某个维度方向将代表的某种语义联系。例如cats-cat的方向就接近于复数向量方向，woman-man就接近于女性化身份向量方向；同时点积的大小即可以表示两个向量之间的关联程度。\n\nPrompt作为初始上下文存在，而用户的第一个问题则是作为第一段对话存在。\n\nGPT中Attention网络数据流量则为上下文长度。\n\nunembedding得到的输出结果是logits，即softmax函数的输入，probablity则是输出；常见的Temperature其实是softmax的参数，即$\\frac{e^{x/T}}{\\sum_{n=0}^{N-1} e^{x/T}}$中的参数$T$。\n\n\nTransformer&amp;Attention\n核心思想：Query-Key-Value三元组，Qurey是理解对象（需要什么信息？），Key是候选关联对象（提供什么信息？），Value是关联具体信息（语义&#x2F;提供的具体信息内容）。\n\n注意力计算过程：Q、K相似度计算-&gt;权重归一化-&gt;Value加权求和；\n\n注意力计算公式SDPA： $$ \\text{Attention}(Q, K, V) = \\text{softmax}\\left( \\frac{QK^T}{\\sqrt{d_k}} \\right) V $$\n 公式解释：先计算Query与Key相似度（关联度），将结果缩放使数值稳定，接下来用softmax归一化，将相似度转成概率权重，最后对权重矩阵和Value相乘，得到输出。每个Query位置融合了Key-Value的信息。\n\nQ与K的相似度计算结果依赖于其本身带有语义的嵌入向量的语义，Attention的作用只不过实在其本身语义基础上进行微调理解，嵌入质量决定了QK的语义底子，例如BERT的预训练词嵌入、ViT的图像Patch嵌入才能精确的编码上下文语义，而普通的Word2Vec仅仅是普通的降维，并没有保留其深层语义；嵌入直接定义了输入的基础语义表示，是 Q&#x2F;K 的根本材料。\n\n注意力的Query因注意力机制不同而不同，自注意力的Query来自于其本身；交叉注意力的Query来自于另一个序列，例如翻译模型的Query会指向源语言；多头注意力则是将Query分为多个子空间，每个注意力头处理Query的不同部分；在检索和记忆模块中，Query则是预定义固定的。\n\n注意力在计算的时候要做到后面的此不影响前面的词，即QK矩阵的主对角线Key侧的值在softmax之前应赋值为$-\\infty$（因果掩码）；其本质是因果性约束的要求，即保证预测的合理性和训练的一致性。\n\n在Transformer等场景多次堆叠注意力时，会引入残差连接保证底层的具体信息不会被高层抽象完全覆盖，避免丢失细节。\n\n注意力权重矩阵的大小为上下文长度的平方；注意力模式即QK点积得到的相似度矩阵，其经过缩放与softmax处理则成为注意力权重矩阵。\n\nQ、K、V矩阵是由输入特征矩阵X与相应的可学习参数矩阵点积得，而并非参数矩阵。\n\nV矩阵升维*降维在数学上等效于一个V参数矩阵，但在实际计算中，二者并不等效，因为是降维-&gt;加权-&gt;升维代替V参数矩阵。\n\n注意力更新的嵌入表示是V与注意力模式点积得到的向量，即$ Attention(Q,K,V) $；gpt中的注意力参数矩阵等更新是通过自监督更新的，即用下一个词更新上一个词。\n\n一句话解释注意力机制：通过不断对自己提问 “该关注谁的信息”，倾听每个对象的回应以衡量关联，再把这些回应按重要性整合，最终重新理解自己在整体中的位置与含义。\n\n单头注意力是在单一特征空间中建模联系，而多头注意力则是在多子空间中并行建模；单头注意力难以同时建模不同类型的关联，受限与单一空间的信息瓶颈。\n\nQ、K、V 参数矩阵的学习过程是一个通过梯度引导的自组织分化过程。尽管所有参数最初都是随机初始化的，但通过反向传播的误差信号反馈，它们会自动演化出明确的分工。\n\n单头注意力流程图：\n\nQKV参数矩阵之所以能学到自己的角色是因为前向运算不同，可参考上图，之所QK能区分自己的角色，是因为有$\\frac{\\partial \\text{loss}}{\\partial Q} = K \\cdot \\text{权重梯度}$；Q和K随着训练会被驱动分化并且互补强化，并会让QK分别落在需求子空间和标识子空间中去，所以角色区分是注意力机制高效工作的必然结果：运算逻辑要求分工，梯度推动分工，训练强化分工。\n\n\n","dateCreated":"2025-07-11T00:00:00+08:00","dateModified":"2026-06-10T20:49:00+08:00","datePublished":"2025-07-11T00:00:00+08:00","description":"","headline":"Attention与Transformer","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/07/11/attention-transformer/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/07/11/attention-transformer/","keywords":"深度学习, Transformer, NLP"}</script>
+    <meta name="description" content="Attention&amp;Transformer3blue1brown&amp;豆包GPT&amp;Transformer $\text{GPT} &#x3D; \text{Generative} + \text{Pre-trained} + \text{Transformer} $.  $ \text{Embedding} \rightarrow (\text{Attention} \rightarro">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Attention与Transformer">
 <meta property="og:url" content="https://lpf05.github.io/2025/07/11/attention-transformer/index.html">
 <meta property="og:site_name" content="LPF05&#39; s Blog">
-<meta property="og:description" content="Attention&amp;Transformer3blue1brown&amp;豆包GPT&amp;Transformer $\text{GPT} &#x3D; \text{Generative} + \text{Pre-trained} + \text{Transformer} $.  $ \text{Embedding} \rightarrow (\text{Attention} \righ">
+<meta property="og:description" content="Attention&amp;Transformer3blue1brown&amp;豆包GPT&amp;Transformer $\text{GPT} &#x3D; \text{Generative} + \text{Pre-trained} + \text{Transformer} $.  $ \text{Embedding} \rightarrow (\text{Attention} \rightarro">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lpf05.github.io/2025/07/11/attention-transformer/3323292-20250711203136162-1855366659.png">
 <meta property="article:published_time" content="2025-07-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-10T00:21:06.705Z">
+<meta property="article:modified_time" content="2026-06-10T12:49:00.353Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="Transformer">
-<meta property="article:tag" content="注意力机制">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lpf05.github.io/2025/07/11/attention-transformer/3323292-20250711203136162-1855366659.png">
@@ -52,6 +52,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -72,7 +88,7 @@
         
     
 
-<header id="header" data-behavior="4">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -105,7 +121,7 @@
         
     
 
-<nav id="sidebar" data-behavior="4">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -213,22 +229,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -253,7 +253,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="4"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -290,9 +290,9 @@
     <div class="post-content markdown">
         <div class="main-content-wrap">
             <h1 id="Attention-Transformer"><a href="#Attention-Transformer" class="headerlink" title="Attention&amp;Transformer"></a>Attention&amp;Transformer</h1><h2 id="3blue1brown-豆包"><a href="#3blue1brown-豆包" class="headerlink" title="3blue1brown&amp;豆包"></a>3blue1brown&amp;豆包</h2><h3 id="GPT-Transformer"><a href="#GPT-Transformer" class="headerlink" title="GPT&amp;Transformer"></a>GPT&amp;Transformer</h3><ol>
-<li><p>$\text{GPT} &#x3D; \text{Generative} + \text{Pre-trained} + \text{Transformer} $.</p>
+<li><p>$\text{GPT} = \text{Generative} + \text{Pre-trained} + \text{Transformer} $.</p>
 </li>
-<li><p>$ \text{Embedding} \rightarrow (\text{Attention} \rightarrow \text{MLP})_{repeat} \rightarrow \text{Unembedding}$</p>
+<li>$ \text{Embedding} \rightarrow (\text{Attention} \rightarrow \text{MLP})_{repeat} \rightarrow \text{Unembedding}$
 </li>
 <li><p>token -&gt; vector&#x2F;tensor(embedding) -Attention&gt; update Value (fashion model or ML model) -MLP&gt; problem update vector</p>
 </li>
@@ -328,7 +328,7 @@
 </li>
 <li><p>GPT中Attention网络数据流量则为上下文长度。</p>
 </li>
-<li><p>unembedding得到的输出结果是logits，即softmax函数的输入，probablity则是输出；常见的Temperature其实是softmax的参数，即$\frac{e^{x&#x2F;T}}{\sum_{n&#x3D;0}^{N-1} e^{x&#x2F;T}}$中的参数$T$。</p>
+<li><p>unembedding得到的输出结果是logits，即softmax函数的输入，probablity则是输出；常见的Temperature其实是softmax的参数，即$\frac{e^{x/T}}{\sum_{n=0}^{N-1} e^{x/T}}$中的参数$T$。</p>
 </li>
 </ol>
 <h3 id="Transformer-Attention"><a href="#Transformer-Attention" class="headerlink" title="Transformer&amp;Attention"></a>Transformer&amp;Attention</h3><ol>
@@ -336,7 +336,7 @@
 </li>
 <li><p>注意力计算过程：Q、K相似度计算-&gt;权重归一化-&gt;Value加权求和；</p>
 </li>
-<li><p>注意力计算公式SDPA：<br> $$ \text{Attention}(Q, K, V) &#x3D; \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V $$</p>
+<li><p>注意力计算公式SDPA：<br> $$ \text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V $$</p>
 <p> 公式解释：先计算Query与Key相似度（关联度），将结果缩放使数值稳定，接下来用softmax归一化，将相似度转成概率权重，最后对权重矩阵和Value相乘，得到输出。每个Query位置融合了Key-Value的信息。</p>
 </li>
 <li><p>Q与K的相似度计算结果依赖于其本身带有语义的嵌入向量的语义，Attention的作用只不过实在其本身语义基础上进行微调理解，嵌入质量决定了QK的语义底子，例如BERT的预训练词嵌入、ViT的图像Patch嵌入才能精确的编码上下文语义，而普通的Word2Vec仅仅是普通的降维，并没有保留其深层语义；嵌入直接定义了输入的基础语义表示，是 Q&#x2F;K 的根本材料。</p>
@@ -363,7 +363,7 @@
 </li>
 <li><p>单头注意力流程图：<br><img src="/2025/07/11/attention-transformer/3323292-20250711203136162-1855366659.png" alt="1752237083400"></p>
 </li>
-<li><p>QKV参数矩阵之所以能学到自己的角色是因为前向运算不同，可参考上图，之所QK能区分自己的角色，是因为有$\frac{\partial \text{loss}}{\partial Q} &#x3D; K \cdot \text{权重梯度}$；Q和K随着训练会被驱动分化并且互补强化，并会让QK分别落在需求子空间和标识子空间中去，所以角色区分是注意力机制高效工作的必然结果：运算逻辑要求分工，梯度推动分工，训练强化分工。</p>
+<li><p>QKV参数矩阵之所以能学到自己的角色是因为前向运算不同，可参考上图，之所QK能区分自己的角色，是因为有$\frac{\partial \text{loss}}{\partial Q} = K \cdot \text{权重梯度}$；Q和K随着训练会被驱动分化并且互补强化，并会让QK分别落在需求子空间和标识子空间中去，所以角色区分是注意力机制高效工作的必然结果：运算逻辑要求分工，梯度推动分工，训练强化分工。</p>
 </li>
 </ol>
 
@@ -377,7 +377,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/NLP/" rel="tag">NLP</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Transformer/" rel="tag">Transformer</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6/" rel="tag">注意力机制</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NLP/" rel="tag">NLP</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Transformer/" rel="tag">Transformer</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a>
 
             </div>
         
@@ -496,7 +496,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -596,7 +596,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -669,7 +669,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -683,7 +683,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -697,21 +843,150 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+        <script>
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                    processEscapes: true
+                },
+                options: {
+                    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                }
+            };
+        </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+    </body>
 </html>

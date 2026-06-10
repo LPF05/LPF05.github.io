@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>标签: 大模型 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -52,6 +53,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -70,7 +87,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -103,7 +120,7 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -211,22 +228,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -251,7 +252,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -267,23 +268,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2025/07/15/cs336-scaling-laws/"
-                            aria-label=": CS336 Scaling Laws"
+                            href="/2025/06/15/wow-rag/"
+                            aria-label=": WoW-RAG：检索增强生成"
                         >
-                            CS336 Scaling Laws
+                            WoW-RAG：检索增强生成
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2025-07-15T00:00:00+08:00">
+    <time datetime="2025-06-15T00:00:00+08:00">
 	
-		    2025 年 7 月 15 日
+		    2025 年 6 月 15 日
     	
     </time>
     
         <span>发布在 </span>
         
-    <a class="category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
+    <a class="category-link" href="/categories/NLP/">NLP</a>
 
 
     
@@ -292,18 +293,31 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h1 id="CS336-Scaling-laws"><a href="#CS336-Scaling-laws" class="headerlink" title="CS336 Scaling laws"></a>CS336 Scaling laws</h1><h2 id="lecture9-Scaling-laws-basic"><a href="#lecture9-Scaling-laws-basic" class="headerlink" title="lecture9-Scaling laws basic"></a>lecture9-Scaling laws basic</h2><ol>
-<li><p>缩放定律意义是为语言模型的行为建立简单的预测规律；核心思想是同从小模型入手将他们放大，并借此改良工程方法。</p>
+                    <h1 id="Wow-RAG"><a href="#Wow-RAG" class="headerlink" title="Wow-RAG"></a>Wow-RAG</h1><h2 id="手搓一个土的RAG"><a href="#手搓一个土的RAG" class="headerlink" title="手搓一个土的RAG"></a>手搓一个土的RAG</h2><ol>
+<li><p>安装相关库：faiss-gpu、scikit-learn、scipy、openai、python-dotenv；配置api_key、base_url、chat_model、emb_model。</p>
 </li>
-<li><p>缩放定律的背景是只要投入可预测资源，就能获得可预测能力的提升，即缩放和收敛是自然的，大数据量带来的收敛是自然的。</p>
+<li><p>加载APIkey，配置环境：  </p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载环境变量</span></span><br><span class="line">load_dotenv()</span><br><span class="line"><span class="comment"># 从环境变量中读取api_key</span></span><br><span class="line">api_key = os.getenv(...)</span><br><span class="line">base_url = ...</span><br><span class="line">chat_model = ...</span><br><span class="line">emb_model = ...</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>缩放是多方面的，算力、参数量、数据量都是由缩放规律的，其中参数量、数据量遵循幂律关系。</p>
+<li><p>构造client：  </p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from openai import OpenAI</span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key = api_key,</span><br><span class="line">    base_url = base_url</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><img src="/2025/07/15/cs336-scaling-laws/1752547783846.png" alt="1752547783846">这其中开头和结尾的平滑曲线符合幂律分布。</p>
+<li><p>构造文档，并将文档向量化：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> normalize</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> faiss</span><br><span class="line">embedding_text = <span class="string">&quot;...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置每个文本块的大小为 150 个字符</span></span><br><span class="line">chunk_size = <span class="number">150</span></span><br><span class="line"><span class="comment"># 使用列表推导式将长文本分割成多个块，每个块的大小为 chunk_size （将文本分段，是因为API输入有长度限制）</span></span><br><span class="line">chunks = [embedding_text[i:i + chunk_size] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(embedding_text), chunk_size)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化一个空列表来存储每个文本块的嵌入向量</span></span><br><span class="line">embeddings = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历每个文本块</span></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> chunks:</span><br><span class="line">    <span class="comment"># 使用 OpenAI API 为当前文本块创建嵌入向量</span></span><br><span class="line">    response = client.embeddings.create(</span><br><span class="line">        model=emb_model,</span><br><span class="line">        <span class="built_in">input</span>=chunk,</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将嵌入向量添加到列表中</span></span><br><span class="line">    embeddings.append(response.data[<span class="number">0</span>].embedding)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 sklearn 的 normalize 函数对嵌入向量进行归一化处理</span></span><br><span class="line">normalized_embeddings = normalize(np.array(embeddings).astype(<span class="string">&#x27;float32&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取嵌入向量的维度</span></span><br><span class="line">d = <span class="built_in">len</span>(embeddings[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 Faiss 索引，用于存储和检索嵌入向量（使用faiss创建向量索引，可以降低向量匹配检索的时间复杂度，且无需训练、是精确检索、无近似误差，在更大规模数据的检索中可以使用更高效的索引类型代替）</span></span><br><span class="line">index = faiss.IndexFlatIP(d)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将归一化后的嵌入向量添加到索引中</span></span><br><span class="line">index.add(normalized_embeddings)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取索引中的向量总数</span></span><br><span class="line">n_vectors = index.ntotal</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(n_vectors)</span><br></pre></td></tr></table></figure>
 </li>
-<li></li>
+<li><p>定义input_text向量化并匹配相似文本：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> normalize</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">match_text</span>(<span class="params">input_text, index, chunks, k=<span class="number">2</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    在给定的文本块集合中，找到与输入文本最相似的前k个文本块。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        input_text (str): 要匹配的输入文本。</span></span><br><span class="line"><span class="string">        index (faiss.Index): 用于搜索的Faiss索引。</span></span><br><span class="line"><span class="string">        chunks (list of str): 文本块的列表。</span></span><br><span class="line"><span class="string">        k (int, optional): 要返回的最相似文本块的数量。默认值为2。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    返回:</span></span><br><span class="line"><span class="string">        str: 格式化的字符串，包含最相似的文本块及其相似度。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 确保k不超过文本块的总数</span></span><br><span class="line">    k = <span class="built_in">min</span>(k, <span class="built_in">len</span>(chunks))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用OpenAI API为输入文本创建嵌入向量</span></span><br><span class="line">    response = client.embeddings.create(</span><br><span class="line">        model=emb_model,</span><br><span class="line">        <span class="built_in">input</span>=input_text,</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 获取输入文本的嵌入向量</span></span><br><span class="line">    input_embedding = response.data[<span class="number">0</span>].embedding</span><br><span class="line">    <span class="comment"># 对输入嵌入向量进行归一化处理</span></span><br><span class="line">    input_embedding = normalize(np.array([input_embedding]).astype(<span class="string">&#x27;float32&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 在索引中搜索与输入嵌入向量最相似的k个向量</span></span><br><span class="line">    distances, indices = index.search(input_embedding, k)</span><br><span class="line">    <span class="comment"># 初始化一个字符串来存储匹配的文本</span></span><br><span class="line">    matching_texts = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 遍历搜索结果</span></span><br><span class="line">    <span class="keyword">for</span> i, idx <span class="keyword">in</span> <span class="built_in">enumerate</span>(indices[<span class="number">0</span>]):</span><br><span class="line">        <span class="comment"># 打印每个匹配文本块的相似度和文本内容</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;similarity: <span class="subst">&#123;distances[<span class="number">0</span>][i]:<span class="number">.4</span>f&#125;</span>\nmatching text: \n<span class="subst">&#123;chunks[idx]&#125;</span>\n&quot;</span>)</span><br><span class="line">        <span class="comment"># 将相似度和文本内容添加到匹配文本字符串中</span></span><br><span class="line">        matching_texts += <span class="string">f&quot;similarity: <span class="subst">&#123;distances[<span class="number">0</span>][i]:<span class="number">.4</span>f&#125;</span>\nmatching text: \n<span class="subst">&#123;chunks[idx]&#125;</span>\n&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回包含匹配文本块及其相似度的字符串</span></span><br><span class="line">    <span class="keyword">return</span> matching_texts</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获得匹配文块并构造prompt：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">input_text = <span class="string">&quot;What are the applications of Agent AI systems ?&quot;</span></span><br><span class="line"></span><br><span class="line">matched_texts = match_text(input_text=input_text, index=index, chunks=chunks, k=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">prompt = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">根据找到的文档</span></span><br><span class="line"><span class="string"><span class="subst">&#123;matched_texts&#125;</span></span></span><br><span class="line"><span class="string">生成</span></span><br><span class="line"><span class="string"><span class="subst">&#123;input_text&#125;</span></span></span><br><span class="line"><span class="string">的答案，尽可能使用文档语句的原文回答。不要复述问题，直接开始回答。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>构建prompt：</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_completion_stream</span>(<span class="params">prompt</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用 OpenAI 的 Chat Completions API 生成流式的文本回复。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        prompt (str): 要生成回复的提示文本。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    返回:</span></span><br><span class="line"><span class="string">        None: 该函数直接打印生成的回复内容。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 使用 OpenAI 的 Chat Completions API 创建一个聊天完成请求</span></span><br><span class="line">    response = client.chat.completions.create(</span><br><span class="line">        model=chat_model,  <span class="comment"># 填写需要调用的模型名称</span></span><br><span class="line">        messages=[</span><br><span class="line">            <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">            常用的role值分为&quot;system&quot;、&quot;user&quot;、&quot;assistant&quot;；</span></span><br><span class="line"><span class="string">            其中system是系统消息，一般用于设置模型的行为和角色，一般作为对话的第一条消息，会影响模型的整体回复风格；</span></span><br><span class="line"><span class="string">            user是用户消息，代表用户输入的内容；</span></span><br><span class="line"><span class="string">            assistant是助手消息，即模型生成的回复，一般在多轮会话中需要加历史中的assistant加入，保持上下文连贯性。</span></span><br><span class="line"><span class="string">            &#x27;&#x27;&#x27;</span></span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: prompt&#125;,</span><br><span class="line">        ],</span><br><span class="line">        stream=<span class="literal">True</span>,</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 如果响应存在</span></span><br><span class="line">    <span class="keyword">if</span> response:</span><br><span class="line">        <span class="comment"># 遍历响应中的每个块</span></span><br><span class="line">        <span class="keyword">for</span> chunk <span class="keyword">in</span> response:</span><br><span class="line">            <span class="comment"># 获取当前块的内容</span></span><br><span class="line">            content = chunk.choices[<span class="number">0</span>].delta.content</span><br><span class="line">            <span class="comment"># 如果内容存在</span></span><br><span class="line">            <span class="keyword">if</span> content:</span><br><span class="line">                <span class="comment"># 打印内容，并刷新输出缓冲区</span></span><br><span class="line">                <span class="built_in">print</span>(content, end=<span class="string">&#x27;&#x27;</span>, flush=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用prompt</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get_completion_stream(prompt)</span><br></pre></td></tr></table></figure></li>
 </ol>
-
+<h2 id="感谢datawhale的wow-RAG教程支持"><a href="#感谢datawhale的wow-RAG教程支持" class="headerlink" title="感谢datawhale的wow-RAG教程支持"></a>感谢datawhale的wow-RAG教程支持</h2>
                     
                         
 
@@ -312,7 +326,7 @@
                     
                         <p>
                             <a
-                                href="/2025/07/15/cs336-scaling-laws/#post-footer"
+                                href="/2025/06/15/wow-rag/#post-footer"
                                 class="postShorten-excerpt_link link"
                                 aria-label=""
                             >
@@ -370,7 +384,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -384,7 +398,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -396,21 +556,136 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+    </body>
 </html>

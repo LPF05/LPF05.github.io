@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>标签: Transformer - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -52,6 +53,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -70,7 +87,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -103,7 +120,7 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -211,22 +228,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -251,7 +252,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -339,18 +340,18 @@
 </tbody></table>
 <h3 id="二、ResNet-与-LayerNorm-的核心原理：为何能-“强强联合”"><a href="#二、ResNet-与-LayerNorm-的核心原理：为何能-“强强联合”" class="headerlink" title="二、ResNet 与 LayerNorm 的核心原理：为何能 “强强联合”"></a>二、ResNet 与 LayerNorm 的核心原理：为何能 “强强联合”</h3><p>要理解 “ResNet 后加 LayerNorm” 的设计，需先拆解二者的本质价值 —— 它们分别解决了深层网络的两大核心痛点。</p>
 <h4 id="2-1-ResNet：残差连接的-“梯度救赎”"><a href="#2-1-ResNet：残差连接的-“梯度救赎”" class="headerlink" title="2.1 ResNet：残差连接的 “梯度救赎”"></a>2.1 ResNet：残差连接的 “梯度救赎”</h4><p>ResNet的核心创新是<strong>残差模块</strong>，通过 “跳跃连接” 让输入信息直接跨越多层网络，公式表达为：</p>
-<p>$$H(x) &#x3D; F(x) + x$$</p>
+$$H(x) = F(x) + x$$
 <ul>
 <li>$F(x)$：网络层的非线性变换（如卷积、全连接、attn...）</li>
 <li>$x$：原始输入的恒等映射（shortcut 连接）</li>
 </ul>
 <p><strong>核心作用</strong>：</p>
 <ol>
-<li>缓解梯度消失：反向传播时梯度 $\frac{\partial H}{\partial x} &#x3D; \frac{\partial F}{\partial x} + 1$，即使$\frac{\partial F}{\partial x}$趋近于 0，梯度仍能通过常数项 “1” 保持有效传递；</li>
-<li>避免网络退化：当深层网络已达最优性能时，新增层可学习 “恒等变换”（$F(x)&#x3D;0$），不影响模型效果；</li>
+<li>缓解梯度消失：反向传播时梯度 $\frac{\partial H}{\partial x} = \frac{\partial F}{\partial x} + 1$，即使$\frac{\partial F}{\partial x}$趋近于 0，梯度仍能通过常数项 “1” 保持有效传递；</li>
+<li>避免网络退化：当深层网络已达最优性能时，新增层可学习 “恒等变换”（$F(x)=0$），不影响模型效果；</li>
 <li>保留原始特征：融合基础输入与深层变换特征，避免信息丢失。</li>
 </ol>
-<h4 id="2-2-LayerNorm：归一化的-“分布稳定器”"><a href="#2-2-LayerNorm：归一化的-“分布稳定器”" class="headerlink" title="2.2 LayerNorm：归一化的 “分布稳定器”"></a>2.2 LayerNorm：归一化的 “分布稳定器”</h4><p>LayerNorm 是针对 “内部协变量偏移” 的解决方案，其核心是<strong>对单个样本的所有特征维度做归一化</strong>，公式如下：<br>$$\text{LayerNorm}(x) &#x3D; \gamma \cdot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$$</p>
+<h4 id="2-2-LayerNorm：归一化的-“分布稳定器”"><a href="#2-2-LayerNorm：归一化的-“分布稳定器”" class="headerlink" title="2.2 LayerNorm：归一化的 “分布稳定器”"></a>2.2 LayerNorm：归一化的 “分布稳定器”</h4><p>LayerNorm 是针对 “内部协变量偏移” 的解决方案，其核心是<strong>对单个样本的所有特征维度做归一化</strong>，公式如下：<br>$$\text{LayerNorm}(x) = \gamma \cdot \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} + \beta$$</p>
 <ul>
 <li>$\mu$、$\sigma^2$：样本特征的均值和方差（逐样本计算）</li>
 <li>$\gamma$、$\beta$：可学习的缩放和平移参数（保留特征表达能力）</li>
@@ -392,7 +393,7 @@
 <h3 id="总结：归一化位置决定了“梯度是否多走一段衰减路”"><a href="#总结：归一化位置决定了“梯度是否多走一段衰减路”" class="headerlink" title="总结：归一化位置决定了“梯度是否多走一段衰减路”"></a>总结：归一化位置决定了“梯度是否多走一段衰减路”</h3><p>Post-Norm 的梯度困境，本质是“Add 后 Norm”的位置，让梯度在反向传播中必须多经过一层“Norm 对梯度的缩放效应”，且这层衰减与子层矩阵乘法的衰减叠加，导致深层梯度越传越小。  </p>
 <p>而解决思路的核心，都是通过<strong>调整归一化位置</strong>（比如 Pre-Norm 的“Norm 在前”、ResNet 后 Norm 的“Norm 在 ResNet 与 Transformer 子层之间”），要么让 Norm 层的输入分布更稳定（导数不衰减），要么让梯度传递避开“Norm 衰减+矩阵衰减”的叠加——这也印证了“架构设计要先解决‘能不能训深’，再解决‘训深后稳不稳’”的底层思维。</p>
 <h4 id="3-2-优化逻辑：1-1-2-的协同效应"><a href="#3-2-优化逻辑：1-1-2-的协同效应" class="headerlink" title="3.2 优化逻辑：1+1&gt;2 的协同效应"></a>3.2 优化逻辑：1+1&gt;2 的协同效应</h4><p>“ResNet 后加 LayerNorm” 的结构顺序为：</p>
-<p>$$\text{Input} \rightarrow \text{ResNet} \rightarrow \text{LayerNorm} \rightarrow \text{Transformer子层（Attention&#x2F;FFN）} \rightarrow \text{Add}$$</p>
+$$\text{Input} \rightarrow \text{ResNet} \rightarrow \text{LayerNorm} \rightarrow \text{Transformer子层（Attention/FFN）} \rightarrow \text{Add}$$
 <p>其协同价值体现在三点：</p>
 <ol>
 <li><p><strong>梯度传递更顺畅</strong>：ResNet 的残差连接提供 “梯度捷径”，LayerNorm 通过稳定特征分布进一步降低梯度传播的阻力，即使网络堆叠至 100 层以上，仍能保持梯度有效更新；</p>
@@ -416,21 +417,31 @@
 
 <h4 id="2-反向梯度传递路径（核心：梯度要先“拆穿”Norm层，才能到Add和前层）"><a href="#2-反向梯度传递路径（核心：梯度要先“拆穿”Norm层，才能到Add和前层）" class="headerlink" title="2. 反向梯度传递路径（核心：梯度要先“拆穿”Norm层，才能到Add和前层）"></a>2. 反向梯度传递路径（核心：梯度要先“拆穿”Norm层，才能到Add和前层）</h4><p>Post-Norm 让梯度必须“先过 LN、再到 Add、再到 SubLayer”才能计算损失对第 (L) 层的输入 (Input_L) 的梯度，路径如下：<br>$$\frac{\partial Loss}{\partial Input_L}$$</p>
 <p>梯度必须沿着与正向完全相反的路径回溯。路径顺序如下（高层 → 低层）：</p>
-<p>$$\frac{\partial Loss}{\partial LN_{L+1}}<br>\rightarrow<br>\frac{\partial Loss}{\partial Res_{L+1}}<br>\rightarrow<br>\frac{\partial Loss}{\partial Input_{L+1}}<br>\rightarrow<br>\frac{\partial Loss}{\partial LN_L}<br>\rightarrow<br>\frac{\partial Loss}{\partial Res_L}<br>\rightarrow<br>\frac{\partial Loss}{\partial Input_L}$$</p>
+$$\frac{\partial Loss}{\partial LN_{L+1}}
+\rightarrow
+\frac{\partial Loss}{\partial Res_{L+1}}
+\rightarrow
+\frac{\partial Loss}{\partial Input_{L+1}}
+\rightarrow
+\frac{\partial Loss}{\partial LN_L}
+\rightarrow
+\frac{\partial Loss}{\partial Res_L}
+\rightarrow
+\frac{\partial Loss}{\partial Input_L}$$
 <p>拆解如下：</p>
 <ol>
 <li><p><strong>梯度先从第 $L+1$ 层的输出进入 $\text{LN}_{L+1}$</strong><br>必须先乘上 $\text{LayerNorm}_{L+1}$ 的雅可比矩阵 → 这一步可能造成梯度缩放（减小）。</p>
 </li>
-<li><p><strong>从 $\text{LN}<em>{L+1}$ 才能到达 $\text{Res}</em>{L+1}$</strong><br>LN 之后梯度才被分配到 Add 的两个分支（主分支与残差）。</p>
+<li><p><strong>从 $\text{LN}_{L+1}$ 才能到达 $\text{Res}_{L+1}$</strong><br>LN 之后梯度才被分配到 Add 的两个分支（主分支与残差）。</p>
 </li>
-<li><p><strong>接着梯度才会继续回传到第 $L$ 层的输入 $\text{Input}_{L+1}$</strong><br>而 $\text{Input}<em>{L+1}$ 就是 $\text{LN}</em>{L}$。</p>
+<li><p><strong>接着梯度才会继续回传到第 $L$ 层的输入 $\text{Input}_{L+1}$</strong><br>而 $\text{Input}_{L+1}$ 就是 $\text{LN}_{L}$。</p>
 </li>
 <li><p><strong>因此梯度又必须进入 $\text{LN}_{L}$</strong><br>再次被 LN 的导数缩放。</p>
 </li>
-<li><p><strong>最终才能回到 $\text{Res}<em>{L}$、Add、以及 $\text{Input}</em>{L}$</strong></p>
+<li><p><strong>最终才能回到 $\text{Res}_{L}$、Add、以及 $\text{Input}_{L}$</strong></p>
 </li>
 </ol>
-<h4 id="核心关键点："><a href="#核心关键点：" class="headerlink" title="核心关键点："></a><strong>核心关键点：</strong></h4><h5 id="在-Post-Norm-中，梯度从下一层回传时，必定要连续穿过两层-LayerNorm-的导数（-text-LayerNorm-L-1-和-text-LayerNorm-L-）。"><a href="#在-Post-Norm-中，梯度从下一层回传时，必定要连续穿过两层-LayerNorm-的导数（-text-LayerNorm-L-1-和-text-LayerNorm-L-）。" class="headerlink" title="在 Post-Norm 中，梯度从下一层回传时，必定要连续穿过两层 LayerNorm 的导数（$\text{LayerNorm}{L+1}$ 和 $\text{LayerNorm}{L}$）。"></a><strong>在 Post-Norm 中，梯度从下一层回传时，必定要连续穿过两层 LayerNorm 的导数（$\text{LayerNorm}<em>{L+1}$ 和 $\text{LayerNorm}</em>{L}$）。</strong></h5><p>每一个 LayerNorm 的反向传播都会：</p>
+<h4 id="核心关键点："><a href="#核心关键点：" class="headerlink" title="核心关键点："></a><strong>核心关键点：</strong></h4><h5 id="在-Post-Norm-中，梯度从下一层回传时，必定要连续穿过两层-LayerNorm-的导数（$\text{LayerNorm}_{L+1}$-和-$\text{LayerNorm}_{L}$）。"><a href="#在-Post-Norm-中，梯度从下一层回传时，必定要连续穿过两层-LayerNorm-的导数（$\text{LayerNorm}_{L+1}$-和-$\text{LayerNorm}_{L}$）。" class="headerlink" title="在 Post-Norm 中，梯度从下一层回传时，必定要连续穿过两层 LayerNorm 的导数（$\text{LayerNorm}_{L+1}$ 和 $\text{LayerNorm}_{L}$）。"></a><strong>在 Post-Norm 中，梯度从下一层回传时，必定要连续穿过两层 LayerNorm 的导数（$\text{LayerNorm}_{L+1}$ 和 $\text{LayerNorm}_{L}$）。</strong></h5><p>每一个 LayerNorm 的反向传播都会：</p>
 <ul>
 <li>根据输入的方差 $\sigma^2$ 对梯度进行缩放</li>
 <li>并以一种较复杂的方式重新分配梯度（包括均值项、归一化项）</li>
@@ -438,19 +449,23 @@
 <p>因此 <strong>每一层 LN 都有可能让梯度幅值变小或更不稳定</strong>。</p>
 <p>而 Post-Norm 的结构又让 LN 处于反向路径上不可绕过的位置：<br>梯度无法利用残差支路直接跳过 LN，而是<strong>必须要经过 LN 的梯度缩放</strong>。</p>
 <h3 id="二、核心问题：Norm-层在-“Add-之后”-的位置，会放大梯度衰减与梯度波动"><a href="#二、核心问题：Norm-层在-“Add-之后”-的位置，会放大梯度衰减与梯度波动" class="headerlink" title="二、核心问题：Norm 层在 “Add 之后” 的位置，会放大梯度衰减与梯度波动"></a>二、核心问题：Norm 层在 “Add 之后” 的位置，会放大梯度衰减与梯度波动</h3><p>LayerNorm 的正向定义为：</p>
-<p>$$\mathrm{LN}(x)&#x3D;\gamma \cdot \frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta$$</p>
+$$\mathrm{LN}(x)=\gamma \cdot \frac{x-\mu}{\sqrt{\sigma^2+\epsilon}}+\beta$$
 <p>反向传播时，其对输入的梯度（Jacobian）中的主导缩放项来自：</p>
-<p>$$\frac{\partial \mathrm{LN}(x)}{\partial x}<br>\propto<br>\frac{1}{\sqrt{\sigma^2+\epsilon}}$$</p>
+$$\frac{\partial \mathrm{LN}(x)}{\partial x}
+\propto
+\frac{1}{\sqrt{\sigma^2+\epsilon}}$$
 <p>这意味着：</p>
-<h5 id="LN-的导数大小直接受输入方差-sigma-2-的影响，只要-sigma-2-大或不稳定，梯度就会随之变小或波动。"><a href="#LN-的导数大小直接受输入方差-sigma-2-的影响，只要-sigma-2-大或不稳定，梯度就会随之变小或波动。" class="headerlink" title="LN 的导数大小直接受输入方差 $\sigma^2$ 的影响，只要 $\sigma^2$ 大或不稳定，梯度就会随之变小或波动。"></a><strong>LN 的导数大小直接受输入方差 $\sigma^2$ 的影响，只要 $\sigma^2$ 大或不稳定，梯度就会随之变小或波动。</strong></h5><p>而在 <strong>Post-Norm</strong> 架构中，LayerNorm 的输入是：</p>
-<p>$$\mathrm{Res} &#x3D; x + \mathrm{SubLayer}(x)$$</p>
+<h5 id="LN-的导数大小直接受输入方差-$\sigma^2$-的影响，只要-$\sigma^2$-大或不稳定，梯度就会随之变小或波动。"><a href="#LN-的导数大小直接受输入方差-$\sigma^2$-的影响，只要-$\sigma^2$-大或不稳定，梯度就会随之变小或波动。" class="headerlink" title="LN 的导数大小直接受输入方差 $\sigma^2$ 的影响，只要 $\sigma^2$ 大或不稳定，梯度就会随之变小或波动。"></a><strong>LN 的导数大小直接受输入方差 $\sigma^2$ 的影响，只要 $\sigma^2$ 大或不稳定，梯度就会随之变小或波动。</strong></h5><p>而在 <strong>Post-Norm</strong> 架构中，LayerNorm 的输入是：</p>
+$$\mathrm{Res} = x + \mathrm{SubLayer}(x)$$
 <p>其中 $\mathrm{SubLayer}(x)$（多头注意力、FFN）在网络加深时分布会越来越不稳定，从而使得 $\mathrm{Res}$ 的方差和均值不断变化。这就直接影响 LN 的导数，使其成为梯度传递的瓶颈。</p>
 <p>下面分两类情况说明这种问题如何体现。</p>
-<h4 id="1-场景-1：输入方差-sigma-2-增大-→-梯度被持续缩小（梯度衰减）"><a href="#1-场景-1：输入方差-sigma-2-增大-→-梯度被持续缩小（梯度衰减）" class="headerlink" title="1. 场景 1：输入方差 $\sigma^2$ 增大 → 梯度被持续缩小（梯度衰减）"></a><strong>1. 场景 1：输入方差 $\sigma^2$ 增大 → 梯度被持续缩小（梯度衰减）</strong></h4><p>随着层数增加，$\mathrm{SubLayer}(x)$ 的输出振幅会增大或具有更强的层间差异，而残差相加：</p>
-<p>$$\mathrm{Res} &#x3D; x + \mathrm{SubLayer}(x)$$</p>
+<h4 id="1-场景-1：输入方差-$\sigma^2$-增大-→-梯度被持续缩小（梯度衰减）"><a href="#1-场景-1：输入方差-$\sigma^2$-增大-→-梯度被持续缩小（梯度衰减）" class="headerlink" title="1. 场景 1：输入方差 $\sigma^2$ 增大 → 梯度被持续缩小（梯度衰减）"></a><strong>1. 场景 1：输入方差 $\sigma^2$ 增大 → 梯度被持续缩小（梯度衰减）</strong></h4><p>随着层数增加，$\mathrm{SubLayer}(x)$ 的输出振幅会增大或具有更强的层间差异，而残差相加：</p>
+$$\mathrm{Res} = x + \mathrm{SubLayer}(x)$$
 <p>的方差往往会越来越大。</p>
 <p>由于 LN 的导数满足：</p>
-<p>$$\left|\frac{\partial \mathrm{LN}(x)}{\partial x}\right|<br>\propto<br>\frac{1}{\sqrt{\sigma^2+\epsilon}}$$</p>
+$$\left|\frac{\partial \mathrm{LN}(x)}{\partial x}\right|
+\propto
+\frac{1}{\sqrt{\sigma^2+\epsilon}}$$
 <p>当 $\sigma^2$ 较大时，这个缩放系数变得很小，导致：</p>
 <h5 id="LN-反向传播会把梯度整体压缩。"><a href="#LN-反向传播会把梯度整体压缩。" class="headerlink" title="LN 反向传播会把梯度整体压缩。"></a><strong>LN 反向传播会把梯度整体压缩。</strong></h5><p>而 Post-Norm 的结构是：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">... → Add → LN → 下一层</span><br></pre></td></tr></table></figure>
@@ -462,8 +477,8 @@
 <li>越往前，梯度可能呈指数衰减</li>
 </ul>
 <p>最终导致：</p>
-<h5 id="浅层几乎收不到梯度，训练初期尤其严重。"><a href="#浅层几乎收不到梯度，训练初期尤其严重。" class="headerlink" title="浅层几乎收不到梯度，训练初期尤其严重。"></a><strong>浅层几乎收不到梯度，训练初期尤其严重。</strong></h5><h4 id="2-场景-2：输入方差-sigma-2-不稳定-→-梯度也随之不稳定（梯度波动）"><a href="#2-场景-2：输入方差-sigma-2-不稳定-→-梯度也随之不稳定（梯度波动）" class="headerlink" title="2. 场景 2：输入方差 $\sigma^2$ 不稳定 → 梯度也随之不稳定（梯度波动）"></a><strong>2. 场景 2：输入方差 $\sigma^2$ 不稳定 → 梯度也随之不稳定（梯度波动）</strong></h4><p>残差输入：</p>
-<p>$$Res &#x3D; x + \mathrm{SubLayer}(x)$$</p>
+<h5 id="浅层几乎收不到梯度，训练初期尤其严重。"><a href="#浅层几乎收不到梯度，训练初期尤其严重。" class="headerlink" title="浅层几乎收不到梯度，训练初期尤其严重。"></a><strong>浅层几乎收不到梯度，训练初期尤其严重。</strong></h5><h4 id="2-场景-2：输入方差-$\sigma^2$-不稳定-→-梯度也随之不稳定（梯度波动）"><a href="#2-场景-2：输入方差-$\sigma^2$-不稳定-→-梯度也随之不稳定（梯度波动）" class="headerlink" title="2. 场景 2：输入方差 $\sigma^2$ 不稳定 → 梯度也随之不稳定（梯度波动）"></a><strong>2. 场景 2：输入方差 $\sigma^2$ 不稳定 → 梯度也随之不稳定（梯度波动）</strong></h4><p>残差输入：</p>
+$$Res = x + \mathrm{SubLayer}(x)$$
 <p>中，$\mathrm{SubLayer}(x)$ 的分布会随着训练不断变化，例如其输出可能忽大忽小、均值偏移、Batch 内不同 token 差异加剧等。因此：</p>
 <ul>
 <li>$y$ 的均值 ($\mu$) 在变</li>
@@ -471,9 +486,9 @@
 <li>LN 的归一化分母 $\sqrt{\sigma^2+\epsilon}$ 也在变</li>
 </ul>
 <p>而 LN 的梯度包含项：</p>
-<p>$$\frac{1}{\sqrt{\sigma^2+\epsilon}}$$</p>
+$$\frac{1}{\sqrt{\sigma^2+\epsilon}}$$
 <p>意味着：</p>
-<h5 id="sigma-2-一变，梯度也被随之放大或缩小。"><a href="#sigma-2-一变，梯度也被随之放大或缩小。" class="headerlink" title="$\sigma^2$ 一变，梯度也被随之放大或缩小。"></a><strong>$\sigma^2$ 一变，梯度也被随之放大或缩小。</strong></h5><p>这种“梯度时大时小”的不稳定会引发：</p>
+<h5 id="$\sigma^2$-一变，梯度也被随之放大或缩小。"><a href="#$\sigma^2$-一变，梯度也被随之放大或缩小。" class="headerlink" title="$\sigma^2$ 一变，梯度也被随之放大或缩小。"></a><strong>$\sigma^2$ 一变，梯度也被随之放大或缩小。</strong></h5><p>这种“梯度时大时小”的不稳定会引发：</p>
 <ul>
 <li>某一步更新后子层输出波动 → LN 梯度变小 → 梯度传不过去</li>
 <li>下一步权重又改变 → 子层输出变小 → LN 梯度突然变大</li>
@@ -486,7 +501,7 @@
 <li>遇到不稳定方差 → 放大梯度波动（梯度震荡）</li>
 </ol>
 <p>这两个问题都直接来自 LN 输入的分布特性，而 LN 的输入在深层 Transformer 里本身就不稳定，因此 Post-Norm 容易训练困难。</p>
-<h3 id="有关-SubLayer-经过-LayerNorm-的分析"><a href="#有关-SubLayer-经过-LayerNorm-的分析" class="headerlink" title="有关 SubLayer 经过 LayerNorm 的分析"></a>有关 SubLayer 经过 LayerNorm 的分析</h3><h4 id="1-为什么-SubLayer-的输出会让分布变得不稳定？"><a href="#1-为什么-SubLayer-的输出会让分布变得不稳定？" class="headerlink" title="1. 为什么 SubLayer 的输出会让分布变得不稳定？"></a>1. 为什么 SubLayer 的输出会让分布变得不稳定？</h4><p>SubLayer包含线性变换、缩放（例如 Attention 的 $1&#x2F;\sqrt{d_k}$）、非线性激活等操作，这些都会改变输入的统计分布。随着网络加深，这些操作会引入以下现象：</p>
+<h3 id="有关-SubLayer-经过-LayerNorm-的分析"><a href="#有关-SubLayer-经过-LayerNorm-的分析" class="headerlink" title="有关 SubLayer 经过 LayerNorm 的分析"></a>有关 SubLayer 经过 LayerNorm 的分析</h3><h4 id="1-为什么-SubLayer-的输出会让分布变得不稳定？"><a href="#1-为什么-SubLayer-的输出会让分布变得不稳定？" class="headerlink" title="1. 为什么 SubLayer 的输出会让分布变得不稳定？"></a>1. 为什么 SubLayer 的输出会让分布变得不稳定？</h4><p>SubLayer包含线性变换、缩放（例如 Attention 的 $1/\sqrt{d_k}$）、非线性激活等操作，这些都会改变输入的统计分布。随着网络加深，这些操作会引入以下现象：</p>
 <ul>
 <li><strong>权重矩阵与激活的累积效应</strong>会逐层放大或缩小信号；</li>
 <li><strong>注意力机制可能对部分 token 给出极高权重</strong>，导致某些通道的输出激增；</li>
@@ -496,9 +511,9 @@
 <p>所以 SubLayer(x) 在不同样本&#x2F;位置上的幅值可能差别很大。一旦将其与主支路的 x 相加（即残差连接），会造成：</p>
 <p>→ <strong>残差相加结果的方差明显增大</strong>（即 LN 输入的方差 $\sigma^2$ 会变大）。</p>
 <h4 id="2-数学视角：残差相加如何放大方差？"><a href="#2-数学视角：残差相加如何放大方差？" class="headerlink" title="2. 数学视角：残差相加如何放大方差？"></a>2. 数学视角：残差相加如何放大方差？</h4><p>设主支路输入为 (x)，子层输出为 (s &#x3D; f(x))，残差输出为：</p>
-<p>$$Res &#x3D; x + s$$</p>
+$$Res = x + s$$
 <p>其方差（略去均值项）为：</p>
-<p>$$\mathrm{Var}(Res) &#x3D; \mathrm{Var}(x) + \mathrm{Var}(s) + 2\operatorname{Cov}(x, s)$$</p>
+$$\mathrm{Var}(Res) = \mathrm{Var}(x) + \mathrm{Var}(s) + 2\operatorname{Cov}(x, s)$$
 <p>重点分析：</p>
 <ul>
 <li><p>若 $x$ 和 $s$ 弱相关（实际中常常如此），则<br>$$\mathrm{Var}(Res) \approx \mathrm{Var}(x) + \mathrm{Var}(s)$$<br>→ 方差被叠加。</p>
@@ -507,14 +522,21 @@
 </li>
 </ul>
 <p>因此，残差连接会将 SubLayer 的“幅度波动”直接带入下一层的 LayerNorm 输入中。</p>
-<h4 id="3-Pre-Norm-vs-Post-Norm-的根本差别"><a href="#3-Pre-Norm-vs-Post-Norm-的根本差别" class="headerlink" title="3. Pre-Norm vs Post-Norm 的根本差别"></a>3. Pre-Norm vs Post-Norm 的根本差别</h4><h5 id="Post-Norm（原始-Transformer）"><a href="#Post-Norm（原始-Transformer）" class="headerlink" title="Post-Norm（原始 Transformer）"></a>Post-Norm（原始 Transformer）</h5><p>$$Res &#x3D; \mathrm{LN}(x + s)$$<br>LN 看到的是已经方差增大的结果 $x + s$。<br>→ <strong>方差越大，LN 的反向梯度越小</strong>（因为梯度 $\propto 1&#x2F;\sqrt{\sigma^2+\epsilon}$(主导缩放项)）。</p>
-<h5 id="Pre-Norm（常见）"><a href="#Pre-Norm（常见）" class="headerlink" title="Pre-Norm（常见）"></a>Pre-Norm（常见）</h5><p>$$Res &#x3D; x + \mathrm{SubLayer}(\mathrm{LN}(x))$$<br>SubLayer 的输入始终经过 LN 标准化，因此其输出方差更可控。<br>同时，残差路径：</p>
-<p>$$\text{梯度可以从 } y \to x \text{ 直接流动，不经过 LN 的缩放}$$</p>
+<h4 id="3-Pre-Norm-vs-Post-Norm-的根本差别"><a href="#3-Pre-Norm-vs-Post-Norm-的根本差别" class="headerlink" title="3. Pre-Norm vs Post-Norm 的根本差别"></a>3. Pre-Norm vs Post-Norm 的根本差别</h4><h5 id="Post-Norm（原始-Transformer）"><a href="#Post-Norm（原始-Transformer）" class="headerlink" title="Post-Norm（原始 Transformer）"></a>Post-Norm（原始 Transformer）</h5><p>$$Res = \mathrm{LN}(x + s)$$<br>LN 看到的是已经方差增大的结果 $x + s$。<br>→ <strong>方差越大，LN 的反向梯度越小</strong>（因为梯度 $\propto 1/\sqrt{\sigma^2+\epsilon}$(主导缩放项)）。</p>
+<h5 id="Pre-Norm（常见）"><a href="#Pre-Norm（常见）" class="headerlink" title="Pre-Norm（常见）"></a>Pre-Norm（常见）</h5><p>$$Res = x + \mathrm{SubLayer}(\mathrm{LN}(x))$$<br>SubLayer 的输入始终经过 LN 标准化，因此其输出方差更可控。<br>同时，残差路径：</p>
+$$\text{梯度可以从 } y \to x \text{ 直接流动，不经过 LN 的缩放}$$
 <p>→ 根本原因：<strong>梯度主路径避开了 LayerNorm 的梯度缩放项，梯度更稳定、更不衰减。</strong></p>
 <h4 id="4-梯度流动：为什么-Pre-Norm-更稳？"><a href="#4-梯度流动：为什么-Pre-Norm-更稳？" class="headerlink" title="4. 梯度流动：为什么 Pre-Norm 更稳？"></a>4. 梯度流动：为什么 Pre-Norm 更稳？</h4><p>考虑 loss 对第 (l) 层输入 (x^{(l)}) 的梯度。</p>
-<h5 id="Pre-Norm：梯度主路径绕过-LN"><a href="#Pre-Norm：梯度主路径绕过-LN" class="headerlink" title="Pre-Norm：梯度主路径绕过 LN"></a>Pre-Norm：梯度主路径绕过 LN</h5><p>$$<br>x^{(l)} \xrightarrow[]{+} {Res}^{(l)} \xrightarrow[]{\text{直接}} \frac{\partial L}{\partial x^{(l)}}<br>$$</p>
+<h5 id="Pre-Norm：梯度主路径绕过-LN"><a href="#Pre-Norm：梯度主路径绕过-LN" class="headerlink" title="Pre-Norm：梯度主路径绕过 LN"></a>Pre-Norm：梯度主路径绕过 LN</h5>$$
+x^{(l)} \xrightarrow[]{+} {Res}^{(l)} \xrightarrow[]{\text{直接}} \frac{\partial L}{\partial x^{(l)}}
+$$
 <p>梯度在主路径上不经过 LN，因此也不会被$\frac{1}{\sqrt{\sigma^2 + \epsilon}}$反复缩小或放大。</p>
-<h5 id="Post-Norm：每层梯度必须经过-LN-缩放"><a href="#Post-Norm：每层梯度必须经过-LN-缩放" class="headerlink" title="Post-Norm：每层梯度必须经过 LN 缩放"></a>Post-Norm：每层梯度必须经过 LN 缩放</h5><p>$$<br>\frac{\partial L}{\partial y^{(l)}}<br>\xrightarrow[]{\text{LN 反向}}<br>\frac{1}{\sqrt{\sigma^2 + \epsilon}}<br>\Rightarrow \frac{\partial L}{\partial x^{(l)}}<br>$$</p>
+<h5 id="Post-Norm：每层梯度必须经过-LN-缩放"><a href="#Post-Norm：每层梯度必须经过-LN-缩放" class="headerlink" title="Post-Norm：每层梯度必须经过 LN 缩放"></a>Post-Norm：每层梯度必须经过 LN 缩放</h5>$$
+\frac{\partial L}{\partial y^{(l)}}
+\xrightarrow[]{\text{LN 反向}}
+\frac{1}{\sqrt{\sigma^2 + \epsilon}}
+\Rightarrow \frac{\partial L}{\partial x^{(l)}}
+$$
 <p>若网络有 n 层，那么梯度相当于要乘以 LN 的缩放系数 n 次：→ 梯度很容易“层层衰减”，传不到深层，容易导致崩溃。</p>
 <h4 id="5-方差放大问题的来源"><a href="#5-方差放大问题的来源" class="headerlink" title="5. 方差放大问题的来源"></a>5. 方差放大问题的来源</h4><ol>
 <li><strong>参数初始化不理想</strong>：每层的线性变换都会改变幅度。</li>
@@ -533,9 +555,14 @@
 <li><strong>（最有效）改用 Pre-Norm</strong>。</li>
 </ol>
 <h4 id="7-小结"><a href="#7-小结" class="headerlink" title="7. 小结"></a>7. 小结</h4><ul>
-<li><p>残差连接：<br>$$<br>Res &#x3D; x + s<br>\Rightarrow \sigma^2_{Res} &#x3D; \sigma^2_x + \sigma^2_s + 2\operatorname{Cov}(x,s)<br>$$<br>→ 方差容易变大。</p>
+<li><p>残差连接：<br>$$
+  Res = x + s
+  \Rightarrow \sigma^2_{Res} = \sigma^2_x + \sigma^2_s + 2\operatorname{Cov}(x,s)
+  $$<br>→ 方差容易变大。</p>
 </li>
-<li><p>LayerNorm 的梯度：<br>$$<br>\frac{\partial \text{LN}}{\partial x} \propto \frac{1}{\sqrt{\sigma^2_{Res}}}<br>$$<br>→ 方差越大，梯度越小（衰减）。</p>
+<li><p>LayerNorm 的梯度：<br>$$
+  \frac{\partial \text{LN}}{\partial x} \propto \frac{1}{\sqrt{\sigma^2_{Res}}}
+  $$<br>→ 方差越大，梯度越小（衰减）。</p>
 </li>
 <li><p>Post-Norm：每层都要经历这个缩放，深层梯度将迅速衰减。</p>
 </li>
@@ -556,19 +583,23 @@
 <ul>
 <li>Attention 的 $QW_Q,; KW_K,; VW_V$</li>
 <li>FFN 的 $W_1x + b_1,; W_2h + b_2$</li>
-<li>Attention 的 softmax 前后还带缩放因子 $1&#x2F;\sqrt{d_k}$</li>
+<li>Attention 的 softmax 前后还带缩放因子 $1/\sqrt{d_k}$</li>
 </ul>
 <p>在反向传播时，梯度会被权重矩阵的奇异值控制：</p>
-<p>$$\frac{\partial L}{\partial x} &#x3D; W^T \frac{\partial L}{\partial y}$$</p>
+$$\frac{\partial L}{\partial x} = W^T \frac{\partial L}{\partial y}$$
 <p>因此梯度的大小大约满足：</p>
-<p>$$|\delta_x| \approx \sigma_{\max}(W) \cdot |\delta_y|$$</p>
-<p>当矩阵的奇异值 $\sigma_{\max}(W) &lt; 1$（常见于初始化和训练早期）：</p>
+$$|\delta_x| \approx \sigma_{\max}(W) \cdot |\delta_y|$$
+<p>当矩阵的奇异值 $\sigma_{\max}(W) < 1$（常见于初始化和训练早期）：</p>
 <p>→ 每经过一次矩阵乘法，就会有一次梯度缩小。</p>
 <p>举例：</p>
 <ul>
 <li>若奇异值平均 ~0.9</li>
-<li>经过 10 层残差结构：<br>$$<br>0.9^{10} &#x3D; 0.35<br>$$</li>
-<li>经过 20 层：<br>$$<br>0.9^{20} &#x3D; 0.12<br>$$</li>
+<li>经过 10 层残差结构：<br>$$
+  0.9^{10} = 0.35
+  $$</li>
+<li>经过 20 层：<br>$$
+  0.9^{20} = 0.12
+  $$</li>
 </ul>
 <p>这是深层网络的固有风险：<strong>矩阵乘法会自然导致梯度衰减</strong>。</p>
 <h4 id="2-Post-Norm：Norm-衰减-矩阵衰减-“串联生效”"><a href="#2-Post-Norm：Norm-衰减-矩阵衰减-“串联生效”" class="headerlink" title="2. Post-Norm：Norm 衰减 + 矩阵衰减 “串联生效”"></a>2. Post-Norm：Norm 衰减 + 矩阵衰减 “串联生效”</h4><p>在 Post-Norm 中，每一层叠加了两次衰减：</p>
@@ -577,7 +608,19 @@
 <li><strong>子层矩阵衰减一次</strong></li>
 </ol>
 <p>跨两层传递的梯度可以写成：</p>
-<p>$$<br>\delta_{x_L}<br>\approx<br>\delta_{x_{L+2}}<br>\times<br>\underbrace{G_{\text{LN}}^{(L+1)}}<em>{\text{LN 衰减 1}}<br>\times<br>\underbrace{G</em>{\text{Mat}}^{(L+1)}}<em>{\text{矩阵衰减 1}}<br>\times<br>\underbrace{G</em>{\text{LN}}^{(L)}}<em>{\text{LN 衰减 2}}<br>\times<br>\underbrace{G</em>{\text{Mat}}^{(L)}}_{\text{矩阵衰减 2}}<br>$$</p>
+$$
+\delta_{x_L}
+\approx
+\delta_{x_{L+2}}
+\times
+\underbrace{G_{\text{LN}}^{(L+1)}}*{\text{LN 衰减 1}}
+\times
+\underbrace{G*{\text{Mat}}^{(L+1)}}*{\text{矩阵衰减 1}}
+\times
+\underbrace{G*{\text{LN}}^{(L)}}*{\text{LN 衰减 2}}
+\times
+\underbrace{G*{\text{Mat}}^{(L)}}_{\text{矩阵衰减 2}}
+$$
 <p>完整路径是如下所示：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(L+2) 层梯度</span><br><span class="line">    ↓ LN（衰减）</span><br><span class="line">    ↓ 子层矩阵（衰减）</span><br><span class="line">(L+1) 层梯度</span><br><span class="line">    ↓ LN（衰减）</span><br><span class="line">    ↓ 子层矩阵（衰减）</span><br><span class="line">L 层梯度</span><br></pre></td></tr></table></figure>
 
@@ -657,9 +700,9 @@
             
                 <div class="postShorten-content">
                     <h1 id="Attention-Transformer"><a href="#Attention-Transformer" class="headerlink" title="Attention&amp;Transformer"></a>Attention&amp;Transformer</h1><h2 id="3blue1brown-豆包"><a href="#3blue1brown-豆包" class="headerlink" title="3blue1brown&amp;豆包"></a>3blue1brown&amp;豆包</h2><h3 id="GPT-Transformer"><a href="#GPT-Transformer" class="headerlink" title="GPT&amp;Transformer"></a>GPT&amp;Transformer</h3><ol>
-<li><p>$\text{GPT} &#x3D; \text{Generative} + \text{Pre-trained} + \text{Transformer} $.</p>
+<li><p>$\text{GPT} = \text{Generative} + \text{Pre-trained} + \text{Transformer} $.</p>
 </li>
-<li><p>$ \text{Embedding} \rightarrow (\text{Attention} \rightarrow \text{MLP})_{repeat} \rightarrow \text{Unembedding}$</p>
+<li>$ \text{Embedding} \rightarrow (\text{Attention} \rightarrow \text{MLP})_{repeat} \rightarrow \text{Unembedding}$
 </li>
 <li><p>token -&gt; vector&#x2F;tensor(embedding) -Attention&gt; update Value (fashion model or ML model) -MLP&gt; problem update vector</p>
 </li>
@@ -695,7 +738,7 @@
 </li>
 <li><p>GPT中Attention网络数据流量则为上下文长度。</p>
 </li>
-<li><p>unembedding得到的输出结果是logits，即softmax函数的输入，probablity则是输出；常见的Temperature其实是softmax的参数，即$\frac{e^{x&#x2F;T}}{\sum_{n&#x3D;0}^{N-1} e^{x&#x2F;T}}$中的参数$T$。</p>
+<li><p>unembedding得到的输出结果是logits，即softmax函数的输入，probablity则是输出；常见的Temperature其实是softmax的参数，即$\frac{e^{x/T}}{\sum_{n=0}^{N-1} e^{x/T}}$中的参数$T$。</p>
 </li>
 </ol>
 <h3 id="Transformer-Attention"><a href="#Transformer-Attention" class="headerlink" title="Transformer&amp;Attention"></a>Transformer&amp;Attention</h3><ol>
@@ -703,7 +746,7 @@
 </li>
 <li><p>注意力计算过程：Q、K相似度计算-&gt;权重归一化-&gt;Value加权求和；</p>
 </li>
-<li><p>注意力计算公式SDPA：<br> $$ \text{Attention}(Q, K, V) &#x3D; \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V $$</p>
+<li><p>注意力计算公式SDPA：<br> $$ \text{Attention}(Q, K, V) = \text{softmax}\left( \frac{QK^T}{\sqrt{d_k}} \right) V $$</p>
 <p> 公式解释：先计算Query与Key相似度（关联度），将结果缩放使数值稳定，接下来用softmax归一化，将相似度转成概率权重，最后对权重矩阵和Value相乘，得到输出。每个Query位置融合了Key-Value的信息。</p>
 </li>
 <li><p>Q与K的相似度计算结果依赖于其本身带有语义的嵌入向量的语义，Attention的作用只不过实在其本身语义基础上进行微调理解，嵌入质量决定了QK的语义底子，例如BERT的预训练词嵌入、ViT的图像Patch嵌入才能精确的编码上下文语义，而普通的Word2Vec仅仅是普通的降维，并没有保留其深层语义；嵌入直接定义了输入的基础语义表示，是 Q&#x2F;K 的根本材料。</p>
@@ -730,7 +773,7 @@
 </li>
 <li><p>单头注意力流程图：<br><img src="/2025/07/11/attention-transformer/3323292-20250711203136162-1855366659.png" alt="1752237083400"></p>
 </li>
-<li><p>QKV参数矩阵之所以能学到自己的角色是因为前向运算不同，可参考上图，之所QK能区分自己的角色，是因为有$\frac{\partial \text{loss}}{\partial Q} &#x3D; K \cdot \text{权重梯度}$；Q和K随着训练会被驱动分化并且互补强化，并会让QK分别落在需求子空间和标识子空间中去，所以角色区分是注意力机制高效工作的必然结果：运算逻辑要求分工，梯度推动分工，训练强化分工。</p>
+<li><p>QKV参数矩阵之所以能学到自己的角色是因为前向运算不同，可参考上图，之所QK能区分自己的角色，是因为有$\frac{\partial \text{loss}}{\partial Q} = K \cdot \text{权重梯度}$；Q和K随着训练会被驱动分化并且互补强化，并会让QK分别落在需求子空间和标识子空间中去，所以角色区分是注意力机制高效工作的必然结果：运算逻辑要求分工，梯度推动分工，训练强化分工。</p>
 </li>
 </ol>
 
@@ -800,7 +843,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -814,7 +857,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -826,21 +1015,136 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+    </body>
 </html>

@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>Linux指令集 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -19,7 +20,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"基础知识\n~家目录\n#超级用户\n$普通用户\n\n通配符* 匹配任意内容（即含有该内容的任意内容）  \n? 匹配任意一个字符  \n[]　匹配任意一个中括号内的字符\n\n切换超级用户sudo -s\n如遇到拒绝访问，即&#39;permission denied&#39;时\n通常是用户权限不足，应进入su用户\n    e.g.向sysfs文件写入内容时，\n        系统被挂载在/sys 下\n\n或者可在指令前 + sudo\n\n如果还是不可以，应ls -l看文件具体权限\n更改用户的读写执行权限\n\n命令格式命令 [选项] [参数]    （绝大多数）\n\n简化选项与完整选项-a等于--all\n\nPATH环境变量\n定义的是系统搜索命令的路径\n\necho $PATH 即可看到路径\n\n系统运行级别\ninit x 执行运行级别 runlevel 查询系统运行级别 运行 cat&#x2F;etc&#x2F;inittab后显示的 id:5:initdefault: 中的5即为目前默认系统运行级别\n\nx=&gt;\n0关机\n1.单用户\n2.不完全用户，不含NFS服务\n3.完全多用户\n4.未分配\n5.图形界面\n6.重启\n\n常用目录作用根目录 下及 usr目录下 bin和sbin均保存系统命令\n其中 bin是任何用户\n    sbin是root用户\n\nboot  启动目录\ndev   特殊文件目录\netc   配置文件目录\nhome  普通用户\nroot  超级用户\nlib   函数库保存位置\n\nmisc，media，mnt 用来挂载外接设备的目录\n\ntmp      临时目录\nsys,proc 内存挂载点（不可操作）\nusr      系统资源保存目录（包含bin和sbin）\nvar      系统相关文档目录\n\n常用命令\nls [选项]\n\n查看当前目录下文件\n\n -a 显示所有文件（包含隐藏）\n -l 显示详细信息\n -d 查看目录属性\n -h 人性化显示文件大小\n -i 显示inode（文件id）\n\n\n-rw-r--r--\n\n 第一个-是文件类型：-文件 d目录 l软链接文件\n （类windows中快捷方式）\n rw-：所有者u\n r--：所属组g\n r--：其他人o\n 字符代表：r读 w写 x执行\n\n e.g. -rwxrw-r--.  1  root root 24772 1月14 18:18  \n 在这其中\n 1. 第一部分即操作权限\n 2. 操作权限后的.为ACL权限\n 3. 第二部分的“1”为引用计数\n 4. 首个root为所有者\n 5. 第二个root为所属组\n 6. “24772”为字节\n 7. 1月14 18:18  为最后一次修改时间\n 注：如果输入的是-lh则会显示为25k，而并非24772\n\n\n\n文件处理\nmkdir -p [目录名]  \n\n创建目录\n\n -p  递归创建 即 可创建内含二级目录的目录\n\n\ncd [目录]  \n cd~  回到家目录\n cd-  回到上次所在目录\n cd.. 回到上一级目录\n cd.  切换到当前目录\n\n 相对路径：参照当前目录进行查找\n 绝对路径：从根目录一级一级递归查找\n\n推荐使用绝对路径  \n\n &quot;Tab&quot;键可补全目录，命令 双击可显示全部\n\npwd\n\n打印目录当前所在位置\n\n\nrmdir [目录名]\n\n删除空目录\n\n rm -rf 强制删除目录或文件\n\n rm -rf&#x2F; 为自毁，勿试\n\ncp [选项] [原文件或目录] [目标目录]&#x2F;＜文件名＞\n\n复制命令\n\n -r 复制目录\n -p 连带属性复制\n -d 复制链接属性\n -a 相当于-pdr 即 目标文件与原文件完全相同，包括time\n\n\nmv [原文件或目录] [目标目录]\n\n剪切 或 改名（在同一目录下时改名）\n\n\nln (-s) [原文件] [目标文件]\n -s 创建软连接\n\n\n\n\n硬链接和软链接的特征：\n &gt; 硬链接【特征】：\n -　拥有相同的I节点和存储block块，可看作同一个文件。\n -　可通过I节点识别。\n -　不能跨分区。\n -　不能针对目录。\n &gt; 软链接【特征】：\n -　类快捷方式。\n -　拥有自己的I节点和block块，无实际文件数据。\n （即与原文件I节点，block块不同）\n\n\n\n\ntouch ［选项］＜文件名＞\n\n创建新文件或更新时间戳．\n\n -c 如果文件不存在，不创建新文件。\n -d 指定时间与日期   YYYYMMDDhhmmss\n -f 忽略不存在文件（更新时间戳于当前）\n\n\nman [指令]\n\n可以人性化查看指令作用。\n\n\n&gt; [file]\n\n可以重定向到文件（输出）\n\n\n&lt; [file]  \n\n可以重定向到文件（输入）\n\n同 《c primer plus》 一书中讲的重定向\n\n&gt;&gt; [file]\n\n像文件追加内容\n\n\n[file]  |   [file]\n\n将一个程序的输出与另一个程序的输入连接\n\n\nchmod [操作] &lt;文件名&gt;\ne.g. chmod u+rwx,g+ew,o+rw example.txt  \n    u：所有者  \n    g：所属组  \n    o：其他用户\n\n\n\n文件搜索\nlocate &lt;文件名&gt;\n\n在后台数据库中按文件名搜索，搜索速度更快。只可搜索文件名\n\n 在/var/lib/mlocate(不一定是此路径)中搜索数据  \n 可用loacte locate搜索查找数据库路径\n 其并不是实时更新，一天一更新（updatedb强制更新数据库）\n\n 搜索配置在&#x2F;etc&#x2F;updatedb.conf中\n PRUNE_BIND_MOUNTS=是否开启搜索限制\n PRUNEFS=不搜索的文件系统\n PRUNENAMES=不搜索的文件类型\n PRUNEPATHS=不搜索的路径\n\n\nwhereis and which\nwhereis [选项]\n\n搜索（系统）命令所在路径及帮助文档所在位置\n\n -b 只查找可执行文件\n -m 只查找帮助文件\n\n which &lt;文件名&gt;\n\n搜索命令所在路径及别名（全名）\n\n shell内置命令不可搜索\n e.g. cd命令不可搜索\n\n\nfind [搜索范围] [选项]&#x2F;[搜索条件]\n\n搜索（完全）匹配的文件名\n\n\n选项间可用a或者o并列  \n\na:and ...... o:or\n\n\n 注意：\n 1. 避免搜索范围太大，浪费系统资源\n 2. find是搜索完全符合条件的文件名。否则使用通配符。\n\n 选项较多，请注意\n [选项]\n -iname   不区分大小写\n -user    查找所有者搜索\n -nouser  查找没有所有者的文件\n -?time n 查找（）时间文件    \n -size m  查找文件大小的文件\n -inum j  查找j节点文件\n -exec [命令] {}\\ 可接在搜索后，表示将搜索结果执行[命令]\n \n ?time = mtime n 文件访问时间\n         ctime n 改变文件属性\n         mtime n 修改文件内容\n\n n = +n n天前\n      n n天当天\n     -n n天内\n\n m = +m 大于mB的文件  \n      m 等于mB的文件\n     -m 小于mB的文件\n m 要加单位 k小写，M大写\n 默认不是字节单位，是数据块单位\n\n\ngrep [选项] &lt;&quot;字符串&quot;&gt; &lt;文件名&gt;\n\n在文件当中(包含)匹配符合条件的字符串\n\n [选项]：\n  -i 忽略大小写\n  -v 排除指定字符串（取反）\n\n\n\n帮助命令\nman [选项] [命令] &#x3D; whatis\n\nmanuel的缩写，获取指定操作的说明书（帮助）\n\n 在进入manuel后，输入[字符]可跳转至第一个含此字符的行。\n man中有八（九）个级别\n\n [选项]\n -f 可获取并显示该命令操作级别\n -k 显示所有包含此关键字的命令\n    相当于apropos [关键字] \n -级别 可获取相应级别的说明书（类似说明书不同类型说明）\n\n\n命令 --help\n\n获取命令选项帮助\n\n\n\nshell内部命令帮助\nhelp shell\n获得shell内部命令的帮助\n\n\n\n详细命令帮助\ninfo\n-回车 进入子帮助页面（带有*号标记）  -u 进入上层页面  -n 进入下一个帮助小节  -p 进入上一个帮助小节  -q 退出\n\n\n\n压缩与解压缩命令\n常用压缩格式\n.zip  .gz  .bz2  .tar.gz  .tar.bz2\n\n\n\nzip格式\n.zip &lt;压缩文件名&gt; &lt;源文件&gt;\n\n压缩文件\n\n\n.zip -r &lt;压缩文件名&gt; &lt;源目录&gt;\n\n压缩目录\n\n\nunzip &lt;解压缩文件名（目录）&gt;\n\n解压缩.zip格式\n\n\n\ngz格式\ngzip &lt;源文件&gt;\n\n压缩为.gz格式的压缩文件，源文件会消失。\n\n\ngzip -c &lt;源文件&gt; &gt; &lt;压缩文件&gt;\n\n压缩为.gz格式，源文件保留\n\n 原理为重定向，并未gzip本身功能\n\ngzip -r &lt;目录&gt;\n\n压缩为.gz 压缩目录下所有的子文件，但是不能压缩目录\n\n\ngzip -d &lt;压缩文件名&gt;\n\n解压缩文件\n\n\ngunzip &lt;解压缩目录名&gt;\n\n解压缩文件\n\n\ngunzip -r &lt;解压缩目录名&gt;\n\n解压缩文件夹内所有文件\n\n\n\nbz2格式 （不可压缩目录）\nbzip2 &lt;源文件&gt;\n\n压缩为.bz2格式，不保留源文件\n\n\nbzip2 -k &lt;源文件&gt;\n\n压缩之后保留源文件\n\n\nbzip2 -d &lt;压缩文件名&gt;\n\n解压缩，-k 保留压缩文件\n\n\nbunzip2 &lt;压缩文件名&gt;\n\n解压缩，-k 保留压缩文件\n\n\n\n打包与解打包命令tar\ntar -cvf &lt;打包文件名&gt; &lt;源文件&gt;\n [选项]：\n -c 打包\n -t 测试，即只看不打包（把c换成t）\n -v 显示过程\n -f 指定打包后的文件名\n\n\ntar -xvf &lt;打包文件名&gt;\n [选项]：\n -x 解打包\n\n\n\ntar.gz格式\ntar -zcvf (可选绝对路径) &lt;压缩包名为.tar.gz&gt; &lt;源文件(多个之间加空格)&gt;\n [选项]：\n -z 压缩为.tar.gz格式\n\n\ntar -zxvf &lt;压缩包名&gt;\n [选项]\n -x 解压缩.tar.gz格式\n\n\n\ntar.bz2格式\ntar -jcvf (可选绝对路径) &lt;压缩包名为.tar.bz2&gt; &lt;源文件(多个之间加空格)&gt;\n [选项]：\n -z 压缩为.tar.bz2格式\n\n\ntar -jxvf &lt;压缩包名&gt;\n [选项]\n -x 解压缩.tar.bz2格式\n\n\n\n关机和重启命令\nshutdown [选项] 时间\n\n在时间后加 &amp;可让其放入后台只有此命令会在关机前自动保存\n\n -c 取消前一个关机命令\n -h 关机\n -r 重启\n\n\n其他关机命令\n halt    \n poweroff    \n init 0\n\n\n其他重启命令\n reboot 安全，也会自动保存\n init 6\n\n\n\n 退出登陆命令 \nlogout\n必须正确退出\n\n\n\n","dateCreated":"2025-03-15T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-03-15T00:00:00+08:00","description":"","headline":"Linux指令集","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/03/15/linux-commands/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/03/15/linux-commands/","keywords":"命令行, 工具, Linux, 运维"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"基础知识\n~家目录\n#超级用户\n$普通用户\n\n通配符* 匹配任意内容（即含有该内容的任意内容）  \n? 匹配任意一个字符  \n[]　匹配任意一个中括号内的字符\n\n切换超级用户sudo -s\n如遇到拒绝访问，即&#39;permission denied&#39;时\n通常是用户权限不足，应进入su用户\n    e.g.向sysfs文件写入内容时，\n        系统被挂载在/sys 下\n\n或者可在指令前 + sudo\n\n如果还是不可以，应ls -l看文件具体权限\n更改用户的读写执行权限\n\n命令格式命令 [选项] [参数]    （绝大多数）\n\n简化选项与完整选项-a等于--all\n\nPATH环境变量\n定义的是系统搜索命令的路径\n\necho $PATH 即可看到路径\n\n系统运行级别\ninit x 执行运行级别 runlevel 查询系统运行级别 运行 cat&#x2F;etc&#x2F;inittab后显示的 id:5:initdefault: 中的5即为目前默认系统运行级别\n\nx=&gt;\n0关机\n1.单用户\n2.不完全用户，不含NFS服务\n3.完全多用户\n4.未分配\n5.图形界面\n6.重启\n\n常用目录作用根目录 下及 usr目录下 bin和sbin均保存系统命令\n其中 bin是任何用户\n    sbin是root用户\n\nboot  启动目录\ndev   特殊文件目录\netc   配置文件目录\nhome  普通用户\nroot  超级用户\nlib   函数库保存位置\n\nmisc，media，mnt 用来挂载外接设备的目录\n\ntmp      临时目录\nsys,proc 内存挂载点（不可操作）\nusr      系统资源保存目录（包含bin和sbin）\nvar      系统相关文档目录\n\n常用命令\nls [选项]\n\n查看当前目录下文件\n\n -a 显示所有文件（包含隐藏）\n -l 显示详细信息\n -d 查看目录属性\n -h 人性化显示文件大小\n -i 显示inode（文件id）\n\n\n-rw-r--r--\n\n 第一个-是文件类型：-文件 d目录 l软链接文件\n （类windows中快捷方式）\n rw-：所有者u\n r--：所属组g\n r--：其他人o\n 字符代表：r读 w写 x执行\n\n e.g. -rwxrw-r--.  1  root root 24772 1月14 18:18  \n 在这其中\n 1. 第一部分即操作权限\n 2. 操作权限后的.为ACL权限\n 3. 第二部分的“1”为引用计数\n 4. 首个root为所有者\n 5. 第二个root为所属组\n 6. “24772”为字节\n 7. 1月14 18:18  为最后一次修改时间\n 注：如果输入的是-lh则会显示为25k，而并非24772\n\n\n\n文件处理\nmkdir -p [目录名]  \n\n创建目录\n\n -p  递归创建 即 可创建内含二级目录的目录\n\n\ncd [目录]  \n cd~  回到家目录\n cd-  回到上次所在目录\n cd.. 回到上一级目录\n cd.  切换到当前目录\n\n 相对路径：参照当前目录进行查找\n 绝对路径：从根目录一级一级递归查找\n\n推荐使用绝对路径  \n\n &quot;Tab&quot;键可补全目录，命令 双击可显示全部\n\npwd\n\n打印目录当前所在位置\n\n\nrmdir [目录名]\n\n删除空目录\n\n rm -rf 强制删除目录或文件\n\n rm -rf&#x2F; 为自毁，勿试\n\ncp [选项] [原文件或目录] [目标目录]&#x2F;＜文件名＞\n\n复制命令\n\n -r 复制目录\n -p 连带属性复制\n -d 复制链接属性\n -a 相当于-pdr 即 目标文件与原文件完全相同，包括time\n\n\nmv [原文件或目录] [目标目录]\n\n剪切 或 改名（在同一目录下时改名）\n\n\nln (-s) [原文件] [目标文件]\n -s 创建软连接\n\n\n\n\n硬链接和软链接的特征：\n &gt; 硬链接【特征】：\n -　拥有相同的I节点和存储block块，可看作同一个文件。\n -　可通过I节点识别。\n -　不能跨分区。\n -　不能针对目录。\n &gt; 软链接【特征】：\n -　类快捷方式。\n -　拥有自己的I节点和block块，无实际文件数据。\n （即与原文件I节点，block块不同）\n\n\n\n\ntouch ［选项］＜文件名＞\n\n创建新文件或更新时间戳．\n\n -c 如果文件不存在，不创建新文件。\n -d 指定时间与日期   YYYYMMDDhhmmss\n -f 忽略不存在文件（更新时间戳于当前）\n\n\nman [指令]\n\n可以人性化查看指令作用。\n\n\n&gt; [file]\n\n可以重定向到文件（输出）\n\n\n&lt; [file]  \n\n可以重定向到文件（输入）\n\n同 《c primer plus》 一书中讲的重定向\n\n&gt;&gt; [file]\n\n像文件追加内容\n\n\n[file]  |   [file]\n\n将一个程序的输出与另一个程序的输入连接\n\n\nchmod [操作] &lt;文件名&gt;\ne.g. chmod u+rwx,g+ew,o+rw example.txt  \n    u：所有者  \n    g：所属组  \n    o：其他用户\n\n\n\n文件搜索\nlocate &lt;文件名&gt;\n\n在后台数据库中按文件名搜索，搜索速度更快。只可搜索文件名\n\n 在/var/lib/mlocate(不一定是此路径)中搜索数据  \n 可用loacte locate搜索查找数据库路径\n 其并不是实时更新，一天一更新（updatedb强制更新数据库）\n\n 搜索配置在&#x2F;etc&#x2F;updatedb.conf中\n PRUNE_BIND_MOUNTS=是否开启搜索限制\n PRUNEFS=不搜索的文件系统\n PRUNENAMES=不搜索的文件类型\n PRUNEPATHS=不搜索的路径\n\n\nwhereis and which\nwhereis [选项]\n\n搜索（系统）命令所在路径及帮助文档所在位置\n\n -b 只查找可执行文件\n -m 只查找帮助文件\n\n which &lt;文件名&gt;\n\n搜索命令所在路径及别名（全名）\n\n shell内置命令不可搜索\n e.g. cd命令不可搜索\n\n\nfind [搜索范围] [选项]&#x2F;[搜索条件]\n\n搜索（完全）匹配的文件名\n\n\n选项间可用a或者o并列  \n\na:and ...... o:or\n\n\n 注意：\n 1. 避免搜索范围太大，浪费系统资源\n 2. find是搜索完全符合条件的文件名。否则使用通配符。\n\n 选项较多，请注意\n [选项]\n -iname   不区分大小写\n -user    查找所有者搜索\n -nouser  查找没有所有者的文件\n -?time n 查找（）时间文件    \n -size m  查找文件大小的文件\n -inum j  查找j节点文件\n -exec [命令] {}\\ 可接在搜索后，表示将搜索结果执行[命令]\n \n ?time = mtime n 文件访问时间\n         ctime n 改变文件属性\n         mtime n 修改文件内容\n\n n = +n n天前\n      n n天当天\n     -n n天内\n\n m = +m 大于mB的文件  \n      m 等于mB的文件\n     -m 小于mB的文件\n m 要加单位 k小写，M大写\n 默认不是字节单位，是数据块单位\n\n\ngrep [选项] &lt;&quot;字符串&quot;&gt; &lt;文件名&gt;\n\n在文件当中(包含)匹配符合条件的字符串\n\n [选项]：\n  -i 忽略大小写\n  -v 排除指定字符串（取反）\n\n\n\n帮助命令\nman [选项] [命令] &#x3D; whatis\n\nmanuel的缩写，获取指定操作的说明书（帮助）\n\n 在进入manuel后，输入[字符]可跳转至第一个含此字符的行。\n man中有八（九）个级别\n\n [选项]\n -f 可获取并显示该命令操作级别\n -k 显示所有包含此关键字的命令\n    相当于apropos [关键字] \n -级别 可获取相应级别的说明书（类似说明书不同类型说明）\n\n\n命令 --help\n\n获取命令选项帮助\n\n\n\nshell内部命令帮助\nhelp shell\n获得shell内部命令的帮助\n\n\n\n详细命令帮助\ninfo\n-回车 进入子帮助页面（带有*号标记）  -u 进入上层页面  -n 进入下一个帮助小节  -p 进入上一个帮助小节  -q 退出\n\n\n\n压缩与解压缩命令\n常用压缩格式\n.zip  .gz  .bz2  .tar.gz  .tar.bz2\n\n\n\nzip格式\n.zip &lt;压缩文件名&gt; &lt;源文件&gt;\n\n压缩文件\n\n\n.zip -r &lt;压缩文件名&gt; &lt;源目录&gt;\n\n压缩目录\n\n\nunzip &lt;解压缩文件名（目录）&gt;\n\n解压缩.zip格式\n\n\n\ngz格式\ngzip &lt;源文件&gt;\n\n压缩为.gz格式的压缩文件，源文件会消失。\n\n\ngzip -c &lt;源文件&gt; &gt; &lt;压缩文件&gt;\n\n压缩为.gz格式，源文件保留\n\n 原理为重定向，并未gzip本身功能\n\ngzip -r &lt;目录&gt;\n\n压缩为.gz 压缩目录下所有的子文件，但是不能压缩目录\n\n\ngzip -d &lt;压缩文件名&gt;\n\n解压缩文件\n\n\ngunzip &lt;解压缩目录名&gt;\n\n解压缩文件\n\n\ngunzip -r &lt;解压缩目录名&gt;\n\n解压缩文件夹内所有文件\n\n\n\nbz2格式 （不可压缩目录）\nbzip2 &lt;源文件&gt;\n\n压缩为.bz2格式，不保留源文件\n\n\nbzip2 -k &lt;源文件&gt;\n\n压缩之后保留源文件\n\n\nbzip2 -d &lt;压缩文件名&gt;\n\n解压缩，-k 保留压缩文件\n\n\nbunzip2 &lt;压缩文件名&gt;\n\n解压缩，-k 保留压缩文件\n\n\n\n打包与解打包命令tar\ntar -cvf &lt;打包文件名&gt; &lt;源文件&gt;\n [选项]：\n -c 打包\n -t 测试，即只看不打包（把c换成t）\n -v 显示过程\n -f 指定打包后的文件名\n\n\ntar -xvf &lt;打包文件名&gt;\n [选项]：\n -x 解打包\n\n\n\ntar.gz格式\ntar -zcvf (可选绝对路径) &lt;压缩包名为.tar.gz&gt; &lt;源文件(多个之间加空格)&gt;\n [选项]：\n -z 压缩为.tar.gz格式\n\n\ntar -zxvf &lt;压缩包名&gt;\n [选项]\n -x 解压缩.tar.gz格式\n\n\n\ntar.bz2格式\ntar -jcvf (可选绝对路径) &lt;压缩包名为.tar.bz2&gt; &lt;源文件(多个之间加空格)&gt;\n [选项]：\n -z 压缩为.tar.bz2格式\n\n\ntar -jxvf &lt;压缩包名&gt;\n [选项]\n -x 解压缩.tar.bz2格式\n\n\n\n关机和重启命令\nshutdown [选项] 时间\n\n在时间后加 &amp;可让其放入后台只有此命令会在关机前自动保存\n\n -c 取消前一个关机命令\n -h 关机\n -r 重启\n\n\n其他关机命令\n halt    \n poweroff    \n init 0\n\n\n其他重启命令\n reboot 安全，也会自动保存\n init 6\n\n\n\n 退出登陆命令 \nlogout\n必须正确退出\n\n\n\n","dateCreated":"2025-03-15T00:00:00+08:00","dateModified":"2026-06-10T20:50:03+08:00","datePublished":"2025-03-15T00:00:00+08:00","description":"","headline":"Linux指令集","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/03/15/linux-commands/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/03/15/linux-commands/","keywords":"工具, Linux"}</script>
     <meta name="description" content="基础知识 ~家目录 #超级用户 $普通用户  通配符* 匹配任意内容（即含有该内容的任意内容）   ? 匹配任意一个字符   []　匹配任意一个中括号内的字符  切换超级用户sudo -s 如遇到拒绝访问，即&#39;permission denied&#39;时 通常是用户权限不足，应进入su用户     e.g.向sysfs文件写入内容时，         系统被挂载在&#x2F;sys 下  或者可在">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Linux指令集">
@@ -28,12 +29,10 @@
 <meta property="og:description" content="基础知识 ~家目录 #超级用户 $普通用户  通配符* 匹配任意内容（即含有该内容的任意内容）   ? 匹配任意一个字符   []　匹配任意一个中括号内的字符  切换超级用户sudo -s 如遇到拒绝访问，即&#39;permission denied&#39;时 通常是用户权限不足，应进入su用户     e.g.向sysfs文件写入内容时，         系统被挂载在&#x2F;sys 下  或者可在">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-09T16:17:03.625Z">
+<meta property="article:modified_time" content="2026-06-10T12:50:03.254Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="Linux">
-<meta property="article:tag" content="命令行">
 <meta property="article:tag" content="工具">
-<meta property="article:tag" content="运维">
 <meta name="twitter:card" content="summary">
     
     
@@ -50,6 +49,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -70,7 +85,7 @@
         
     
 
-<header id="header" data-behavior="4">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -103,7 +118,7 @@
         
     
 
-<nav id="sidebar" data-behavior="4">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -211,22 +226,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -251,7 +250,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="4"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -762,7 +761,7 @@ var      系统相关文档目录
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/Linux/" rel="tag">Linux</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/" rel="tag">命令行</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Linux/" rel="tag">Linux</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a>
 
             </div>
         
@@ -881,7 +880,7 @@ var      系统相关文档目录
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -981,7 +980,7 @@ var      系统相关文档目录
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -1054,7 +1053,7 @@ var      系统相关文档目录
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -1068,7 +1067,153 @@ var      系统相关文档目录
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -1082,21 +1227,136 @@ var      系统相关文档目录
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+    </body>
 </html>

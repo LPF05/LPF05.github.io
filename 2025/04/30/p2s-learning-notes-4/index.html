@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>p2s学习笔记（四）：chapter 5与chapter 6 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -19,7 +20,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_5与chapter_6chapter_5：循环for循环for循环和循环范围\n特点\n 基于提供的范围，重复执行特定次数的操作\n\nrange默认参数\n\nrange(a,b,c)\n\n\na为起始值，b为终值+1，c为步长\na如果不写，默认为0\nc不写默认为1\n\n\n\nfor循环嵌套12345a = 5b = 5for i in range(a):    for j in range(b):        print(a,b)\n\nwhile循环\n特点\n 未知执行次数，依靠条件判断是否继续执行\n\n在范围已知与未知时都可用while循环\n\n\nbreak 与 continue 语句假死循环\n特点\n 与环境交互后，在特定条件下终止的循环\n\n简单示例\n 12345678910def readUntilDone():linesEntered = 0while True:    response = input(&quot;输入一个字符串（输入 done 则退出）: &quot;)    if response == &quot;done&quot;:        break    print(&quot;你输入了: &quot;, response)    linesEntered += 1print(&quot;Bye!&quot;)return linesEntered\n\nchapter_6：字符串字符串文字\n引号\n\n单引号\n双引号\n三引号\n\n 1234&quot; &quot;&#x27; &#x27;&#x27;&#x27;&#x27; &#x27;&#x27;&#x27;&quot;&quot;&quot; &quot;&quot;&quot;\n\n转义序列\n\n\\n    换行符\n\\t    制表符\n&quot;    双引号\n\\\\   反斜线\n\n\n在多行文本中可用\\来排除换行\n 12345print(&quot;&quot;&quot;你可以在字符串后面使用 反斜杠 `\\`  来排除后面的换行。\\比如这里是第二行文字，但是你会看到它会紧跟在上一行句号后面。\\这种做法在 CIL 里面经常使用（多个 Flag 并排保持美观），\\但是在编程中的应用比较少。\\&quot;&quot;&quot;)\n\n多行字符串作为注释\n 1234567&quot;&quot;&quot;Python 本身是没有多行注释的，但是你可以用多行字符串实现同样的操作，还记得我们之前学过的“表达式“吗？它的原理就是 Python 会运行它，但是马上扔掉！（垃圾回收机制）&quot;&quot;&quot;\n\nrepr()函数\n\n转义字符显示\n\n 123456789str = data\\nwhaleprint(repr(str))&#x27;&#x27;&#x27;有repr()显示data\\nwhale#无repr()显示datawhale&#x27;&#x27;&#x27;\n\n字符串常量\n字母\n 123import stringprint(string.ascii_letters)#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n小写字母\n 12print(string.ascii_lowercase)#abcdefghijklmnopqrstuvwxyz\n\n大写字母\n 12print(string.ascii_uppercase) #ABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n数字\n 12print(string.digits)#0123456789\n\n特殊字符\n 12print(string.punctuation)#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~\n\n可打印字符\n 123print(string.printable)#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~ \n\n空白字符\n 1print(string.whitespace)\n\n空白字符不转义\n 12print(repr(string.whitespace))#\\t\\n\\r\\x0b\\x0c\n\n字符串运算\n简单运算\n 1234print(&quot;abc&quot; + &quot;def&quot;)print(&quot;abc&quot; * 3)#abcdef#abcabcabc\n\nin运算\n 12345print(&quot;ring&quot; in &quot;strings&quot;) # Trueprint(&quot;wow&quot; in &quot;amazing!&quot;) # Falseprint(&quot;Yes&quot; in &quot;yes!&quot;) # Falseprint(&quot;&quot; in &quot;No way!&quot;) # Trueprint(&quot;聪明&quot; in &quot;聪明办法学 Python&quot;) # True\n\n字符串索引和切片\n\n字符串可作为迭代对象\n\n\n\n字符串循环\nin循环\n 12for c in s:print(c)\n\nenumerate函数\n 12345678910111213for idx, c in enumerate(s):print(idx, c)&#x27;&#x27;&#x27;0 D1 a2 t3 a4 w5 h6 a7 l8 e&#x27;&#x27;&#x27;\n\nzip函数\n zip(a,b)可以在一次循环中，分别从 a 和 b 里同时取出一个元素\n 12345678910111213for a, b in zip(s, reverseString(s)):print(a, b)&#x27;&#x27;&#x27;D ea lt aa hw wh aa tl ae D&#x27;&#x27;&#x27;\n\nsplit函数来循环\n 1234567891011121314# class_name.split() 本身会产生一个新的叫做“列表”的东西，但是它不存储任何内容class_name = &quot;learn python the smart way 2nd edition&quot;for word in class_name.split():    print(word)&#x27;&#x27;&#x27;learnpythonthesmartway2ndedition&#x27;&#x27;&#x27;\n\nsplitlines函数来循环\n 1234567891011121314151617# class_info.splitlines() 也会产生一个列表，但不存储任何内容class_info = &quot;&quot;&quot;\\聪明办法学 Python 第二版是 Datawhale 基于第一版教程的一次大幅更新。我们的课程简称为 P2S，有两个含义：Learn Python The Smart Way V2.Prepare To Be Smart. 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&quot;&quot;&quot;for line in class_info.splitlines():    if (line.startswith(&quot;Prepare To Be Smart&quot;)):        print(line)&#x27;&#x27;&#x27;Prepare To Be Smart， 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&#x27;&#x27;&#x27;\n\n字符串内置函数与方法字符串函数\nstr() 和 len()\n\nstr 函数将其他类型转化为字符串\n\n\nlen 函数获得迭代对象长度\n\n\nchr() 和 ord()\n\nchr 函数将ascii码转化为对应字符\n\n\nord 函数将字符转化为对应ascii码\n\n\nast.literal_eval()\n\n安全地执行字符串中的Python表达式，而不会执行任何可能存在的恶意代码。\n\n\n\n字符串方法\nisalnum()\n\nisalpha()\n\nisdigit()\n\nislower()\n\nisspace()\n\nisupper()\n\nstrip()\n\n可以将字符串首尾的空格删除\n\n\ncount()\n\nstartwith()\n 123print(&quot;Dogs and cats!&quot;.startswith(&quot;Do&quot;))print(&quot;Dogs and cats!&quot;.startswith(&quot;Don&#x27;t&quot;))#True False\n\nendwith()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))#True False\n\nfind()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))# 5 -1\n\nindex()\n123print(&quot;Dogs and cats!&quot;.index(&quot;and&quot;))print(&quot;Dogs and cats!&quot;.index(&quot;or&quot;))# 5\n\nwith语句\n\n\n","dateCreated":"2025-04-30T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-30T00:00:00+08:00","description":"","headline":"p2s学习笔记（四）：chapter 5与chapter 6","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/","keywords":"Datawhale, Python, 编程基础, 循环"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_5与chapter_6chapter_5：循环for循环for循环和循环范围\n特点\n 基于提供的范围，重复执行特定次数的操作\n\nrange默认参数\n\nrange(a,b,c)\n\n\na为起始值，b为终值+1，c为步长\na如果不写，默认为0\nc不写默认为1\n\n\n\nfor循环嵌套12345a = 5b = 5for i in range(a):    for j in range(b):        print(a,b)\n\nwhile循环\n特点\n 未知执行次数，依靠条件判断是否继续执行\n\n在范围已知与未知时都可用while循环\n\n\nbreak 与 continue 语句假死循环\n特点\n 与环境交互后，在特定条件下终止的循环\n\n简单示例\n 12345678910def readUntilDone():linesEntered = 0while True:    response = input(&quot;输入一个字符串（输入 done 则退出）: &quot;)    if response == &quot;done&quot;:        break    print(&quot;你输入了: &quot;, response)    linesEntered += 1print(&quot;Bye!&quot;)return linesEntered\n\nchapter_6：字符串字符串文字\n引号\n\n单引号\n双引号\n三引号\n\n 1234&quot; &quot;&#x27; &#x27;&#x27;&#x27;&#x27; &#x27;&#x27;&#x27;&quot;&quot;&quot; &quot;&quot;&quot;\n\n转义序列\n\n\\n    换行符\n\\t    制表符\n&quot;    双引号\n\\\\   反斜线\n\n\n在多行文本中可用\\来排除换行\n 12345print(&quot;&quot;&quot;你可以在字符串后面使用 反斜杠 `\\`  来排除后面的换行。\\比如这里是第二行文字，但是你会看到它会紧跟在上一行句号后面。\\这种做法在 CIL 里面经常使用（多个 Flag 并排保持美观），\\但是在编程中的应用比较少。\\&quot;&quot;&quot;)\n\n多行字符串作为注释\n 1234567&quot;&quot;&quot;Python 本身是没有多行注释的，但是你可以用多行字符串实现同样的操作，还记得我们之前学过的“表达式“吗？它的原理就是 Python 会运行它，但是马上扔掉！（垃圾回收机制）&quot;&quot;&quot;\n\nrepr()函数\n\n转义字符显示\n\n 123456789str = data\\nwhaleprint(repr(str))&#x27;&#x27;&#x27;有repr()显示data\\nwhale#无repr()显示datawhale&#x27;&#x27;&#x27;\n\n字符串常量\n字母\n 123import stringprint(string.ascii_letters)#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n小写字母\n 12print(string.ascii_lowercase)#abcdefghijklmnopqrstuvwxyz\n\n大写字母\n 12print(string.ascii_uppercase) #ABCDEFGHIJKLMNOPQRSTUVWXYZ\n\n数字\n 12print(string.digits)#0123456789\n\n特殊字符\n 12print(string.punctuation)#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~\n\n可打印字符\n 123print(string.printable)#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\\]^_`&#123;|&#125;~ \n\n空白字符\n 1print(string.whitespace)\n\n空白字符不转义\n 12print(repr(string.whitespace))#\\t\\n\\r\\x0b\\x0c\n\n字符串运算\n简单运算\n 1234print(&quot;abc&quot; + &quot;def&quot;)print(&quot;abc&quot; * 3)#abcdef#abcabcabc\n\nin运算\n 12345print(&quot;ring&quot; in &quot;strings&quot;) # Trueprint(&quot;wow&quot; in &quot;amazing!&quot;) # Falseprint(&quot;Yes&quot; in &quot;yes!&quot;) # Falseprint(&quot;&quot; in &quot;No way!&quot;) # Trueprint(&quot;聪明&quot; in &quot;聪明办法学 Python&quot;) # True\n\n字符串索引和切片\n\n字符串可作为迭代对象\n\n\n\n字符串循环\nin循环\n 12for c in s:print(c)\n\nenumerate函数\n 12345678910111213for idx, c in enumerate(s):print(idx, c)&#x27;&#x27;&#x27;0 D1 a2 t3 a4 w5 h6 a7 l8 e&#x27;&#x27;&#x27;\n\nzip函数\n zip(a,b)可以在一次循环中，分别从 a 和 b 里同时取出一个元素\n 12345678910111213for a, b in zip(s, reverseString(s)):print(a, b)&#x27;&#x27;&#x27;D ea lt aa hw wh aa tl ae D&#x27;&#x27;&#x27;\n\nsplit函数来循环\n 1234567891011121314# class_name.split() 本身会产生一个新的叫做“列表”的东西，但是它不存储任何内容class_name = &quot;learn python the smart way 2nd edition&quot;for word in class_name.split():    print(word)&#x27;&#x27;&#x27;learnpythonthesmartway2ndedition&#x27;&#x27;&#x27;\n\nsplitlines函数来循环\n 1234567891011121314151617# class_info.splitlines() 也会产生一个列表，但不存储任何内容class_info = &quot;&quot;&quot;\\聪明办法学 Python 第二版是 Datawhale 基于第一版教程的一次大幅更新。我们的课程简称为 P2S，有两个含义：Learn Python The Smart Way V2.Prepare To Be Smart. 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&quot;&quot;&quot;for line in class_info.splitlines():    if (line.startswith(&quot;Prepare To Be Smart&quot;)):        print(line)&#x27;&#x27;&#x27;Prepare To Be Smart， 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。&#x27;&#x27;&#x27;\n\n字符串内置函数与方法字符串函数\nstr() 和 len()\n\nstr 函数将其他类型转化为字符串\n\n\nlen 函数获得迭代对象长度\n\n\nchr() 和 ord()\n\nchr 函数将ascii码转化为对应字符\n\n\nord 函数将字符转化为对应ascii码\n\n\nast.literal_eval()\n\n安全地执行字符串中的Python表达式，而不会执行任何可能存在的恶意代码。\n\n\n\n字符串方法\nisalnum()\n\nisalpha()\n\nisdigit()\n\nislower()\n\nisspace()\n\nisupper()\n\nstrip()\n\n可以将字符串首尾的空格删除\n\n\ncount()\n\nstartwith()\n 123print(&quot;Dogs and cats!&quot;.startswith(&quot;Do&quot;))print(&quot;Dogs and cats!&quot;.startswith(&quot;Don&#x27;t&quot;))#True False\n\nendwith()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))#True False\n\nfind()\n123print(&quot;Dogs and cats!&quot;.endswith(&quot;!&quot;))print(&quot;Dogs and cats!&quot;.endswith(&quot;rats!&quot;))# 5 -1\n\nindex()\n123print(&quot;Dogs and cats!&quot;.index(&quot;and&quot;))print(&quot;Dogs and cats!&quot;.index(&quot;or&quot;))# 5\n\nwith语句\n\n\n","dateCreated":"2025-04-30T00:00:00+08:00","dateModified":"2026-06-10T20:49:36+08:00","datePublished":"2025-04-30T00:00:00+08:00","description":"","headline":"p2s学习笔记（四）：chapter 5与chapter 6","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/30/p2s-learning-notes-4/","keywords":"Datawhale, Python, 编程基础"}</script>
     <meta name="description" content="datawhale p2s 学习chapter_5与chapter_6chapter_5：循环for循环for循环和循环范围 特点  基于提供的范围，重复执行特定次数的操作  range默认参数  range(a,b,c)   a为起始值，b为终值+1，c为步长 a如果不写，默认为0 c不写默认为1    for循环嵌套12345a &#x3D; 5b &#x3D; 5for i in range(a):    fo">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="p2s学习笔记（四）：chapter 5与chapter 6">
@@ -28,11 +29,10 @@
 <meta property="og:description" content="datawhale p2s 学习chapter_5与chapter_6chapter_5：循环for循环for循环和循环范围 特点  基于提供的范围，重复执行特定次数的操作  range默认参数  range(a,b,c)   a为起始值，b为终值+1，c为步长 a如果不写，默认为0 c不写默认为1    for循环嵌套12345a &#x3D; 5b &#x3D; 5for i in range(a):    fo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-29T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-09T16:17:03.632Z">
+<meta property="article:modified_time" content="2026-06-10T12:49:36.053Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="Datawhale">
 <meta property="article:tag" content="Python">
-<meta property="article:tag" content="循环">
 <meta property="article:tag" content="编程基础">
 <meta name="twitter:card" content="summary">
     
@@ -50,6 +50,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -70,7 +86,7 @@
         
     
 
-<header id="header" data-behavior="4">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -103,7 +119,7 @@
         
     
 
-<nav id="sidebar" data-behavior="4">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -211,22 +227,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -251,7 +251,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="4"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -471,7 +471,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/Datawhale/" rel="tag">Datawhale</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%BE%AA%E7%8E%AF/" rel="tag">循环</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Datawhale/" rel="tag">Datawhale</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
 
             </div>
         
@@ -484,9 +484,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2025/05/01/frontend/"
-                    data-tooltip="前端学习笔记"
-                    aria-label="上一篇: 前端学习笔记"
+                    href="/2025/05/10/python-setattr-principle/"
+                    data-tooltip="Python类的实现中有关__setattr__原理问题"
+                    aria-label="上一篇: Python类的实现中有关__setattr__原理问题"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -590,7 +590,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -599,9 +599,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2025/05/01/frontend/"
-                    data-tooltip="前端学习笔记"
-                    aria-label="上一篇: 前端学习笔记"
+                    href="/2025/05/10/python-setattr-principle/"
+                    data-tooltip="Python类的实现中有关__setattr__原理问题"
+                    aria-label="上一篇: Python类的实现中有关__setattr__原理问题"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -690,7 +690,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -763,7 +763,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -777,7 +777,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -791,21 +937,136 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+    </body>
 </html>

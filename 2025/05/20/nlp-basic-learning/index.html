@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.loli.net/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap">
     <meta name="generator" content="LPF05&#39; s Blog">
     <title>NLP基础学习 - LPF05&#39; s Blog</title>
     <meta name="author" content="LPF05">
@@ -19,7 +20,7 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg"},"articleBody":"NLP基础学习(NLP鱼书)基于同义词词典、计数的方法\n最基础的方法即同义词词典，建立词间上下级关系，构造WordNet，需要大量人工标记。\n优于同义词词典的方法即基于计数，即用共现矩阵统计语料库corpus中单词的单位距离（窗口大小）内共现次数；共现矩阵为对称矩阵，对应的行则为词的向量，可用余弦相似度判断词向量之间的相似度，越接近1表示越相似。\n分布式假设是指某个单词的含义由它周围的单词形成，是向量表示单词的想法基础。\n原始次数并不是一个好的信息指标，例如常用词(the...)会与部分名词达到很强的相关性，可以用PPMI（正的点互信息）表示其相关性，PPMI矩阵可以很好的表示词向量，但是维度与语料库中词数成正比，即词汇量大时单词向量维数也大；可以用奇异值分解降维PPMI矩阵，将稀疏向量转换为密集向量。\nPMI点互信息是用来衡量两个事件发生的概率与它们分别发生的概率的乘积的差异，即$PMI(x,y)&#x3D;P(x,y)-P(x)P(y)$，其中$P(x,y)$是事件$x$和$y$同时发生的概率，$P(x)$和$P(y)$分别是事件$x$和$y$发生的概率，可以很好的减少常用词对其他词的影响。\nPPMI（正的点互信息）是PMI的一种变形，即$PPMI(x,y)&#x3D;max(PMI(x,y),0)$，它将所有负值都设为0，使得PPMI矩阵中的元素都为非负。\n因为由PPMI得出的矩阵比较稀疏，稳健性差，所以需要用**奇异值分解（SVD）**降维，将稀疏向量转换为密集向量，可是其复杂度较高，可以使用Truncated SVD截去奇异值较小的部分实现高速化。\n\n基于推理的方法（Word2vec）\n基于计数的方法是一次性处理整个语料库的统计数据获得单词分布式表示，而基于推理的方法通常是在mini-batch上进行，并且神经网络可以使用多GPU执行加速，具有优势。\n每个词都用一个多维向量表示，向量之间的绝对距离即词与词义的相似度。\nword2vec常用CBOW和Skip-gram两种模型，CBOW是用上下文预测中心词，Skip-gram是用中心词预测上下文。\nCBOW的输入首先要同时经过一个嵌入层（原始为输入层），将输入的上下文词转换为对应的词向量表示（因为由one-hot向量表示，所以输入层的作用是用one-hot向量矩阵乘积从词向量矩阵中获取输入的词向量表示），然后将这些向量进行平均，得到一个表示上下文的向量，最后将这个向量输入到一个全连接层（输出层），输出一个表示中心词的向量。\n无论是输入侧还是输出侧的权重都可以被视为单词的分布式表示，最受欢迎的是将输入侧的权重作为单词的分布式表示。\nWord2Vec实际就是由输入词用网络（Encode+Decode+softmax）计算共现词（上下文出现词）的得分，优化目标是在输入$\\omega_I$时输出$\\omega_j$的概率最高。\n词袋模型（BOW）即是将文本视为词的无序集合，忽略语法词序，通过统计构建特征，由这构成的词向量的负向量接近的词并非反义词而是几乎完全无关的词，但是却擅长处理除语义相似以外的类比语义（$\\text{king}-\\text{man}+\\text{woman}&#x3D;\\text{queen}$或$\\text{king}-\\text{man}\\approx\\text{queen}-\\text{woman}$）。\nWord2Vec中我们通常会建立一个外部词向量表和一个中心词向量表，但实际使用中通常只将词视为一个向量，实践中最常见是平均。\nskip-gram模型与CBOW模型的区别在于，skip-gram模型是用中心词预测上下文，而CBOW模型是用上下文预测中心词；我们应该用skip-gram模型，因为它的性能要优于CBOW模型在处理低频词、类推语义等方面，因为其训练的问题更难相较于CBOW。\nword2vec相较于基于计数的方法，编码除了单词的相似性以外，还能理解更复杂的单词之间的模式，但是就单词相似性的定量评价而言，基于推理的方法和基于计数的方法难分上下，因为两个方法论在某些条件下作用是相通的，及对整个语料库的共现矩阵进行特殊矩阵分解。\n\nword2vec的高速化\n首先是输入层的改进，将输入层换成嵌入层(embedding)，即用直接通过单词 ID 索引权重矩阵的对应行替代one-hot向量的生成与乘积，由one-hot查表变为embedding查向量，减少输入的维度与计算量，计算量(空间)由$O(V*N)$减少为$O(1)$（K个上下文单词）。\n\n其次是输出层的改进，将输出层的全量softmax替换为负采样（negative sampling），，从而达到轻量化的计算，计算量由$O(V)$减少为$O(K)$（K个负样本），K远小于V。\n\n负采样的核心思想即不计算所有单词的概率，只计算正样本和少量负样本(随机单词)的概率，用二分类代替多分类，随机单词的采样来源于概率分布，即常用词被采样的概率要大于不常用词。\n\n在选择解决问题的模型时，需要关注任务类型、语料库大小、单词向量维度等因素，根据不同的场景选择不同的模型，否则会导致表现差。\n\n改进版word2vec的CBOW示例：\n 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150import numpy as npfrom collections import defaultdict# --------------------------# 1. 数据预处理（构建词汇表和训练数据）# --------------------------def preprocess(text, window_size=2):    # 简单分词（示例用空格分割）    words = text.split()    # 构建词汇表（词→ID映射）    vocab = defaultdict(int)    for word in words:        vocab[word] += 1  # 统计词频    vocab = &#123;word: i for i, word in enumerate(vocab.keys())&#125;    vocab_size = len(vocab)        # 生成训练数据：(上下文ID列表, 中心词ID)    data = []    for i in range(window_size, len(words) - window_size):        center_word = words[i]        context_words = [words[i - window_size + j] for j in range(2 * window_size)]        # 转换为ID        center_id = vocab[center_word]        context_ids = [vocab[w] for w in context_words]        data.append((context_ids, center_id))        return data, vocab, vocab_size# --------------------------# 2. 负采样工具（生成负样本）# --------------------------def generate_negative_samples(positive_id, vocab_size, num_neg=5, power=0.75):    &quot;&quot;&quot;根据词频分布采样负样本（简化版：这里用均匀分布替代真实词频分布）&quot;&quot;&quot;    negatives = []    while len(negatives) &lt; num_neg:        # 随机生成一个不等于正样本的ID        neg_id = np.random.randint(vocab_size)        if neg_id != positive_id and neg_id not in negatives:            negatives.append(neg_id)    return negatives# --------------------------# 3. CBOW模型（含Embedding和负采样）# --------------------------class CBOW:    def __init__(self, vocab_size, embedding_dim=100):        self.vocab_size = vocab_size  # 词汇表大小        self.embedding_dim = embedding_dim  # 词向量维度                # 初始化参数（Embedding矩阵和输出权重）        # 输入Embedding矩阵 W_in: [vocab_size, embedding_dim]        self.W_in = np.random.randn(vocab_size, embedding_dim) * 0.01        # 输出权重矩阵 W_out: [vocab_size, embedding_dim]（每一行对应一个词的输出权重）        self.W_out = np.random.randn(vocab_size, embedding_dim) * 0.01            def sigmoid(self, x):        &quot;&quot;&quot;Sigmoid激活函数（替代Softmax）&quot;&quot;&quot;        return 1.0 / (1.0 + np.exp(-x))        def forward(self, context_ids):        &quot;&quot;&quot;前向传播：通过Embedding层获取上下文向量并平均&quot;&quot;&quot;        # 1. Embedding层：直接索引提取上下文词向量（高速化改进1）        context_vectors = self.W_in[context_ids]  # [window_size*2, embedding_dim]        # 2. 中间层：上下文向量求平均        hidden = np.mean(context_vectors, axis=0)  # [embedding_dim]        return hidden        def loss(self, hidden, positive_id, negative_ids):        &quot;&quot;&quot;计算负采样损失（高速化改进2）&quot;&quot;&quot;        # 正样本损失：log(sigmoid(正样本得分))        pos_score = np.dot(self.W_out[positive_id], hidden)  # 内积计算得分        pos_loss = -np.log(self.sigmoid(pos_score) + 1e-8)  # 防止log(0)                # 负样本损失：sum(log(sigmoid(-负样本得分)))        neg_loss = 0.0        for neg_id in negative_ids:            neg_score = np.dot(self.W_out[neg_id], hidden)            neg_loss -= np.log(self.sigmoid(-neg_score) + 1e-8)                return pos_loss + neg_loss        def backward(self, hidden, context_ids, positive_id, negative_ids, lr=0.01):        &quot;&quot;&quot;反向传播更新参数&quot;&quot;&quot;        # 1. 计算输出侧梯度（正样本+负样本）        pos_score = np.dot(self.W_out[positive_id], hidden)        pos_delta = self.sigmoid(pos_score) - 1  # 正样本梯度                neg_deltas = []        for neg_id in negative_ids:            neg_score = np.dot(self.W_out[neg_id], hidden)            neg_deltas.append(self.sigmoid(neg_score))  # 负样本梯度                # 2. 更新输出权重 W_out        self.W_out[positive_id] -= lr * pos_delta * hidden        for i, neg_id in enumerate(negative_ids):            self.W_out[neg_id] -= lr * neg_deltas[i] * hidden                # 3. 计算隐藏层梯度，反向更新输入Embedding W_in        hidden_delta = pos_delta * self.W_out[positive_id]        for i, neg_id in enumerate(negative_ids):            hidden_delta += neg_deltas[i] * self.W_out[neg_id]                # 4. 更新输入Embedding（上下文每个词的向量都要更新）        avg_delta = hidden_delta / len(context_ids)  # 平均到每个上下文词        for ctx_id in context_ids:            self.W_in[ctx_id] -= lr * avg_delta# --------------------------# 4. 训练示例# --------------------------if __name__ == &quot;__main__&quot;:    # 示例文本（可替换为更大语料）    text = &quot;i like natural language processing and i like deep learning&quot;        # 预处理数据    data, vocab, vocab_size = preprocess(text, window_size=2)    print(&quot;词汇表大小:&quot;, vocab_size)    print(&quot;训练样本数:&quot;, len(data))        # 初始化模型    model = CBOW(vocab_size, embedding_dim=100)        # 训练参数    epochs = 100    lr = 0.01    num_neg = 5  # 每个正样本配5个负样本        # 开始训练    for epoch in range(epochs):        total_loss = 0.0        for context_ids, center_id in data:            # 前向传播：获取上下文平均向量            hidden = model.forward(context_ids)            # 生成负样本            negative_ids = generate_negative_samples(center_id, vocab_size, num_neg)            # 计算损失            loss = model.loss(hidden, center_id, negative_ids)            total_loss += loss            # 反向传播更新            model.backward(hidden, context_ids, center_id, negative_ids, lr)                # 每10轮打印一次损失        if (epoch + 1) % 10 == 0:            print(f&quot;Epoch &#123;epoch+1&#125;, Loss: &#123;total_loss / len(data):.4f&#125;&quot;)        # 训练完成后，W_in即为词向量（Embedding）    word = &quot;like&quot;    if word in vocab:        word_id = vocab[word]        print(f&quot;\\n单词 &#x27;&#123;word&#125;&#x27; 的词向量（前5维）：&#123;model.W_in[word_id][:5]&#125;&quot;)\n\nRNN\nword2vec是以获取单词的分布式表示为目的的方法，一般不会用于语言模型，因为语言模型需要考虑单词之间的上下文关系，而word2vec只考虑单词的独立表示，会忽略单词的顺序以及其马尔可夫性质，同时无法获得长序记忆理解。\n\nRNN网络的核心是拥有一个循环的环路，可以使数据不断循环流通记住过去的数据，从而实现长序记忆理解。\n\nRNN可以被表述为第t个RNN层、时刻t的RNN层等，各个时刻的RNN层接收该层的输入和前一个RNN层的输出，输入是时序数据按照事件顺序排列的向量，输出是该时刻的隐藏状态向量。\n\n\n","dateCreated":"2025-05-20T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-05-20T00:00:00+08:00","description":"","headline":"NLP基础学习","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/20/nlp-basic-learning/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":["https://github.com/LPF05"],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/05/20/nlp-basic-learning/","keywords":"深度学习, NLP, 自然语言处理, 词向量"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"NLP基础学习(NLP鱼书)基于同义词词典、计数的方法\n最基础的方法即同义词词典，建立词间上下级关系，构造WordNet，需要大量人工标记。\n优于同义词词典的方法即基于计数，即用共现矩阵统计语料库corpus中单词的单位距离（窗口大小）内共现次数；共现矩阵为对称矩阵，对应的行则为词的向量，可用余弦相似度判断词向量之间的相似度，越接近1表示越相似。\n分布式假设是指某个单词的含义由它周围的单词形成，是向量表示单词的想法基础。\n原始次数并不是一个好的信息指标，例如常用词(the...)会与部分名词达到很强的相关性，可以用PPMI（正的点互信息）表示其相关性，PPMI矩阵可以很好的表示词向量，但是维度与语料库中词数成正比，即词汇量大时单词向量维数也大；可以用奇异值分解降维PPMI矩阵，将稀疏向量转换为密集向量。\nPMI点互信息是用来衡量两个事件发生的概率与它们分别发生的概率的乘积的差异，即$PMI(x,y)=P(x,y)-P(x)P(y)$，其中$P(x,y)$是事件$x$和$y$同时发生的概率，$P(x)$和$P(y)$分别是事件$x$和$y$发生的概率，可以很好的减少常用词对其他词的影响。\nPPMI（正的点互信息）是PMI的一种变形，即$PPMI(x,y)=max(PMI(x,y),0)$，它将所有负值都设为0，使得PPMI矩阵中的元素都为非负。\n因为由PPMI得出的矩阵比较稀疏，稳健性差，所以需要用**奇异值分解（SVD）**降维，将稀疏向量转换为密集向量，可是其复杂度较高，可以使用Truncated SVD截去奇异值较小的部分实现高速化。\n\n基于推理的方法（Word2vec）\n基于计数的方法是一次性处理整个语料库的统计数据获得单词分布式表示，而基于推理的方法通常是在mini-batch上进行，并且神经网络可以使用多GPU执行加速，具有优势。\n每个词都用一个多维向量表示，向量之间的绝对距离即词与词义的相似度。\nword2vec常用CBOW和Skip-gram两种模型，CBOW是用上下文预测中心词，Skip-gram是用中心词预测上下文。\nCBOW的输入首先要同时经过一个嵌入层（原始为输入层），将输入的上下文词转换为对应的词向量表示（因为由one-hot向量表示，所以输入层的作用是用one-hot向量矩阵乘积从词向量矩阵中获取输入的词向量表示），然后将这些向量进行平均，得到一个表示上下文的向量，最后将这个向量输入到一个全连接层（输出层），输出一个表示中心词的向量。\n无论是输入侧还是输出侧的权重都可以被视为单词的分布式表示，最受欢迎的是将输入侧的权重作为单词的分布式表示。\nWord2Vec实际就是由输入词用网络（Encode+Decode+softmax）计算共现词（上下文出现词）的得分，优化目标是在输入$\\omega_I$时输出$\\omega_j$的概率最高。\n词袋模型（BOW）即是将文本视为词的无序集合，忽略语法词序，通过统计构建特征，由这构成的词向量的负向量接近的词并非反义词而是几乎完全无关的词，但是却擅长处理除语义相似以外的类比语义（$\\text{king}-\\text{man}+\\text{woman}=\\text{queen}$或$\\text{king}-\\text{man}\\approx\\text{queen}-\\text{woman}$）。\nWord2Vec中我们通常会建立一个外部词向量表和一个中心词向量表，但实际使用中通常只将词视为一个向量，实践中最常见是平均。\nskip-gram模型与CBOW模型的区别在于，skip-gram模型是用中心词预测上下文，而CBOW模型是用上下文预测中心词；我们应该用skip-gram模型，因为它的性能要优于CBOW模型在处理低频词、类推语义等方面，因为其训练的问题更难相较于CBOW。\nword2vec相较于基于计数的方法，编码除了单词的相似性以外，还能理解更复杂的单词之间的模式，但是就单词相似性的定量评价而言，基于推理的方法和基于计数的方法难分上下，因为两个方法论在某些条件下作用是相通的，及对整个语料库的共现矩阵进行特殊矩阵分解。\n\nword2vec的高速化\n首先是输入层的改进，将输入层换成嵌入层(embedding)，即用直接通过单词 ID 索引权重矩阵的对应行替代one-hot向量的生成与乘积，由one-hot查表变为embedding查向量，减少输入的维度与计算量，计算量(空间)由$O(V*N)$减少为$O(1)$（K个上下文单词）。\n\n其次是输出层的改进，将输出层的全量softmax替换为负采样（negative sampling），，从而达到轻量化的计算，计算量由$O(V)$减少为$O(K)$（K个负样本），K远小于V。\n\n负采样的核心思想即不计算所有单词的概率，只计算正样本和少量负样本(随机单词)的概率，用二分类代替多分类，随机单词的采样来源于概率分布，即常用词被采样的概率要大于不常用词。\n\n在选择解决问题的模型时，需要关注任务类型、语料库大小、单词向量维度等因素，根据不同的场景选择不同的模型，否则会导致表现差。\n\n改进版word2vec的CBOW示例：\n 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150import numpy as npfrom collections import defaultdict# --------------------------# 1. 数据预处理（构建词汇表和训练数据）# --------------------------def preprocess(text, window_size=2):    # 简单分词（示例用空格分割）    words = text.split()    # 构建词汇表（词→ID映射）    vocab = defaultdict(int)    for word in words:        vocab[word] += 1  # 统计词频    vocab = &#123;word: i for i, word in enumerate(vocab.keys())&#125;    vocab_size = len(vocab)        # 生成训练数据：(上下文ID列表, 中心词ID)    data = []    for i in range(window_size, len(words) - window_size):        center_word = words[i]        context_words = [words[i - window_size + j] for j in range(2 * window_size)]        # 转换为ID        center_id = vocab[center_word]        context_ids = [vocab[w] for w in context_words]        data.append((context_ids, center_id))        return data, vocab, vocab_size# --------------------------# 2. 负采样工具（生成负样本）# --------------------------def generate_negative_samples(positive_id, vocab_size, num_neg=5, power=0.75):    &quot;&quot;&quot;根据词频分布采样负样本（简化版：这里用均匀分布替代真实词频分布）&quot;&quot;&quot;    negatives = []    while len(negatives) &lt; num_neg:        # 随机生成一个不等于正样本的ID        neg_id = np.random.randint(vocab_size)        if neg_id != positive_id and neg_id not in negatives:            negatives.append(neg_id)    return negatives# --------------------------# 3. CBOW模型（含Embedding和负采样）# --------------------------class CBOW:    def __init__(self, vocab_size, embedding_dim=100):        self.vocab_size = vocab_size  # 词汇表大小        self.embedding_dim = embedding_dim  # 词向量维度                # 初始化参数（Embedding矩阵和输出权重）        # 输入Embedding矩阵 W_in: [vocab_size, embedding_dim]        self.W_in = np.random.randn(vocab_size, embedding_dim) * 0.01        # 输出权重矩阵 W_out: [vocab_size, embedding_dim]（每一行对应一个词的输出权重）        self.W_out = np.random.randn(vocab_size, embedding_dim) * 0.01            def sigmoid(self, x):        &quot;&quot;&quot;Sigmoid激活函数（替代Softmax）&quot;&quot;&quot;        return 1.0 / (1.0 + np.exp(-x))        def forward(self, context_ids):        &quot;&quot;&quot;前向传播：通过Embedding层获取上下文向量并平均&quot;&quot;&quot;        # 1. Embedding层：直接索引提取上下文词向量（高速化改进1）        context_vectors = self.W_in[context_ids]  # [window_size*2, embedding_dim]        # 2. 中间层：上下文向量求平均        hidden = np.mean(context_vectors, axis=0)  # [embedding_dim]        return hidden        def loss(self, hidden, positive_id, negative_ids):        &quot;&quot;&quot;计算负采样损失（高速化改进2）&quot;&quot;&quot;        # 正样本损失：log(sigmoid(正样本得分))        pos_score = np.dot(self.W_out[positive_id], hidden)  # 内积计算得分        pos_loss = -np.log(self.sigmoid(pos_score) + 1e-8)  # 防止log(0)                # 负样本损失：sum(log(sigmoid(-负样本得分)))        neg_loss = 0.0        for neg_id in negative_ids:            neg_score = np.dot(self.W_out[neg_id], hidden)            neg_loss -= np.log(self.sigmoid(-neg_score) + 1e-8)                return pos_loss + neg_loss        def backward(self, hidden, context_ids, positive_id, negative_ids, lr=0.01):        &quot;&quot;&quot;反向传播更新参数&quot;&quot;&quot;        # 1. 计算输出侧梯度（正样本+负样本）        pos_score = np.dot(self.W_out[positive_id], hidden)        pos_delta = self.sigmoid(pos_score) - 1  # 正样本梯度                neg_deltas = []        for neg_id in negative_ids:            neg_score = np.dot(self.W_out[neg_id], hidden)            neg_deltas.append(self.sigmoid(neg_score))  # 负样本梯度                # 2. 更新输出权重 W_out        self.W_out[positive_id] -= lr * pos_delta * hidden        for i, neg_id in enumerate(negative_ids):            self.W_out[neg_id] -= lr * neg_deltas[i] * hidden                # 3. 计算隐藏层梯度，反向更新输入Embedding W_in        hidden_delta = pos_delta * self.W_out[positive_id]        for i, neg_id in enumerate(negative_ids):            hidden_delta += neg_deltas[i] * self.W_out[neg_id]                # 4. 更新输入Embedding（上下文每个词的向量都要更新）        avg_delta = hidden_delta / len(context_ids)  # 平均到每个上下文词        for ctx_id in context_ids:            self.W_in[ctx_id] -= lr * avg_delta# --------------------------# 4. 训练示例# --------------------------if __name__ == &quot;__main__&quot;:    # 示例文本（可替换为更大语料）    text = &quot;i like natural language processing and i like deep learning&quot;        # 预处理数据    data, vocab, vocab_size = preprocess(text, window_size=2)    print(&quot;词汇表大小:&quot;, vocab_size)    print(&quot;训练样本数:&quot;, len(data))        # 初始化模型    model = CBOW(vocab_size, embedding_dim=100)        # 训练参数    epochs = 100    lr = 0.01    num_neg = 5  # 每个正样本配5个负样本        # 开始训练    for epoch in range(epochs):        total_loss = 0.0        for context_ids, center_id in data:            # 前向传播：获取上下文平均向量            hidden = model.forward(context_ids)            # 生成负样本            negative_ids = generate_negative_samples(center_id, vocab_size, num_neg)            # 计算损失            loss = model.loss(hidden, center_id, negative_ids)            total_loss += loss            # 反向传播更新            model.backward(hidden, context_ids, center_id, negative_ids, lr)                # 每10轮打印一次损失        if (epoch + 1) % 10 == 0:            print(f&quot;Epoch &#123;epoch+1&#125;, Loss: &#123;total_loss / len(data):.4f&#125;&quot;)        # 训练完成后，W_in即为词向量（Embedding）    word = &quot;like&quot;    if word in vocab:        word_id = vocab[word]        print(f&quot;\\n单词 &#x27;&#123;word&#125;&#x27; 的词向量（前5维）：&#123;model.W_in[word_id][:5]&#125;&quot;)\n\nRNN\nword2vec是以获取单词的分布式表示为目的的方法，一般不会用于语言模型，因为语言模型需要考虑单词之间的上下文关系，而word2vec只考虑单词的独立表示，会忽略单词的顺序以及其马尔可夫性质，同时无法获得长序记忆理解。\n\nRNN网络的核心是拥有一个循环的环路，可以使数据不断循环流通记住过去的数据，从而实现长序记忆理解。\n\nRNN可以被表述为第t个RNN层、时刻t的RNN层等，各个时刻的RNN层接收该层的输入和前一个RNN层的输出，输入是时序数据按照事件顺序排列的向量，输出是该时刻的隐藏状态向量。\n\n\n","dateCreated":"2025-05-20T00:00:00+08:00","dateModified":"2026-06-10T20:49:14+08:00","datePublished":"2025-05-20T00:00:00+08:00","description":"","headline":"NLP基础学习","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/05/20/nlp-basic-learning/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/05/20/nlp-basic-learning/","keywords":"深度学习, NLP"}</script>
     <meta name="description" content="NLP基础学习(NLP鱼书)基于同义词词典、计数的方法 最基础的方法即同义词词典，建立词间上下级关系，构造WordNet，需要大量人工标记。 优于同义词词典的方法即基于计数，即用共现矩阵统计语料库corpus中单词的单位距离（窗口大小）内共现次数；共现矩阵为对称矩阵，对应的行则为词的向量，可用余弦相似度判断词向量之间的相似度，越接近1表示越相似。 分布式假设是指某个单词的含义由它周围的单词形成，是">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="NLP基础学习">
@@ -28,12 +29,10 @@
 <meta property="og:description" content="NLP基础学习(NLP鱼书)基于同义词词典、计数的方法 最基础的方法即同义词词典，建立词间上下级关系，构造WordNet，需要大量人工标记。 优于同义词词典的方法即基于计数，即用共现矩阵统计语料库corpus中单词的单位距离（窗口大小）内共现次数；共现矩阵为对称矩阵，对应的行则为词的向量，可用余弦相似度判断词向量之间的相似度，越接近1表示越相似。 分布式假设是指某个单词的含义由它周围的单词形成，是">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-05-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-09T16:17:03.614Z">
+<meta property="article:modified_time" content="2026-06-10T12:49:14.341Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="NLP">
 <meta property="article:tag" content="深度学习">
-<meta property="article:tag" content="自然语言处理">
-<meta property="article:tag" content="词向量">
 <meta name="twitter:card" content="summary">
     
     
@@ -50,6 +49,22 @@
 <link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
     <!--STYLES END-->
+    <style>
+        /* 侧边栏菜单居中 */
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button {
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link {
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            padding-left: 0 !important;
+            text-align: center !important;
+        }
+        #sidebar[data-behavior="2"] ul.sidebar-buttons li.sidebar-button .sidebar-button-link .sidebar-button-icon {
+            margin-right: 8px !important;
+        }
+    </style>
     
 
     
@@ -70,7 +85,7 @@
         
     
 
-<header id="header" data-behavior="4">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a
@@ -103,7 +118,7 @@
         
     
 
-<nav id="sidebar" data-behavior="4">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -211,22 +226,6 @@
         
             <ul class="sidebar-buttons">
             
-                <li class="sidebar-button">
-                    
-                        <a
-                            class="sidebar-button-link "
-                            href="https://github.com/LPF05"
-                            
-                                target="_blank"
-                            
-                            rel="noopener"
-                            title="GitHub"
-                        >
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
         </ul>
         
             <ul class="sidebar-buttons">
@@ -251,7 +250,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="4"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -292,8 +291,8 @@
 <li>优于同义词词典的方法即<strong>基于计数</strong>，即用共现矩阵统计<strong>语料库corpus</strong>中单词的单位距离（窗口大小）内共现次数；共现矩阵为对称矩阵，对应的行则为词的向量，可用<strong>余弦相似度</strong>判断词向量之间的相似度，越接近1表示越相似。</li>
 <li><strong>分布式假设</strong>是指某个单词的含义由它周围的单词形成，是向量表示单词的想法基础。</li>
 <li>原始次数并不是一个好的信息指标，例如常用词(the...)会与部分名词达到很强的相关性，可以用PPMI（正的点互信息）表示其相关性，PPMI矩阵可以很好的表示词向量，但是维度与语料库中词数成正比，即词汇量大时单词向量维数也大；可以用奇异值分解降维PPMI矩阵，将稀疏向量转换为密集向量。</li>
-<li><strong>PMI点互信息</strong>是用来衡量两个事件发生的概率与它们分别发生的概率的乘积的差异，即$PMI(x,y)&#x3D;P(x,y)-P(x)P(y)$，其中$P(x,y)$是事件$x$和$y$同时发生的概率，$P(x)$和$P(y)$分别是事件$x$和$y$发生的概率，可以很好的减少常用词对其他词的影响。</li>
-<li>PPMI（正的点互信息）是PMI的一种变形，即$PPMI(x,y)&#x3D;max(PMI(x,y),0)$，它将所有负值都设为0，使得PPMI矩阵中的元素都为非负。</li>
+<li><strong>PMI点互信息</strong>是用来衡量两个事件发生的概率与它们分别发生的概率的乘积的差异，即$PMI(x,y)=P(x,y)-P(x)P(y)$，其中$P(x,y)$是事件$x$和$y$同时发生的概率，$P(x)$和$P(y)$分别是事件$x$和$y$发生的概率，可以很好的减少常用词对其他词的影响。</li>
+<li>PPMI（正的点互信息）是PMI的一种变形，即$PPMI(x,y)=max(PMI(x,y),0)$，它将所有负值都设为0，使得PPMI矩阵中的元素都为非负。</li>
 <li>因为由PPMI得出的矩阵比较稀疏，稳健性差，所以需要用**奇异值分解（SVD）**降维，将稀疏向量转换为密集向量，可是其复杂度较高，可以使用Truncated SVD截去奇异值较小的部分实现高速化。</li>
 </ol>
 <h3 id="基于推理的方法（Word2vec）"><a href="#基于推理的方法（Word2vec）" class="headerlink" title="基于推理的方法（Word2vec）"></a>基于推理的方法（Word2vec）</h3><ol>
@@ -303,7 +302,7 @@
 <li>CBOW的输入首先要同时经过一个<strong>嵌入层</strong>（原始为输入层），将输入的上下文词转换为对应的词向量表示（因为由one-hot向量表示，所以输入层的作用是用one-hot向量矩阵乘积从词向量矩阵中获取输入的词向量表示），然后将这些向量进行平均，得到一个表示上下文的向量，最后将这个向量输入到一个<strong>全连接层</strong>（输出层），输出一个表示中心词的向量。</li>
 <li>无论是输入侧还是输出侧的权重都可以被视为单词的分布式表示，最受欢迎的是将输入侧的权重作为单词的分布式表示。</li>
 <li>Word2Vec实际就是由输入词用网络（Encode+Decode+softmax）计算共现词（上下文出现词）的得分，优化目标是在输入$\omega_I$时输出$\omega_j$的概率最高。</li>
-<li>词袋模型（BOW）即是将文本视为词的无序集合，忽略语法词序，通过统计构建特征，由这构成的词向量的负向量接近的词并非反义词而是几乎完全无关的词，但是却擅长处理除语义相似以外的类比语义（$\text{king}-\text{man}+\text{woman}&#x3D;\text{queen}$或$\text{king}-\text{man}\approx\text{queen}-\text{woman}$）。</li>
+<li>词袋模型（BOW）即是将文本视为词的无序集合，忽略语法词序，通过统计构建特征，由这构成的词向量的负向量接近的词并非反义词而是几乎完全无关的词，但是却擅长处理除语义相似以外的类比语义（$\text{king}-\text{man}+\text{woman}=\text{queen}$或$\text{king}-\text{man}\approx\text{queen}-\text{woman}$）。</li>
 <li>Word2Vec中我们通常会建立一个外部词向量表和一个中心词向量表，但实际使用中通常只将词视为一个向量，实践中最常见是平均。</li>
 <li>skip-gram模型与CBOW模型的区别在于，skip-gram模型是用中心词预测上下文，而CBOW模型是用上下文预测中心词；我们应该用skip-gram模型，因为它的性能要优于CBOW模型在处理低频词、类推语义等方面，因为其训练的问题更难相较于CBOW。</li>
 <li>word2vec相较于基于计数的方法，编码除了单词的相似性以外，还能理解更复杂的单词之间的模式，但是就单词相似性的定量评价而言，基于推理的方法和基于计数的方法难分上下，因为两个方法论在某些条件下作用是相通的，及对整个语料库的共现矩阵进行特殊矩阵分解。</li>
@@ -339,7 +338,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">标签</span><br/>
                 
-    <a class="tag tag--primary tag--small t-none-link" href="/tags/NLP/" rel="tag">NLP</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/" rel="tag">自然语言处理</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E8%AF%8D%E5%90%91%E9%87%8F/" rel="tag">词向量</a>
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/NLP/" rel="tag">NLP</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a>
 
             </div>
         
@@ -458,7 +457,7 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="2">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
@@ -558,7 +557,7 @@
 
                 </div>
                 
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <div id="share-options-bar" class="share-options-bar" data-behavior="2">
         <i id="btn-close-shareoptions" class="fa fa-times"></i>
         <ul class="share-options">
             
@@ -631,7 +630,7 @@
             <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
-                <p>人之所以能，是相信能</p>
+                <p>即将进入研究生生涯</p>
 
             </div>
         
@@ -645,7 +644,153 @@
     </div>
 </div>
 
-        
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="/assets/images/logo-algolia-nebula-blue-full.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/01/git-commands/"
+                            aria-label=": Git指令集"
+                        >
+                            <h3 class="media-heading">Git指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/15/linux-commands/"
+                            aria-label=": Linux指令集"
+                        >
+                            <h3 class="media-heading">Linux指令集</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/03/20/liaoxuefeng-python-notes/"
+                            aria-label=": 跟学廖雪峰Python教程新学新知"
+                        >
+                            <h3 class="media-heading">跟学廖雪峰Python教程新学新知</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年3月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/01/p2s-learning-notes-1/"
+                            aria-label=": p2s学习笔记（一）：chapter 0与chapter 1"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（一）：chapter 0与chapter 1</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月1日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a
+                            class="link-unstyled"
+                            href="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                            aria-label=": p2s学习笔记（二）：chapter 2与chapter 3"
+                        >
+                            <h3 class="media-heading">p2s学习笔记（二）：chapter 2与chapter 3</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2025年4月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 21 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+
         
 <div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
         <!--SCRIPTS-->
@@ -659,21 +804,150 @@
 
 
 
+    <!-- 本地搜索：使用 hexo-generator-searchdb 生成的 search.xml -->
+    
+<script src="/assets/js/moment-with-locales.js"></script>
 
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
+    <script>
+    (function() {
+        var searchData = [];
+        var $searchModal = $('#algolia-search-modal');
+        var $searchInput = $('#algolia-search-input');
+        var $results = $searchModal.find('.results');
+        var $noResults = $searchModal.find('.no-result');
+        var $resultsCount = $searchModal.find('.results-count');
+
+        // 加载搜索数据
+        fetch('/search.xml')
+            .then(function(r) { return r.text(); })
+            .then(function(xmlText) {
+                var parser = new DOMParser();
+                var xml = parser.parseFromString(xmlText, 'text/xml');
+                var entries = xml.querySelectorAll('entry');
+                entries.forEach(function(entry) {
+                    var title = entry.querySelector('title') ? entry.querySelector('title').textContent : '';
+                    var url = entry.querySelector('url') ? entry.querySelector('url').textContent : '';
+                    var content = entry.querySelector('content') ? entry.querySelector('content').textContent : '';
+                    if (title && url) {
+                        searchData.push({
+                            title: title,
+                            permalink: url,
+                            excerpt: content.replace(/<[^>]+>/g, '').substring(0, 200)
+                        });
+                    }
+                });
+            })
+            .catch(function() {});
+
+        // 打开搜索弹窗
+        $('.open-algolia-search').on('click', function(e) {
+            e.preventDefault();
+            $searchModal.fadeIn(300);
+            $searchInput.focus();
+        });
+
+        // 关闭搜索弹窗
+        $searchModal.find('.close-button').on('click', function() {
+            $searchModal.fadeOut(300);
+            $searchInput.blur();
+        });
+
+        // 点击遮罩关闭
+        $searchModal.on('click', function(e) {
+            if ($(e.target).is($searchModal)) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+        });
+
+        // ESC 关闭
+        $(document).on('keydown', function(e) {
+            if (e.keyCode === 27 && $searchModal.is(':visible')) {
+                $searchModal.fadeOut(300);
+                $searchInput.blur();
+            }
+            // Ctrl+S / Cmd+S 打开搜索
+            if (e.keyCode === 83 && (e.ctrlKey || e.metaKey) && !$searchInput.is(':focus')) {
+                e.preventDefault();
+                $searchModal.fadeIn(300);
+                $searchInput.focus();
+            }
+        });
+
+        // 执行搜索
+        function doSearch(query) {
+            query = query.toLowerCase().trim();
+            if (!query) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            var hits = searchData.filter(function(post) {
+                return post.title.toLowerCase().indexOf(query) !== -1 ||
+                       post.excerpt.toLowerCase().indexOf(query) !== -1;
+            });
+
+            if (hits.length === 0) {
+                $results.html('');
+                $noResults.show();
+                $resultsCount.text($resultsCount.data('message-zero'));
+                return;
+            }
+
+            $noResults.hide();
+            var html = '';
+            hits.forEach(function(post) {
+                html += '<div class="media">';
+                html += '<div class="media-body">';
+                html += '<a class="link-unstyled" href="' + post.permalink + '">';
+                html += '<h3 class="media-heading">' + post.title + '</h3>';
+                html += '</a>';
+                html += '<div class="media-content hide-xs font-merryweather">' + post.excerpt + '...</div>';
+                html += '</div>';
+                html += '<div style="clear:both;"></div>';
+                html += '<hr>';
+                html += '</div>';
+            });
+            $results.html(html);
+            var msg = $resultsCount.data('message-other').replace('{n}', hits.length);
+            if (hits.length === 1) msg = $resultsCount.data('message-one');
+            $resultsCount.text(msg);
         }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+
+        // 输入时实时搜索（防抖）
+        var timer = null;
+        $searchInput.on('input keyup', function() {
+            clearTimeout(timer);
+            timer = setTimeout(function() {
+                doSearch($searchInput.val());
+            }, 300);
+        });
+
+        // 回车提交
+        $searchModal.find('#algolia-search-form').on('submit', function(e) {
+            e.preventDefault();
+            doSearch($searchInput.val());
+        });
+    })();
+    </script>
+
+
+        
+        <script>
+            window.MathJax = {
+                tex: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                    processEscapes: true
+                },
+                options: {
+                    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+                }
+            };
+        </script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        
+    </body>
 </html>
