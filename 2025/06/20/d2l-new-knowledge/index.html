@@ -1,29 +1,27 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
+    
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=consolas:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"lpf05.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat","show_result":true},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="My Blog">
+    <title>动手学深度学习新知 - My Blog</title>
+    <meta name="author" content="GOD">
+    
+        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg"},"articleBody":"动手学深度学习新知预处理\npd.get_dummies()可获得one-hot编码，但有陷阱，可参考文献1。\n\n降维时候的指定轴是保留轴。\n\n点积、数量积、标量积都是向量相同位置的按元素乘积的和，即torch.dot()函数。\n\n哈达玛积是矩阵的点积，即A*B。\n\n矩阵-向量积用torch.mv()函数。\n\n矩阵乘法用@或torch.mm()函数。\n\n范数是$\\left | X \\right |_p &#x3D; ({\\sum^n \\left| x_i \\right|^p})^{1&#x2F;p}$。\n\n\n线性神经网络\n熵是信息量的期望。\n\n高级索引a[[row_index],[col_index]]。\n\n只有标量可以反向传播，所以一般torch中内置criterion都是在内部将张量mean()化。\n\n反向传播将张量mean()或sum()为标量，一般都是mean()，可以减少梯度中的噪声。\n\nnet.apply(fn)函数能将函数fn递归到每一层网络。\n\n规避softmax的overflow和underflow，可以首先将项减去最大值，然后将softmax与交叉熵相结合，即log(exp(*)) = *，这类似于LogSumExp技巧，可参考文献2。\n\n单纯的增加隐藏层而不加入激活函数没有任何益处，因为单层网络就已经可以表示任何仿射函数。\n\n学习率过小会局部收敛。\n\n过拟合原因：\n\n参数量(自由度)过大。\n初始参数权重取值范围过大(参数空间大、梯度消失爆炸)。\n训练样本的数量过少。\n\n\n训练误差和验证误差都很大，且其差距很小，继续训练无法降低误差，则在证明该模型欠拟合，该复杂模型结构。\n\n（对于线性回归），函数阶数等于数据样本数的多项式函数可以完美拟合训练集。\n\n\n多层感知机\n权重衰退是最常用正则化技术，有效性可以从拉格朗日乘数、权重衰减、贝叶斯、模型复杂度等多个角度理解，可以参考文献3进行学习。\n\n正则化用范数的柔性限制限制权重大小，其$L_2$范数惩罚与权重矩阵的点积等价，可证，且范数惩罚是加入损失函数中，从而使权重受罚（权重受罚公式待推导）。\n\nDropout暂退法有效的有效性原理是具有噪音输入的训练等价于吉洪诺夫正则化，即在计算后一层之前每一层注入噪音会增加输入-输出的平滑性，有性生殖相较于无性生殖会破坏共适应性（但会是健壮性变强），同理，会使神经元健壮性更强，具体原理与表现可参考文献4、5。\n\n暂退法将激活值替换为具有相同期望值的随机变量。\n\ndropout放在激活函数后，如果放在激活函数前仍会导致置0的神经元在前向传播造成贡献，待证（可参考答案参考.4.6）。\n\n神经网络层数过深会使得梯度乘积过深，而且特征值具有多样多样性 则会使得出现梯度爆炸或者梯度消失问题。\n\n梯度爆炸是参数更新过大，破坏了模型的稳定收敛；梯度消失是参数更新过小，在更新时几乎不会移动。\n\n激活函数sigmoid容易导致梯度消失，由函数的导数特性导致，只有在每层输入接近0时梯度正常。\n\n神经网络参数的初始化问题（排列对称性、过大、过小）会导致梯度爆炸，排列对称性迭代无法打破（可加入正则化dropout打破）。\n\n分布偏移是在许多情况下训练集和测试集不来自于同一个分布。\n\n分布偏移一般有协变量偏移（训练和测试输入特征不一致，例如训练时是真照片，测试时是虚拟形象）、标签偏移（测试和训练标签分布不一致，或者标签分布随时间变化）和概念偏移。\n\n真实风险或期望风险是模型在全体数据分布上的平均损失，而经验风险是模型在训练数据集上的平均损失，是真实风险的估计。\n\n神经网络的真实目的是真实风险最小化，但训练数据对分布的体现不全面，使得训练中是使经验风险最小化，用经验风险近似真实风险。\n\n协变量偏移纠正典型算法（前提是目标分布和源分布有重叠）：\n\n生成二元分类训练集${(\\textbf{x}_1, -1),...,(\\textbf{x}_n, -1),(\\textbf{u}_1, 1),...,(\\textbf{u}_1, 1)}$\n使用logistic回归训练二元分类器得到函数$\\textbf{h}$\n使用$\\beta_i &#x3D; \\exp(h(\\textbf{x}_i))$或更好的$\\beta_i &#x3D; \\min(\\exp(h(\\textbf{x}_i)), c)$对训练数据进行加权。\n使用权重 $\\beta_i$进行$\\text{minimize}{f} \\frac{1}{n} \\sum{i&#x3D;1}^{n} \\beta_i l(f(\\mathbf{x}_i), y_i)$中${(\\textbf{x}_1, y_1),...,(\\textbf{x}_n, y_n)}$的训练。\n\n\n概念分布偏移纠正：使用新数据更新现有的网络权重代替从零开始训练。\n\n在线学习：不断实时观测、估计、评估损失、训练、更新模式。\n\n环境的变化（方式、速度...）决定采用算法的类型。\n\n要实时监控评估优化系统，避免失控反馈循环。\n\n影响经验风险接近真实风险程度的因素除分布偏移外：\n\n样本大小：经验风险的准确性通常随着样本大小的增加而增加。较大的样本量提供了更多的信息，使得估计的风险更加可靠。\n\n特征选择：选择恰当的特征可以减少噪声和冗余信息的影响，从而提高对真实风险的估计。良好的特征选择有助于提高模型的泛化能力。\n\n模型复杂度：模型的复杂度与其在训练数据上的表现以及对真实风险的估计密切相关。过于简单的模型可能无法捕捉到数据中的复杂关系，而过于复杂的模型可能过度拟合训练数据。\n\n数据质量：数据质量对于经验风险的准确性至关重要。低质量的数据、含有错误或缺失值的数据可能导致错误的模型训练和风险估计。\n\n样本选择偏差：如果样本选择不恰当或存在偏差，例如采样方式不随机或样本并非代表总体。\n\n噪声和异常值：数据中的噪声和异常值可能对经验风险的估计造成干扰。这些异常值可能使模型过度拟合，并导致对真实风险的估计不准确。\n\n\n\n自定义module需要继承Module类，参数是复合对象，包含值、梯度、额外信息。\n\n参数绑定，即多个一样的层共享一组参数，CNN卷积核权重在整个输入数据上共享（特征检测、平移不变性、层次化特征提取、局部性限制）。\n\n多个卷积核不会学习到重复特征，因为初始化随机权重、梯度更新、数据多样性，如果发现相似的学习特征，可以通过正则化、增加卷积核数、调整网络结构等多种方式解决。\n\n共享参数可以减少参数量，降低计算量，加速收敛，加强模型可解释性，提高泛化能力（捕捉数据共性）。\n\n框架有延后初始化，当模型中有形状不确定的时候，模型可以直到数据第一次通过模型传递时，框架才会动态推断出层的大小（自动）。\n\n如果输入具有不同维度，可以增加一层额外层并于该层权重绑定。\n\n\n卷积神经网络\n全连接层可以通过引用平移不变性和局部性的变成卷积层，即一维全连接层参数变成二维，且将参数尺寸固定且不依赖输入的值，通过正偏移和负偏移覆盖整张图像，即产生卷积（实际为交叉相关或互相关），卷积本身是把一个函数翻转并移位，测量两个函数f、g之间的重叠。\n\n一系列具有二维张量的通道（隐藏表示）称为特征映射，即经过卷积核处理后反映了输入数据的某种特征分布情况。\n\n文本向量化的特征矩阵卷积有效。\n\n在卷积网络中，对于某一层的任意元素的感受野是指在前向传播期间可能影响该元素计算的所有元素，如果要检测更大区域的输入特征时，可以构建一个更深的网络。\n\n1*1的全连接层可以看作每个像素位置应用的全连接层，可用于调整网络层的通道数量和控制模型复杂度。\n\n池化层（汇聚层）的目的是降低卷积层对位置的敏感性，同时降低对空间降采样表示的敏感性。\n\n使用最大汇聚层以及大于一的步幅可减少空间维度。\n\nLeNet由两个卷积层和三个全连接层组成，使用Sigmoid激活函数。\n\n\n现代卷积神经网络\nAlexNet由五个卷积层和三个全连接层组成，且使用ReLU激活函数，同时使用了Dropout和数据增强。\n\nbatch大，显存占用大，精度变低。\n\nAlexNet中主演占用显存的是卷积层，因为需要保留核参数与中间结果；但是全连接层需要更多计算。\n\nVGG网络也是由卷积层和全连接层组成，只不过运用了块的思想，VGG块由n个卷积+一个池化层构成，同时使用了较窄的卷积。\n\nVGG中主要意识到深层且窄的卷积（3*3）比浅层且宽的卷积有效。\n\n层数深、卷积核小的计算量大。\n\n卷积核通道数是输入通道数，卷积核个数是输出通道数，所以1*1卷积为全连接层。\n\nNiN中提出思想：1*1卷积用来增强特征的非线性表达能力。\n\nNiN块是由一个卷积层+两个1*1卷积组成，NiN最后通过NiN块+全局平均池化代替普通网络中的全连接层（减少过拟合概率），显著减少了参数量。\n\n去掉NiN块中的一个1*1卷积会影响模型精度，减少模型的非线性能力和特征提取能力。\n\n如果一次性将表示缩减太多（例如384*5*5缩减至10*5*5），会丢弃大量信息，从而导致丢失有效信息，影响模型性能，但同样也会减少参数量，减少过拟合风险。\n\nGoogleNet提出了Inception块，通过多种不同的卷积核可以有效识别不同范围的图像细节，Inception块相当于一个有4条路径的子网络，通过不同窗口形状的卷积层和最大汇聚层来并行提取信息，并使用1*1卷积层减少像素级上的通道维数从而降低模型复杂度。\n\n批量规范化BN在每次训练迭代中，我们首先规范化输入（减去其均值并除以其标准差），其中两者均基于小批量处理，然后应用比例系数和比例偏移。\n\n只有使用足够大的小批量，批量规范化才有效且稳定的，BN在训练模式（小批量统计数据规范化）和预测模式（通过数据集统计规范化）的功能不同。\n\nBN层将训练时的均值和方差的移动平均值保存，从而加快test中的BN计算速度。\n\nBN层的原理是减少内部协变量偏移，向小批量中加入噪音，即正则化（与Dropout二选一）。\n\n残差网络（ResNet）解决的问题是模型偏移问题（即深层网络退化问题），残差块通过学习输入与输出间的残差代替学习输出，即当期望输出等同于该层网络输入时，该层网络需要学习成恒等层（恒等映射），直接学习为恒等层比较难，但网络学习残差为0比较简单（即微小调整比重新生成新结果简单）。\n\n残差的作用是：\n\n简化学习目标（学习恒等映射比较难）。\n缓解梯度消失，跳跃连接使得梯度有效传递，保留原始信息。\n解决网络退化问题。\n\n\n输入可以通过层间的残余连接更快地先前传播，利用残差块可以训练出一个有效的深度神经网络。\n\n稠密连接网络（DenseNet）类似于泰勒展开，ResNet是由一个简单的线性项（输入）和一个复杂的非线性项（残差）相加组成，而DenseNet则是一个线性项拼接多个非线性项。  \n\nDenseNet主要由稠密块（连接输入输出）和过渡层（控制通道数）两部分组成，且基础架构是由改良的BN+激活函数+conv架构，稠密快由多个卷积块组成，每个块使用相同数量的输出通道。\n\n卷积块的通道数控制了输出通道较输入通道的增长程度，所以也被称为增长率，DensNet在通道维度上连接输入与输出。\n\n\n循环神经网络1. \n参考文献\npandas.get_dummies （独热编码）详解\n\n一文弄懂LogSumExp技巧\n\n“L1和L2正则化”直观理解(之一)，从拉格朗日乘数法角度进行理解\n\n深度学习中Dropout的作用和原理\n\nDropout的深入理解（基础介绍、模型描述、原理深入、代码实现以及变种）\n\n\n答案参考动手学深度学习习题解答\n","dateCreated":"2025-06-20T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-06-20T00:00:00+08:00","description":"","headline":"动手学深度学习新知","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"},"publisher":{"@type":"Organization","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg","logo":{"@type":"ImageObject","url":"please-run.jpg"}},"url":"https://lpf05.github.io/2025/06/20/d2l-new-knowledge/","keywords":"深度学习, 数据预处理, 实践, d2l"}</script>
     <meta name="description" content="动手学深度学习新知预处理 pd.get_dummies()可获得one-hot编码，但有陷阱，可参考文献1。  降维时候的指定轴是保留轴。  点积、数量积、标量积都是向量相同位置的按元素乘积的和，即torch.dot()函数。  哈达玛积是矩阵的点积，即A*B。  矩阵-向量积用torch.mv()函数。  矩阵乘法用@或torch.mm()函数。  范数是$\left | X \right |_">
-<meta property="og:type" content="article">
+<meta property="og:type" content="blog">
 <meta property="og:title" content="动手学深度学习新知">
-<meta property="og:url" content="http://lpf05.github.io/2025/06/20/d2l-new-knowledge/index.html">
+<meta property="og:url" content="https://lpf05.github.io/2025/06/20/d2l-new-knowledge/index.html">
 <meta property="og:site_name" content="My Blog">
 <meta property="og:description" content="动手学深度学习新知预处理 pd.get_dummies()可获得one-hot编码，但有陷阱，可参考文献1。  降维时候的指定轴是保留轴。  点积、数量积、标量积都是向量相同位置的按元素乘积的和，即torch.dot()函数。  哈达玛积是矩阵的点积，即A*B。  矩阵-向量积用torch.mv()函数。  矩阵乘法用@或torch.mm()函数。  范数是$\left | X \right |_">
 <meta property="og:locale" content="zh_CN">
@@ -35,255 +33,245 @@
 <meta property="article:tag" content="数据预处理">
 <meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://lpf05.github.io/assets/images/please-run.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
+    <!--STYLES END-->
+    
 
-<link rel="canonical" href="http://lpf05.github.io/2025/06/20/d2l-new-knowledge/">
+    
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://lpf05.github.io/2025/06/20/d2l-new-knowledge/","path":"2025/06/20/d2l-new-knowledge/","title":"动手学深度学习新知"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>动手学深度学习新知 | My Blog</title>
-  
-
-
-
-
-
-
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
-<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
-<script src="/js/third-party/search/local-search.js" defer></script>
-
-
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
-  <script src="/js/third-party/tags/mermaid.js" defer></script>
-
-
-
-
-
-  
-
-
-
-
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js" defer></script>
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
+    
+        
+    
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">My Blog</p>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">深度学习 · NLP · 编程笔记</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
 
 
+    
+        
+            
+        
+    
 
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            My Blog
         </a>
-      </li>
-  </ul>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Ouvrir le lien: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="En savoir plus sur l&#39;auteur"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                </a>
+                <h4 class="sidebar-profile-name">GOD</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Accueil"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Accueil</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archive"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archive</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Rechercher"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Rechercher</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/LPF05"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
 </nav>
 
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-      <div class="search-header">
-        <span class="search-icon">
-          <i class="fa fa-search"></i>
-        </span>
-        <div class="search-input-container">
-          <input autocomplete="off" autocapitalize="off" maxlength="80"
-                placeholder="搜索..." spellcheck="false"
-                type="search" class="search-input">
-        </div>
-        <span class="popup-btn-close" role="button">
-          <i class="fa fa-times-circle"></i>
-        </span>
-      </div>
-      <div class="search-result-container">
-        <div class="search-result-icon">
-          <i class="fa fa-spinner fa-pulse fa-5x"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%96%B0%E7%9F%A5"><span class="nav-number">1.</span> <span class="nav-text">动手学深度学习新知</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">1.1.</span> <span class="nav-text">预处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.2.</span> <span class="nav-text">线性神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%B1%82%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="nav-number">1.3.</span> <span class="nav-text">多层感知机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.4.</span> <span class="nav-text">卷积神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%B0%E4%BB%A3%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.5.</span> <span class="nav-text">现代卷积神经网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.6.</span> <span class="nav-text">循环神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">1.6.1.</span> <span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%94%E6%A1%88%E5%8F%82%E8%80%83"><span class="nav-number">1.6.2.</span> <span class="nav-text">答案参考</span></a></li></ol></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="GOD"
-      src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">GOD</p>
-  <div class="site-description" itemprop="description">个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考</div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">24</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">63</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/your-username" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;your-username" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-
-        </div>
-      </div>
-    </div>
-
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
     
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://lpf05.github.io/2025/06/20/d2l-new-knowledge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="GOD">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My Blog">
-      <meta itemprop="description" content="个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="动手学深度学习新知 | My Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          动手学深度学习新知
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            动手学深度学习新知
         </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2025-06-20T00:00:00+08:00">
+	
+		    20 6月 2025
+    	
+    </time>
+    
+        <span>dans </span>
+        
+    <a class="category-link" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a>
 
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2025-06-20 00:00:00" itemprop="dateCreated datePublished" datetime="2025-06-20T00:00:00+08:00">2025-06-20</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-06-10 00:17:03" itemprop="dateModified" datetime="2026-06-10T00:17:03+08:00">2026-06-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">深度学习</span></a>
-        </span>
-    </span>
-
-  
+    
 </div>
 
-        </div>
-      </header>
+    
+</div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="动手学深度学习新知"><a href="#动手学深度学习新知" class="headerlink" title="动手学深度学习新知"></a>动手学深度学习新知</h1><h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><ol>
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h1 id="动手学深度学习新知"><a href="#动手学深度学习新知" class="headerlink" title="动手学深度学习新知"></a>动手学深度学习新知</h1><h2 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h2><ol>
 <li><p><code>pd.get_dummies()</code>可获得one-hot编码，但有陷阱，可<strong>参考文献1</strong>。</p>
 </li>
 <li><p>降维时候的指定轴是保留轴。</p>
@@ -357,17 +345,17 @@
 </li>
 <li><p>协变量偏移纠正典型算法（前提是目标分布和源分布有重叠）：</p>
 <ul>
-<li>生成二元分类训练集${(\textbf{x}_1, -1),…,(\textbf{x}_n, -1),(\textbf{u}_1, 1),…,(\textbf{u}_1, 1)}$</li>
+<li>生成二元分类训练集${(\textbf{x}_1, -1),...,(\textbf{x}_n, -1),(\textbf{u}_1, 1),...,(\textbf{u}_1, 1)}$</li>
 <li>使用logistic回归训练二元分类器得到函数$\textbf{h}$</li>
 <li>使用$\beta_i &#x3D; \exp(h(\textbf{x}_i))$或更好的$\beta_i &#x3D; \min(\exp(h(\textbf{x}_i)), c)$对训练数据进行加权。</li>
-<li>使用权重 $\beta_i$进行$\text{minimize}<em>{f} \frac{1}{n} \sum</em>{i&#x3D;1}^{n} \beta_i l(f(\mathbf{x}_i), y_i)$中${(\textbf{x}_1, y_1),…,(\textbf{x}_n, y_n)}$的训练。</li>
+<li>使用权重 $\beta_i$进行$\text{minimize}<em>{f} \frac{1}{n} \sum</em>{i&#x3D;1}^{n} \beta_i l(f(\mathbf{x}_i), y_i)$中${(\textbf{x}_1, y_1),...,(\textbf{x}_n, y_n)}$的训练。</li>
 </ul>
 </li>
 <li><p>概念分布偏移纠正：使用新数据更新现有的网络权重代替从零开始训练。</p>
 </li>
 <li><p>在线学习：不断实时观测、估计、评估损失、训练、更新模式。</p>
 </li>
-<li><p>环境的变化（方式、速度…）决定采用算法的类型。</p>
+<li><p>环境的变化（方式、速度...）决定采用算法的类型。</p>
 </li>
 <li><p>要实时监控评估优化系统，避免失控反馈循环。</p>
 </li>
@@ -484,79 +472,351 @@
 </ol>
 <h3 id="答案参考"><a href="#答案参考" class="headerlink" title="答案参考"></a>答案参考</h3><p><a target="_blank" rel="noopener" href="https://datawhalechina.github.io/d2l-ai-solutions-manual/">动手学深度学习习题解答</a></p>
 
+            
+
+
+        </div>
     </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGÉ DANS</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/d2l/" rel="tag">d2l</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E5%AE%9E%E8%B7%B5/" rel="tag">实践</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" rel="tag">数据预处理</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag">深度学习</a>
 
-    
-    
-    
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/07/01/datawhale-nlp-camp/"
+                    data-tooltip="Datawhale NLP夏令营"
+                    aria-label="PRÉCÉDENT: Datawhale NLP夏令营"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/06/15/wow-rag/"
+                    data-tooltip="WoW-RAG：检索增强生成"
+                    aria-label="SUIVANT: WoW-RAG：检索增强生成"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                    title="Partager sur Facebook"
+                    aria-label="Partager sur Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                    title="Partager sur Twitter"
+                    aria-label="Partager sur Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                    title="Partager sur Weibo"
+                    aria-label="Partager sur Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="tag"># 深度学习</a>
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86/" rel="tag"># 数据预处理</a>
-              <a href="/tags/%E5%AE%9E%E8%B7%B5/" rel="tag"># 实践</a>
-              <a href="/tags/d2l/" rel="tag"># d2l</a>
-          </div>
 
         
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2025/06/15/wow-rag/" rel="prev" title="WoW-RAG：检索增强生成">
-                  <i class="fa fa-angle-left"></i> WoW-RAG：检索增强生成
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2025/07/01/datawhale-nlp-camp/" rel="next" title="Datawhale NLP夏令营">
-                  Datawhale NLP夏令营 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 2025 – 
-    <span itemprop="copyrightYear">2026</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">GOD</span>
-  </div>
-
+        
+            
+        
     </div>
-  </footer>
+</article>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
 
-  <a href="https://github.com/your-username" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2026 GOD. All Rights Reserved.
+    </span>
+</footer>
 
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/07/01/datawhale-nlp-camp/"
+                    data-tooltip="Datawhale NLP夏令营"
+                    aria-label="PRÉCÉDENT: Datawhale NLP夏令营"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/06/15/wow-rag/"
+                    data-tooltip="WoW-RAG：检索增强生成"
+                    aria-label="SUIVANT: WoW-RAG：检索增强生成"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                    title="Partager sur Facebook"
+                    aria-label="Partager sur Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                    title="Partager sur Twitter"
+                    aria-label="Partager sur Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                    title="Partager sur Weibo"
+                    aria-label="Partager sur Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                        aria-label="Partager sur Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Partager sur Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                        aria-label="Partager sur Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Partager sur Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/06/20/d2l-new-knowledge/"
+                        aria-label="Partager sur Weibo"
+                    >
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Partager sur Weibo</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+            <h4 id="about-card-name">GOD</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                China
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-6yu5w4pfz4aqanvhrjcwld22ilanwb1tmjt8vttlswsuc7y6omw9oxqp9prz.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

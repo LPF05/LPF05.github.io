@@ -1,29 +1,27 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
+    
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=consolas:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"lpf05.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat","show_result":true},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="My Blog">
+    <title>p2s学习笔记（二）：chapter 2与chapter 3 - My Blog</title>
+    <meta name="author" content="GOD">
+    
+        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg"},"articleBody":"datawhale p2s 学习chapter_2与chapter_3chapter_2：数据类型和操作常用内置类型\n整数 int\n离散\n\n\n浮点数 float\n双精度\n\n\n布尔值 bool\nTrue or False\n\n\n类型 type\n即int float等类型\n\n\n字符串 string\n5~9为数组类型\n\n\n列表 list\n元组 tuple\n集合 set\n字典 Dictionary (映射map)\n复数 complex\n函数 function\n模块 module\n\n常用内置常数\nTrue\n真\n\n\nFalse\n假\n\n\nNone\n空\n\n\npi\n数学常数 π &#x3D; 3.141592...，精确到可用精度\n\n\ne\n数学常数 e &#x3D; 2.718281...，精确到可用精度\n\n\ntau\n数学常数 τ &#x3D; 6.283185...，精确到可用精度\n\n\ninf\n浮点正无穷大，等价于 float(&#39;inf&#39;)，负无穷大使用 -math.inf\n\n\n\n常用内置运算符\n算术：+, -, *, @, &#x2F;, &#x2F;&#x2F;, **, %, - (一元算符), + (一元算符)\n关系：&lt;, &lt;&#x3D;, &gt;&#x3D;, &gt;, &#x3D;&#x3D;, !&#x3D;\n赋值： +&#x3D;, -&#x3D;, *&#x3D;, &#x2F;&#x3D;, &#x2F;&#x2F;&#x3D;, **&#x3D;, %&#x3D;\n逻辑：and, or, not\n\n\n除法类型\n&#x2F; 指的是浮点数除法，它的结果是一个浮点数&#x2F;&#x2F; 指的是整除除法，它的计算结果是整数，舍弃余数\n\n模运算% 代表模运算（取余），结果为商的余数a mod b ⟺ a−(a∣b)×b\n\n\n类型影响语义12345print(3 * 2)  #6print(3 * &quot;p2s&quot;)  #p2sp2sp2sprint(3 + 2)  #5print(&quot;Data&quot; + &quot;whale&quot;)  #Datawhaleprint(3 + &quot;p2s&quot;)  #3p2s\n\n运算符优先级\n\n\n运算符\n描述\n\n\n\n(expressions...),[expressions...], {key: value...}, {expressions...}\n绑定或加圆括号的表达式，列表显示，字典显示，集合显示\n\n\nx[index], x[index:index], x(arguments...), x.attribute\n抽取，切片，调用，属性引用\n\n\nawait x\nawait 表达式\n\n\n**\n乘方\n\n\n+x, -x, ~x\n正，负，按位非 NOT\n\n\n*, @, &#x2F;, &#x2F;&#x2F;, %\n乘，矩阵乘，除，整除，取余\n\n\n+, -\n加和减\n\n\n&lt;&lt;, &gt;&gt;\n移位\n\n\n&amp;\n按位与 AND\n\n\n^\n按位异或 XOR\n\n\n|\n按位或 OR\n\n\nin, not in, is, is not, &lt;, &lt;&#x3D;, &gt;, &gt;&#x3D;, !&#x3D;, &#x3D;&#x3D;\n比较运算，包括成员检测和标识号检测\n\n\nnot x\n布尔逻辑非 NOT\n\n\nand\n布尔逻辑与 AND\n\n\nor\n布尔逻辑或 OR\n\n\nif -- else\n条件表达式\n\n\nlambda\nlambda 表达式\n\n\n:&#x3D;\n赋值表达式\n\n\n短路求值\n\n\nX\nY\nX and Y\nX or Y\nnot X\nnot Y\n\n\n\nTrue\nTrue\nTrue\nTrue\nFalse\nFalse\n\n\nTrue\nFalse\nFalse\nTrue\nFalse\nTrue\n\n\nFalse\nFalse\nFalse\nFalse\nTrue\nTrue\n\n\nFalse\nTrue\nFalse\nTrue\nTrue\nFalse\n\n\n12345678def yes():    return Truedef no():    return Falsedef crash():    return 1/0 # 会崩溃！\n\n1234print(no() and crash()) # 成功运行！print(crash() and no()) # 崩溃了！print (yes() and crash()) # 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃#输出False\n\n1234print(yes() or crash()) # 成功运行print(crash() or yes()) # 崩溃了print(no() or crash())  # 因为上一行崩溃了，所以这行不会被运行，就是运行也会因为短路求值崩溃#输出True\n\ntype() vs isinstance()\nisinstance() 比 type() 更具有 稳健性（Robustness）\n这种做法更加符合 面向对象编程 中 继承（inheritance）的思想\n\nchapter_3：变量与函数变量\n变量的规则\n\n变量是一个标签，它所指代的是一段数据\n使用 &#x3D; 来对这段数据的区域进行赋值\n新值会覆盖旧值\n新值的数据类型不一定与旧值相同\n\n\n变量命名规则：\n\n必须以字母或下划线（_）开头\n命名可由字母、数字和下划线组成\n大小写敏感\n尽量避免使用保留字命名\n\n\n保留字\nFalse、None、True、and、as、assert、break、class、continue、def、del、elif、else、except、finally、for、from、global、if、import、in、is、lambda、nonlocal、not、or、pass、raise、return、try、while、with、yield\n\n更新变量\n12x = 5x += 2 # 等价于 x = x + 2\n多变量赋值\n12a = b = c = 2a, b, c = 1, 2, 6\n\n函数\n函数由两个部分组成：header 和 body\n\nheader 用于定义函数接口（函数 名称 与 参数）\nbody 包含函数所需要执行的操作\n\n\nheader\n\nheader 用于定义函数的名称和参数\n\n\n当函数被调用时，参数将会作为变量被提供给函数的 body 部分\n可以提供多个参数（用 , 分隔），也可以不提供参数\nheader 以 : 结尾，代表后面会跟着 body 部分\n\n\nbody\n\nbody 包含函数执行的语句（statement）\n\n\n语句需要缩进（由 Code Style Guide 决定）\n当语句不再缩进，函数部分结束\n一般会使用 return 语句让函数返回其结果，但不是必须的\n\n\n函数示例\n123def double(x):print(&quot;I&#x27;m in double!&quot;)return 2 * x\n\n\n我们使用函数名来调用函数\n函数名后紧跟一对括号\n括号中是我们设定的参数的值，一个不多，一个不少（这很重要）\n函数会返回设定的 return 语句的值\n如果参数数目没有匹配会Oops\n\n12345678def f(x, y, z):return x + y + zdef g():return 42print(g(2)) # 崩溃！print(f(1, 2)) # 也会崩溃\n多返回值\n\n可设置多返回值\n\n1return 1,2,3 \n\n语句与表达式\n表达式\n\n它本身是值\n它的计算结果是值\n\n\n语句\n\n它不是值\n它不能打印\n但它能执行一些操作\n\n\n\n内置函数\nbool(),float()等python内置类型转换函数\nabs(),max(),min(),pow(),round()等python内置math库\n\n变量作用域\n每个变量都有属于自己的作用范围，在范围内生效\n\n局部作用域\n\n局部生效，只存在于函数内部，与其他函数中的同名变量无关，优先级大于全局\n\n\n全局作用域\n\n全局生效\n\n\n\n返回语句 vs 输出语句\n返回立即结束(函数内或全局)\n输出不结束，且不会赋值于其他变量\n\n嵌套函数 or 组合函数\n嵌套函数，最先运行最内层的函数。\n\n递归\n\n\n组合函数，一般用于分治或模块化\n\n分治\n\n\n\n","dateCreated":"2025-04-10T00:00:00+08:00","dateModified":"2026-06-10T00:17:03+08:00","datePublished":"2025-04-10T00:00:00+08:00","description":"","headline":"p2s学习笔记（二）：chapter 2与chapter 3","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"},"publisher":{"@type":"Organization","name":"GOD","sameAs":["https://github.com/LPF05"],"image":"please-run.jpg","logo":{"@type":"ImageObject","url":"please-run.jpg"}},"url":"https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/","keywords":"Python, 编程基础, Datawhale, 数据类型"}</script>
     <meta name="description" content="datawhale p2s 学习chapter_2与chapter_3chapter_2：数据类型和操作常用内置类型 整数 int 离散   浮点数 float 双精度   布尔值 bool True or False   类型 type 即int float等类型   字符串 string 5~9为数组类型   列表 list 元组 tuple 集合 set 字典 Dictionary (映射m">
-<meta property="og:type" content="article">
+<meta property="og:type" content="blog">
 <meta property="og:title" content="p2s学习笔记（二）：chapter 2与chapter 3">
-<meta property="og:url" content="http://lpf05.github.io/2025/04/10/p2s-learning-notes-2/index.html">
+<meta property="og:url" content="https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/index.html">
 <meta property="og:site_name" content="My Blog">
 <meta property="og:description" content="datawhale p2s 学习chapter_2与chapter_3chapter_2：数据类型和操作常用内置类型 整数 int 离散   浮点数 float 双精度   布尔值 bool True or False   类型 type 即int float等类型   字符串 string 5~9为数组类型   列表 list 元组 tuple 集合 set 字典 Dictionary (映射m">
 <meta property="og:locale" content="zh_CN">
@@ -35,255 +33,245 @@
 <meta property="article:tag" content="数据类型">
 <meta property="article:tag" content="编程基础">
 <meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://lpf05.github.io/assets/images/please-run.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
+    <!--STYLES END-->
+    
 
-<link rel="canonical" href="http://lpf05.github.io/2025/04/10/p2s-learning-notes-2/">
+    
 
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://lpf05.github.io/2025/04/10/p2s-learning-notes-2/","path":"2025/04/10/p2s-learning-notes-2/","title":"p2s学习笔记（二）：chapter 2与chapter 3"}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>p2s学习笔记（二）：chapter 2与chapter 3 | My Blog</title>
-  
-
-
-
-
-
-
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
-<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
-<script src="/js/third-party/search/local-search.js" defer></script>
-
-
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
-  <script src="/js/third-party/tags/mermaid.js" defer></script>
-
-
-
-
-
-  
-
-
-
-
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js" defer></script>
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
+    
+        
+    
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">My Blog</p>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">深度学习 · NLP · 编程笔记</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
 
 
+    
+        
+            
+        
+    
 
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            My Blog
         </a>
-      </li>
-  </ul>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Ouvrir le lien: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="En savoir plus sur l&#39;auteur"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                </a>
+                <h4 class="sidebar-profile-name">GOD</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Accueil"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Accueil</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archive"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archive</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Rechercher"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Rechercher</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/LPF05"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
 </nav>
 
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-      <div class="search-header">
-        <span class="search-icon">
-          <i class="fa fa-search"></i>
-        </span>
-        <div class="search-input-container">
-          <input autocomplete="off" autocapitalize="off" maxlength="80"
-                placeholder="搜索..." spellcheck="false"
-                type="search" class="search-input">
-        </div>
-        <span class="popup-btn-close" role="button">
-          <i class="fa fa-times-circle"></i>
-        </span>
-      </div>
-      <div class="search-result-container">
-        <div class="search-result-icon">
-          <i class="fa fa-spinner fa-pulse fa-5x"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</header>
-        
-  
-  <aside class="sidebar">
-
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#datawhale-p2s-%E5%AD%A6%E4%B9%A0chapter-2%E4%B8%8Echapter-3"><span class="nav-number">1.</span> <span class="nav-text">datawhale p2s 学习chapter_2与chapter_3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#chapter-2%EF%BC%9A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%93%8D%E4%BD%9C"><span class="nav-number">1.1.</span> <span class="nav-text">chapter_2：数据类型和操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">常用内置类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E5%B8%B8%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">常用内置常数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%86%85%E7%BD%AE%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">1.1.3.</span> <span class="nav-text">常用内置运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%BD%B1%E5%93%8D%E8%AF%AD%E4%B9%89"><span class="nav-number">1.1.4.</span> <span class="nav-text">类型影响语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">1.1.5.</span> <span class="nav-text">运算符优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%AD%E8%B7%AF%E6%B1%82%E5%80%BC"><span class="nav-number">1.1.6.</span> <span class="nav-text">短路求值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#type-vs-isinstance"><span class="nav-number">1.1.7.</span> <span class="nav-text">type() vs isinstance()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#chapter-3%EF%BC%9A%E5%8F%98%E9%87%8F%E4%B8%8E%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">chapter_3：变量与函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E4%B8%8E%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.2.3.</span> <span class="nav-text">语句与表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.4.</span> <span class="nav-text">内置函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">1.2.5.</span> <span class="nav-text">变量作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E8%AF%AD%E5%8F%A5-vs-%E8%BE%93%E5%87%BA%E8%AF%AD%E5%8F%A5"><span class="nav-number">1.2.6.</span> <span class="nav-text">返回语句 vs 输出语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E5%87%BD%E6%95%B0-or-%E7%BB%84%E5%90%88%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.7.</span> <span class="nav-text">嵌套函数 or 组合函数</span></a></li></ol></li></ol></li></ol></div>
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="GOD"
-      src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">GOD</p>
-  <div class="site-description" itemprop="description">个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考</div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">24</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">63</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/your-username" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;your-username" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-
-        </div>
-      </div>
-    </div>
-
+            
+            <div id="main" data-behavior="4"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
     
-  </aside>
-
-
-    </div>
-
-    <div class="main-inner post posts-expand">
-
-
-  
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://lpf05.github.io/2025/04/10/p2s-learning-notes-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="GOD">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="My Blog">
-      <meta itemprop="description" content="个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="p2s学习笔记（二）：chapter 2与chapter 3 | My Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          p2s学习笔记（二）：chapter 2与chapter 3
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            p2s学习笔记（二）：chapter 2与chapter 3
         </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2025-04-10T00:00:00+08:00">
+	
+		    10 4月 2025
+    	
+    </time>
+    
+        <span>dans </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2025-04-10 00:00:00" itemprop="dateCreated datePublished" datetime="2025-04-10T00:00:00+08:00">2025-04-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2026-06-10 00:17:03" itemprop="dateModified" datetime="2026-06-10T00:17:03+08:00">2026-06-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">编程基础</span></a>
-        </span>
-    </span>
-
-  
+    
 </div>
 
-        </div>
-      </header>
+    
+</div>
 
     
-    
-    
-    <div class="post-body" itemprop="articleBody"><h1 id="datawhale-p2s-学习chapter-2与chapter-3"><a href="#datawhale-p2s-学习chapter-2与chapter-3" class="headerlink" title="datawhale p2s 学习chapter_2与chapter_3"></a>datawhale p2s 学习chapter_2与chapter_3</h1><h2 id="chapter-2：数据类型和操作"><a href="#chapter-2：数据类型和操作" class="headerlink" title="chapter_2：数据类型和操作"></a>chapter_2：数据类型和操作</h2><h3 id="常用内置类型"><a href="#常用内置类型" class="headerlink" title="常用内置类型"></a>常用内置类型</h3><ol>
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h1 id="datawhale-p2s-学习chapter-2与chapter-3"><a href="#datawhale-p2s-学习chapter-2与chapter-3" class="headerlink" title="datawhale p2s 学习chapter_2与chapter_3"></a>datawhale p2s 学习chapter_2与chapter_3</h1><h2 id="chapter-2：数据类型和操作"><a href="#chapter-2：数据类型和操作" class="headerlink" title="chapter_2：数据类型和操作"></a>chapter_2：数据类型和操作</h2><h3 id="常用内置类型"><a href="#常用内置类型" class="headerlink" title="常用内置类型"></a>常用内置类型</h3><ol>
 <li>整数 int<blockquote>
 <p>离散</p>
 </blockquote>
@@ -326,19 +314,19 @@
 </blockquote>
 </li>
 <li>pi<blockquote>
-<p>数学常数 π &#x3D; 3.141592…，精确到可用精度</p>
+<p>数学常数 π &#x3D; 3.141592...，精确到可用精度</p>
 </blockquote>
 </li>
 <li>e<blockquote>
-<p>数学常数 e &#x3D; 2.718281…，精确到可用精度</p>
+<p>数学常数 e &#x3D; 2.718281...，精确到可用精度</p>
 </blockquote>
 </li>
 <li>tau<blockquote>
-<p>数学常数 τ &#x3D; 6.283185…，精确到可用精度</p>
+<p>数学常数 τ &#x3D; 6.283185...，精确到可用精度</p>
 </blockquote>
 </li>
 <li>inf<blockquote>
-<p>浮点正无穷大，等价于 float(‘inf’)，负无穷大使用 -math.inf</p>
+<p>浮点正无穷大，等价于 float(&#39;inf&#39;)，负无穷大使用 -math.inf</p>
 </blockquote>
 </li>
 </ol>
@@ -365,11 +353,11 @@
 </tr>
 </thead>
 <tbody><tr>
-<td align="left">(expressions…),[expressions…], {key: value…}, {expressions…}</td>
+<td align="left">(expressions...),[expressions...], {key: value...}, {expressions...}</td>
 <td align="left">绑定或加圆括号的表达式，列表显示，字典显示，集合显示</td>
 </tr>
 <tr>
-<td align="left">x[index], x[index:index], x(arguments…), x.attribute</td>
+<td align="left">x[index], x[index:index], x(arguments...), x.attribute</td>
 <td align="left">抽取，切片，调用，属性引用</td>
 </tr>
 <tr>
@@ -425,7 +413,7 @@
 <td align="left">布尔逻辑或 OR</td>
 </tr>
 <tr>
-<td align="left">if – else</td>
+<td align="left">if -- else</td>
 <td align="left">条件表达式</td>
 </tr>
 <tr>
@@ -610,79 +598,351 @@
 </li>
 </ol>
 
+            
+
+
+        </div>
     </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGÉ DANS</span><br/>
+                
+    <a class="tag tag--primary tag--small t-none-link" href="/tags/Datawhale/" rel="tag">Datawhale</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/Python/" rel="tag">Python</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" rel="tag">数据类型</a> <a class="tag tag--primary tag--small t-none-link" href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag">编程基础</a>
 
-    
-    
-    
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/04/15/web-crawler/"
+                    data-tooltip="爬虫学习笔记"
+                    aria-label="PRÉCÉDENT: 爬虫学习笔记"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/04/01/p2s-learning-notes-1/"
+                    data-tooltip="p2s学习笔记（一）：chapter 0与chapter 1"
+                    aria-label="SUIVANT: p2s学习笔记（一）：chapter 0与chapter 1"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                    title="Partager sur Facebook"
+                    aria-label="Partager sur Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                    title="Partager sur Twitter"
+                    aria-label="Partager sur Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                    title="Partager sur Weibo"
+                    aria-label="Partager sur Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
 
-    <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/Python/" rel="tag"># Python</a>
-              <a href="/tags/Datawhale/" rel="tag"># Datawhale</a>
-              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" rel="tag"># 数据类型</a>
-              <a href="/tags/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/" rel="tag"># 编程基础</a>
-          </div>
 
         
-
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2025/04/01/p2s-learning-notes-1/" rel="prev" title="p2s学习笔记（一）：chapter 0与chapter 1">
-                  <i class="fa fa-angle-left"></i> p2s学习笔记（一）：chapter 0与chapter 1
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2025/04/15/web-crawler/" rel="next" title="爬虫学习笔记">
-                  爬虫学习笔记 <i class="fa fa-angle-right"></i>
-                </a>
-            </div>
-          </div>
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-
-</div>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-inner">
-
-  <div class="copyright">
-    &copy; 2025 – 
-    <span itemprop="copyrightYear">2026</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
-    </span>
-    <span class="author" itemprop="copyrightHolder">GOD</span>
-  </div>
-
+        
+            
+        
     </div>
-  </footer>
+</article>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
 
-  <a href="https://github.com/your-username" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2026 GOD. All Rights Reserved.
+    </span>
+</footer>
 
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/04/15/web-crawler/"
+                    data-tooltip="爬虫学习笔记"
+                    aria-label="PRÉCÉDENT: 爬虫学习笔记"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2025/04/01/p2s-learning-notes-1/"
+                    data-tooltip="p2s学习笔记（一）：chapter 0与chapter 1"
+                    aria-label="SUIVANT: p2s学习笔记（一）：chapter 0与chapter 1"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                    title="Partager sur Facebook"
+                    aria-label="Partager sur Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                    title="Partager sur Twitter"
+                    aria-label="Partager sur Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                    title="Partager sur Weibo"
+                    aria-label="Partager sur Weibo"
+                >
+                    <i class="fab fa-weibo" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                        aria-label="Partager sur Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Partager sur Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                        aria-label="Partager sur Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Partager sur Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="http://service.weibo.com/share/share.php?&amp;title=https://lpf05.github.io/2025/04/10/p2s-learning-notes-2/"
+                        aria-label="Partager sur Weibo"
+                    >
+                        <i class="fab fa-weibo" aria-hidden="true"></i><span>Partager sur Weibo</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+            <h4 id="about-card-name">GOD</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                China
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-6yu5w4pfz4aqanvhrjcwld22ilanwb1tmjt8vttlswsuc7y6omw9oxqp9prz.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

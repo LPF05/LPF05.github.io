@@ -1,295 +1,467 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
+    
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=consolas:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"lpf05.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat","show_result":true},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="My Blog">
+    <title>Tag: Java - My Blog</title>
+    <meta name="author" content="GOD">
+    
+        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{}</script>
     <meta name="description" content="个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考">
-<meta property="og:type" content="website">
+<meta property="og:type" content="blog">
 <meta property="og:title" content="My Blog">
-<meta property="og:url" content="http://lpf05.github.io/tags/Java/index.html">
+<meta property="og:url" content="https://lpf05.github.io/tags/Java/index.html">
 <meta property="og:site_name" content="My Blog">
 <meta property="og:description" content="个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="GOD">
-<meta property="article:tag" content="深度学习,NLP,Python,机器学习,Transformer">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="http://lpf05.github.io/tags/Java/">
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/Java/index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: Java | My Blog</title>
-  
-
-
-
-
-
-
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
-<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
-<script src="/js/third-party/search/local-search.js" defer></script>
-
-
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
-  <script src="/js/third-party/tags/mermaid.js" defer></script>
-
-
-
-
-
-  
-
-
-
-
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js" defer></script>
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">My Blog</p>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">深度学习 · NLP · 编程笔记</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-      <div class="search-header">
-        <span class="search-icon">
-          <i class="fa fa-search"></i>
-        </span>
-        <div class="search-input-container">
-          <input autocomplete="off" autocapitalize="off" maxlength="80"
-                placeholder="搜索..." spellcheck="false"
-                type="search" class="search-input">
-        </div>
-        <span class="popup-btn-close" role="button">
-          <i class="fa fa-times-circle"></i>
-        </span>
-      </div>
-      <div class="search-result-container">
-        <div class="search-result-icon">
-          <i class="fa fa-spinner fa-pulse fa-5x"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</header>
+    
+    
         
-  
-  <aside class="sidebar">
+    
+    
+        <meta property="og:image" content="https://lpf05.github.io/assets/images/please-run.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="GOD"
-      src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">GOD</p>
-  <div class="site-description" itemprop="description">个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考</div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">24</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">63</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/your-username" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;your-username" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-
-        </div>
-      </div>
-    </div>
+    <!--STYLES END-->
+    
 
     
-  </aside>
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
 
 
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            My Blog
+        </a>
     </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Ouvrir le lien: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+        </a>
+    
+</header>
 
-    <div class="main-inner tag posts-collapse">
+            <!-- Define author's picture -->
 
 
-  
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">Java
-          <small>标签</small>
-        </h1>
-      </div>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="En savoir plus sur l&#39;auteur"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                </a>
+                <h4 class="sidebar-profile-name">GOD</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Accueil"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Accueil</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archive"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archive</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Rechercher"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Rechercher</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/LPF05"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
     </div>
+</nav>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-06-01T00:00:00+08:00"
-              content="2025-06-01">
-          06-01
-        </time>
-      </div>
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+    <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2025/06/01/java-backend-learning/"
+                            aria-label=": Java后端学习路线"
+                        >
+                            Java后端学习路线
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2025-06-01T00:00:00+08:00">
+	
+		    01 6月 2025
+    	
+    </time>
+    
+        <span>dans </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/06/01/java-backend-learning/" itemprop="url">
-            <span itemprop="name">Java后端学习路线</span>
-          </a>
-      </div>
 
-      
-    </header>
-  </article>
-
-    </div>
-  </div>
-  
-  
-  
-
+    
 </div>
-  </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="学习路线"><a href="#学习路线" class="headerlink" title="学习路线"></a>学习路线</h1><h2 id="计算机基础认识"><a href="#计算机基础认识" class="headerlink" title="计算机基础认识"></a>计算机基础认识</h2><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vR4y1Q7iF/">windows11教学：计算机基础实战</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1aA411x7Us/">4小时学会计算机基础 零基础学习计算机（纯干货）</a><br><a target="_blank" rel="noopener" href="https://www.hello-algo.com/chapter_data_structure/number_encoding/">计算机数字编码基础。</a><br><a target="_blank" rel="noopener" href="https://www.hello-algo.com/chapter_data_structure/character_encoding/">计算机字符编码基础。</a></p>
+<h2 id="基础学习"><a href="#基础学习" class="headerlink" title="基础学习"></a>基础学习</h2><ol>
+<li><p>c语言  </p>
+<blockquote>
+<p>《c primer plus》跟学，配合《Learn C hard way》。</p>
+</blockquote>
+<p> <a target="_blank" rel="noopener" href="https://docs.kilvn.com/lcthw-zh/">《Learn C hard way》</a></p>
+</li>
+<li><p>linux系统与shell命令大杂烩  </p>
+<blockquote>
+<p>文档资料:《Missing-Semester》(大杂烩)<br>视频资料:《Linux达人养成计划 I》<br>《【小白入门 通俗易懂】2021韩顺平 一周学会Linux》<br>非选都学，视频学韩顺平只学rpm基本命令</p>
+</blockquote>
+<p> <a target="_blank" rel="noopener" href="https://missing-semester-cn.github.io/">Missing-Semester</a><br> <a target="_blank" rel="noopener" href="https://www.imooc.com/learn/175">Linux达人养成计划 I</a>  </p>
+<p> 资源：  </p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://ubuntu.com/">Ubuntu官网</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.vmware.com/cn/products/workstation-pro.html">VMware官网</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/hupoboy/article/details/131394587">VMware激活码</a></li>
+</ul>
+<p> 注意事项:<br> a. 使用的VMware和Ubuntu请不要依据视频中的版本与资源。<br> b. 虚拟机硬件兼容性请选择17.xxxx以上，Ubuntu安装时选择内存请大于4GB，磁盘空间大于30GB。<br> c. 安装Ubuntu时，在欢迎界面请选择英文直接安装，键盘请选择美或英的英语键盘。如果你觉得使用英文操作系统对你有点困难，请多背单词。记住，如果你做计算机领域的东西而只会用中文，约等于你去上厕所手里却只有砂纸⼀样。  </p>
+</li>
+<li><p>git学习</p>
+<blockquote>
+<p>文档资料:《廖雪峰git官方教程》<br> 视频资料: 《【GeekHour】一小时Git教程》  </p>
+</blockquote>
+<p> <a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/896043488029600">廖雪峰git官方教程</a><br> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1HM411377j/">【GeekHour】一小时Git教程</a>  </p>
+<p> 资源:  </p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://git-scm.com/">git官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/">github官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://git-scm.com/doc">git官方文档</a></li>
+</ul>
+<p> gitee和github使用</p>
+</li>
+<li><p>markdown学习</p>
+<blockquote>
+<p>文档资料: 《手把手教会你使用Markdown【从入门到精通一篇就够了】》<br> 《Typora图床（使用PicGo以及阿里云阿里云oss服务搭建）》<br> 视频资料: 《教你Markdown+VSCODE实现最完美流畅写作体验》<br> 《科普篇！什么是图床？会markdown必看！附图床免费资源》  </p>
+</blockquote>
+<p> <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40818172/article/details/126260661">手把手教会你使用Markdown【从入门到精通一篇就够了】</a><br> <a target="_blank" rel="noopener" href="https://www.yunliyunwai.cn/blog/detail/97392f55c70416bb109b23f2105f1606">Typora图床（使用PicGo以及阿里云阿里云oss服务搭建）</a><br> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1si4y1472o/">教你Markdown+VSCODE实现最完美流畅写作体验</a><br> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1HZ4y1o7VT/">《科普篇！什么是图床？会markdown必看！附图床免费资源》</a>  </p>
+</li>
+<li><p>xmind下载使用</p>
+</li>
+</ol>
+<h2 id="后端开发学习内容"><a href="#后端开发学习内容" class="headerlink" title="后端开发学习内容"></a>后端开发学习内容</h2><h3 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h3><ol>
+<li><p>Jdk下载安装配置和IDEA安装与学生认证  </p>
+<blockquote>
+<p>文档资料:《JDK安装配置教程》<br> <a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43884946/article/details/127386338">JDK安装配置教程</a></p>
+</blockquote>
+<p> 详解:</p>
+<ul>
+<li><p>JDK：英文全称 Java Development Kit，是Java的开发工具包 JDK是提供给Java开发人员使用的，其中包含了Java的开发工具和JRE。其中的开发工具包括：编译工具（javac.exe）打包工具（jar.exe）等。通俗的说就是开发用的。  </p>
+</li>
+<li><p>JRE：英文全称 Java Runtime Environment，是Java运行环境 JRE包括Java虚拟机 (JVM Java Virtual Machine)和Java程序所需的核心类库等，如果想要运行一个开发好的Java程序，计算机中只需要安装JRE即可。通俗的说就是运行用的。  </p>
+</li>
+<li><p>JVM：英文全称 Java Virtual Machine），是java虚拟机。 它只认识.class为后缀的文件，它能将class文件中的字节码指令进行识别并调用操作系统向上的API完成动作。JVM是java能够跨平台的核心机制。通俗的说就是跨平台用的，就是把我们写的代码，转换成class文件用的。</p>
+</li>
+</ul>
+<p> JDK，JRE和JVM三者之间的关系<br> JDK &#x3D; JRE + 开发工具集（例如Javac编译工具等）<br> JRE &#x3D; JVM + Java SE 标准类库  </p>
+</li>
+<li><p>java学习</p>
+<blockquote>
+<p>文档资料: 《java菜鸟教程》<br> 《廖雪峰java官方教程》<br> 视频资料:《Java入门基础视频教程，java零基础自学就选黑马程序员Java入门教程（含Java项目和Java真题）》<br> 《黑马Java基础教程，全面解析Java-IO流，一套通关》<br> 《【Java】Java8新特性-Lambda表达式-Stream API等_尚硅谷__李贺飞》  </p>
+</blockquote>
+<p> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Cv411372m/">Java入门基础视频教程，java零基础自学就选黑马程序员Java入门教程（含Java项目和Java真题）</a><br> <a target="_blank" rel="noopener" href="https://www.runoob.com/java/java-tutorial.html">java菜鸟教程</a><br> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1n3411Q7gi/">黑马Java基础教程，全面解析Java-IO流，一套通关</a><br> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1ut411g7E9/">【Java】Java8新特性-Lambda表达式-Stream API等_尚硅谷__李贺飞</a></p>
+</li>
+</ol>
+<h3 id="JavaWeb开发"><a href="#JavaWeb开发" class="headerlink" title="JavaWeb开发"></a>JavaWeb开发</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1UN411x7xe/">尚硅谷全新JavaWeb教程，企业主流javaweb技术栈</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cainiaojc.com/spring/spring-mvc-tutorial.html">Spring MVC菜鸟教程</a></p>
+<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><p><a target="_blank" rel="noopener" href="https://www.hello-algo.com/">Hello算法</a></p>
+<h3 id="Java单体项目实战"><a href="#Java单体项目实战" class="headerlink" title="Java单体项目实战"></a>Java单体项目实战</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1TP411v7v6/">黑马程序员Java项目实战《苍穹外卖》，最适合新手的SpringBoot+SSM的企业级Java项目实战</a></p>
+<h3 id="Java微服务"><a href="#Java微服务" class="headerlink" title="Java微服务"></a>Java微服务</h3><ol>
+<li><p>MYbatis Plus<br> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Xu411A7tL/">黑马程序员最新MybatisPlus全套视频教程，4小时快速精通mybatis-plus框架</a>  </p>
+</li>
+<li><p>Java全套微服务技术栈<br> <a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1LQ4y127n4/">SpringCloud+RabbitMQ+Docker+Redis+搜索+分布式，系统详解springcloud微服务技术栈课程|黑马程序员Java微服务</a></p>
+</li>
+</ol>
+<h3 id="Java企业级项目开发"><a href="#Java企业级项目开发" class="headerlink" title="Java企业级项目开发"></a>Java企业级项目开发</h3><ol>
+<li>学成在线【在线教育】<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1j8411N7Bm/">黑马程序员Java项目企业级微服务实战《学成在线》，基于SpringCloud、SpringCloudAlibaba技术栈开发，项目搭建到选课支付学习全通关</a></li>
+<li>黑马头条【企业级微服务项目】<br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Qs4y1v7x4/">黑马程序员Java项目实战微服务项目《黑马头条》开发全套视频教程，基于SpringBoot+SpringCloud+Nacos等企业级微服务架构项目解决方案</a></li>
+</ol>
+<h3 id="Java面试专题"><a href="#Java面试专题" class="headerlink" title="Java面试专题"></a>Java面试专题</h3><p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1yT411H7YK/">新版Java面试专题视频教程，java八股文面试全套真题+深度详解（含大厂高频面试真题）</a></p>
 
-  <div class="copyright">
-    &copy; 2025 – 
-    <span itemprop="copyrightYear">2026</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2025/06/01/java-backend-learning/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Commenter et partager
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    <div class="pagination-bar">
+    <ul class="pagination">
+        
+        
+        <li class="pagination-number">page 1 sur 1</li>
+    </ul>
+</div>
+
+</section>
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2026 GOD. All Rights Reserved.
     </span>
-    <span class="author" itemprop="copyrightHolder">GOD</span>
-  </div>
+</footer>
 
+            </div>
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+            <h4 id="about-card-name">GOD</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                China
+            </div>
+        
     </div>
-  </footer>
+</div>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
 
-  <a href="https://github.com/your-username" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+<script src="/assets/js/script-6yu5w4pfz4aqanvhrjcwld22ilanwb1tmjt8vttlswsuc7y6omw9oxqp9prz.min.js"></script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<!--SCRIPTS END-->
 
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>

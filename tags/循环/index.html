@@ -1,295 +1,559 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
+    
 <head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-
-<link rel="stylesheet" href="/css/main.css">
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=consolas:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
-
-<script class="next-config" data-name="main" type="application/json">{"hostname":"lpf05.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"flat","show_result":true},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="My Blog">
+    <title>Tag: 循环 - My Blog</title>
+    <meta name="author" content="GOD">
+    
+        <meta name="keywords" content="深度学习,NLP,Python,机器学习,Transformer,">
+    
+    
+    
+        
+            <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+        
+    
+    <script type="application/ld+json">{}</script>
     <meta name="description" content="个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考">
-<meta property="og:type" content="website">
+<meta property="og:type" content="blog">
 <meta property="og:title" content="My Blog">
-<meta property="og:url" content="http://lpf05.github.io/tags/%E5%BE%AA%E7%8E%AF/index.html">
+<meta property="og:url" content="https://lpf05.github.io/tags/%E5%BE%AA%E7%8E%AF/index.html">
 <meta property="og:site_name" content="My Blog">
 <meta property="og:description" content="个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="GOD">
-<meta property="article:tag" content="深度学习,NLP,Python,机器学习,Transformer">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Transformer">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="深度学习">
 <meta name="twitter:card" content="summary">
-
-
-<link rel="canonical" href="http://lpf05.github.io/tags/%E5%BE%AA%E7%8E%AF/">
-
-
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"tags/循环/index.html","title":""}</script>
-
-<script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>标签: 循环 | My Blog</title>
-  
-
-
-
-
-
-
-
-
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
-<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
-<script src="/js/third-party/search/local-search.js" defer></script>
-
-
-  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
-  <script src="/js/third-party/tags/mermaid.js" defer></script>
-
-
-
-
-
-  
-
-
-
-
-  
-
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
-<script src="/js/third-party/math/mathjax.js" defer></script>
-
-
-
-  <noscript>
-    <link rel="stylesheet" href="/css/noscript.css">
-  </noscript>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
-  <div class="headband"></div>
-
-  <main class="main">
-    <div class="column">
-      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏" role="button">
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-        <span class="toggle-line"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <i class="logo-line"></i>
-      <p class="site-title">My Blog</p>
-      <i class="logo-line"></i>
-    </a>
-      <p class="site-subtitle" itemprop="description">深度学习 · NLP · 编程笔记</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger" aria-label="搜索" role="button">
-        <i class="fa fa-search fa-fw fa-lg"></i>
-    </div>
-  </div>
-</div>
-
-
-
-<nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
-      <li class="menu-item menu-item-search">
-        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
-        </a>
-      </li>
-  </ul>
-</nav>
-
-
-
-  <div class="search-pop-overlay">
-    <div class="popup search-popup">
-      <div class="search-header">
-        <span class="search-icon">
-          <i class="fa fa-search"></i>
-        </span>
-        <div class="search-input-container">
-          <input autocomplete="off" autocapitalize="off" maxlength="80"
-                placeholder="搜索..." spellcheck="false"
-                type="search" class="search-input">
-        </div>
-        <span class="popup-btn-close" role="button">
-          <i class="fa fa-times-circle"></i>
-        </span>
-      </div>
-      <div class="search-result-container">
-        <div class="search-result-icon">
-          <i class="fa fa-spinner fa-pulse fa-5x"></i>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</header>
+    
+    
         
-  
-  <aside class="sidebar">
+    
+    
+        <meta property="og:image" content="https://lpf05.github.io/assets/images/please-run.jpg"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-eb68zk2t5ce8ceuxjzpuiwmcmdnmx6h0i3fsq5k4yzyjcjvio23wxw2cr7qg.min.css">
 
-    <div class="sidebar-inner sidebar-overview-active">
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <div class="sidebar-panel-container">
-        <!--noindex-->
-        <div class="post-toc-wrap sidebar-panel">
-        </div>
-        <!--/noindex-->
-
-        <div class="site-overview-wrap sidebar-panel">
-          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="GOD"
-      src="/images/avatar.png">
-  <p class="site-author-name" itemprop="name">GOD</p>
-  <div class="site-description" itemprop="description">个人技术博客，记录深度学习、自然语言处理、编程等领域的学习笔记与思考</div>
-</div>
-<div class="site-state-wrap animated">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-        <a href="/archives/">
-          <span class="site-state-item-count">24</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">63</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author animated">
-      <span class="links-of-author-item">
-        <a href="https://github.com/your-username" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;your-username" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-  </div>
-
-        </div>
-      </div>
-    </div>
+    <!--STYLES END-->
+    
 
     
-  </aside>
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
 
 
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            My Blog
+        </a>
     </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Ouvrir le lien: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+        </a>
+    
+</header>
 
-    <div class="main-inner tag posts-collapse">
+            <!-- Define author's picture -->
 
 
-  
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <h1 class="collection-header">循环
-          <small>标签</small>
-        </h1>
-      </div>
 
-      
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="En savoir plus sur l&#39;auteur"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+                </a>
+                <h4 class="sidebar-profile-name">GOD</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/"
+                            
+                            rel="noopener"
+                            title="Accueil"
+                        >
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Accueil</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-categories"
+                            
+                            rel="noopener"
+                            title="Categories"
+                        >
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-tags"
+                            
+                            rel="noopener"
+                            title="Tags"
+                        >
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/all-archives"
+                            
+                            rel="noopener"
+                            title="Archive"
+                        >
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archive</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link open-algolia-search"
+                            href="#search"
+                            
+                            rel="noopener"
+                            title="Rechercher"
+                        >
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Rechercher</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="https://github.com/LPF05"
+                            
+                                target="_blank"
+                            
+                            rel="noopener"
+                            title="GitHub"
+                        >
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a
+                            class="sidebar-button-link "
+                            href="/atom.xml"
+                            
+                            rel="noopener"
+                            title="RSS"
+                        >
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
     </div>
+</nav>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-04-30T00:00:00+08:00"
-              content="2025-04-30">
-          04-30
-        </time>
-      </div>
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+    <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2025/04/30/p2s-learning-notes-4/"
+                            aria-label=": p2s学习笔记（四）：chapter 5与chapter 6"
+                        >
+                            p2s学习笔记（四）：chapter 5与chapter 6
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2025-04-30T00:00:00+08:00">
+	
+		    30 4月 2025
+    	
+    </time>
+    
+        <span>dans </span>
+        
+    <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80/">编程基础</a>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/04/30/p2s-learning-notes-4/" itemprop="url">
-            <span itemprop="name">p2s学习笔记（四）：chapter 5与chapter 6</span>
-          </a>
-      </div>
 
-      
-    </header>
-  </article>
-
-    </div>
-  </div>
-  
-  
-  
-
+    
 </div>
-  </main>
 
-  <footer class="footer">
-    <div class="footer-inner">
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="datawhale-p2s-学习chapter-5与chapter-6"><a href="#datawhale-p2s-学习chapter-5与chapter-6" class="headerlink" title="datawhale p2s 学习chapter_5与chapter_6"></a>datawhale p2s 学习chapter_5与chapter_6</h1><h2 id="chapter-5：循环"><a href="#chapter-5：循环" class="headerlink" title="chapter_5：循环"></a>chapter_5：循环</h2><h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><h4 id="for循环和循环范围"><a href="#for循环和循环范围" class="headerlink" title="for循环和循环范围"></a>for循环和循环范围</h4><ol>
+<li><p>特点</p>
+<p> 基于提供的范围，重复执行特定次数的操作</p>
+</li>
+<li><p>range默认参数</p>
+<blockquote>
+<p>range(a,b,c)</p>
+</blockquote>
+<ul>
+<li>a为起始值，b为终值+1，c为步长</li>
+<li>a如果不写，默认为0</li>
+<li>c不写默认为1</li>
+</ul>
+</li>
+</ol>
+<h4 id="for循环嵌套"><a href="#for循环嵌套" class="headerlink" title="for循环嵌套"></a>for循环嵌套</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">5</span></span><br><span class="line">b = <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(a):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(b):</span><br><span class="line">        <span class="built_in">print</span>(a,b)</span><br></pre></td></tr></table></figure>
 
-  <div class="copyright">
-    &copy; 2025 – 
-    <span itemprop="copyrightYear">2026</span>
-    <span class="with-love">
-      <i class="fa fa-heart"></i>
+<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><ol>
+<li><p>特点</p>
+<p> 未知执行次数，依靠条件判断是否继续执行</p>
+</li>
+<li><p>在范围已知与未知时都可用while循环</p>
+</li>
+</ol>
+<h3 id="break-与-continue-语句"><a href="#break-与-continue-语句" class="headerlink" title="break 与 continue 语句"></a>break 与 continue 语句</h3><h4 id="假死循环"><a href="#假死循环" class="headerlink" title="假死循环"></a>假死循环</h4><ol>
+<li><p>特点</p>
+<p> 与环境交互后，在特定条件下终止的循环</p>
+</li>
+<li><p>简单示例</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">readUntilDone</span>():</span><br><span class="line">linesEntered = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    response = <span class="built_in">input</span>(<span class="string">&quot;输入一个字符串（输入 done 则退出）: &quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> response == <span class="string">&quot;done&quot;</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;你输入了: &quot;</span>, response)</span><br><span class="line">    linesEntered += <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Bye!&quot;</span>)</span><br><span class="line"><span class="keyword">return</span> linesEntered</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="chapter-6：字符串"><a href="#chapter-6：字符串" class="headerlink" title="chapter_6：字符串"></a>chapter_6：字符串</h2><h3 id="字符串文字"><a href="#字符串文字" class="headerlink" title="字符串文字"></a>字符串文字</h3><ol>
+<li><p>引号</p>
+<ul>
+<li>单引号</li>
+<li>双引号</li>
+<li>三引号</li>
+</ul>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot; &quot;</span></span><br><span class="line"><span class="string">&#x27; &#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27; &#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot; &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>转义序列</p>
+<ul>
+<li>\n    换行符</li>
+<li>\t    制表符</li>
+<li>&quot;    双引号</li>
+<li>\\   反斜线</li>
+</ul>
+</li>
+<li><p>在多行文本中可用<code>\</code>来排除换行</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&quot;&quot;你可以在字符串后面使用 反斜杠 `\`  来排除后面的换行。\</span></span><br><span class="line"><span class="string">比如这里是第二行文字，但是你会看到它会紧跟在上一行句号后面。\</span></span><br><span class="line"><span class="string">这种做法在 CIL 里面经常使用（多个 Flag 并排保持美观），\</span></span><br><span class="line"><span class="string">但是在编程中的应用比较少。\</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多行字符串作为注释</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Python 本身是没有多行注释的，</span></span><br><span class="line"><span class="string">但是你可以用多行字符串实现同样的操作，</span></span><br><span class="line"><span class="string">还记得我们之前学过的“表达式“吗？</span></span><br><span class="line"><span class="string">它的原理就是 Python 会运行它，</span></span><br><span class="line"><span class="string">但是马上扔掉！（垃圾回收机制）</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>repr()函数</p>
+<blockquote>
+<p>转义字符显示</p>
+</blockquote>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">str</span> = data\nwhale</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(<span class="built_in">str</span>))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">有repr()显示</span></span><br><span class="line"><span class="string">data\nwhale</span></span><br><span class="line"><span class="string">#无repr()显示</span></span><br><span class="line"><span class="string">data</span></span><br><span class="line"><span class="string">whale</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="字符串常量"><a href="#字符串常量" class="headerlink" title="字符串常量"></a>字符串常量</h3><ol>
+<li><p>字母</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="built_in">print</span>(string.ascii_letters)</span><br><span class="line"><span class="comment">#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>小写字母</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.ascii_lowercase)</span><br><span class="line"><span class="comment">#abcdefghijklmnopqrstuvwxyz</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>大写字母</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.ascii_uppercase) </span><br><span class="line"><span class="comment">#ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数字</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.digits)</span><br><span class="line"><span class="comment">#0123456789</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>特殊字符</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.punctuation)</span><br><span class="line"><span class="comment">#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\]^_`&#123;|&#125;~</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>可打印字符</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.printable)</span><br><span class="line"><span class="comment">#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br><span class="line"><span class="comment">#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\]^_`&#123;|&#125;~ </span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>空白字符</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.whitespace)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>空白字符不转义</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(string.whitespace))</span><br><span class="line"><span class="comment">#\t\n\r\x0b\x0c</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="字符串运算"><a href="#字符串运算" class="headerlink" title="字符串运算"></a>字符串运算</h3><ol>
+<li><p>简单运算</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;abc&quot;</span> + <span class="string">&quot;def&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;abc&quot;</span> * <span class="number">3</span>)</span><br><span class="line"><span class="comment">#abcdef</span></span><br><span class="line"><span class="comment">#abcabcabc</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>in运算</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;ring&quot;</span> <span class="keyword">in</span> <span class="string">&quot;strings&quot;</span>) <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;wow&quot;</span> <span class="keyword">in</span> <span class="string">&quot;amazing!&quot;</span>) <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Yes&quot;</span> <span class="keyword">in</span> <span class="string">&quot;yes!&quot;</span>) <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&quot;</span> <span class="keyword">in</span> <span class="string">&quot;No way!&quot;</span>) <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;聪明&quot;</span> <span class="keyword">in</span> <span class="string">&quot;聪明办法学 Python&quot;</span>) <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>字符串索引和切片</p>
+<blockquote>
+<p>字符串可作为迭代对象</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="字符串循环"><a href="#字符串循环" class="headerlink" title="字符串循环"></a>字符串循环</h3><ol>
+<li><p>in循环</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line"><span class="built_in">print</span>(c)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>enumerate函数</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> idx, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(s):</span><br><span class="line"><span class="built_in">print</span>(idx, c)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0 D</span></span><br><span class="line"><span class="string">1 a</span></span><br><span class="line"><span class="string">2 t</span></span><br><span class="line"><span class="string">3 a</span></span><br><span class="line"><span class="string">4 w</span></span><br><span class="line"><span class="string">5 h</span></span><br><span class="line"><span class="string">6 a</span></span><br><span class="line"><span class="string">7 l</span></span><br><span class="line"><span class="string">8 e</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>zip函数</p>
+<p> zip(a,b)可以在一次循环中，分别从 a 和 b 里同时取出一个元素</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>(s, reverseString(s)):</span><br><span class="line"><span class="built_in">print</span>(a, b)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">D e</span></span><br><span class="line"><span class="string">a l</span></span><br><span class="line"><span class="string">t a</span></span><br><span class="line"><span class="string">a h</span></span><br><span class="line"><span class="string">w w</span></span><br><span class="line"><span class="string">h a</span></span><br><span class="line"><span class="string">a t</span></span><br><span class="line"><span class="string">l a</span></span><br><span class="line"><span class="string">e D</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>split函数来循环</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class_name.split() 本身会产生一个新的叫做“列表”的东西，但是它不存储任何内容</span></span><br><span class="line"></span><br><span class="line">class_name = <span class="string">&quot;learn python the smart way 2nd edition&quot;</span></span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> class_name.split():</span><br><span class="line">    <span class="built_in">print</span>(word)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">learn</span></span><br><span class="line"><span class="string">python</span></span><br><span class="line"><span class="string">the</span></span><br><span class="line"><span class="string">smart</span></span><br><span class="line"><span class="string">way</span></span><br><span class="line"><span class="string">2nd</span></span><br><span class="line"><span class="string">edition</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>splitlines函数来循环</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class_info.splitlines() 也会产生一个列表，但不存储任何内容</span></span><br><span class="line"></span><br><span class="line">class_info = <span class="string">&quot;&quot;&quot;\</span></span><br><span class="line"><span class="string">聪明办法学 Python 第二版是 Datawhale 基于第一版教程的一次大幅更新。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">我们的课程简称为 P2S，有两个含义：</span></span><br><span class="line"><span class="string">Learn Python The Smart Way V2.</span></span><br><span class="line"><span class="string">Prepare To Be Smart. 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> class_info.splitlines():</span><br><span class="line">    <span class="keyword">if</span> (line.startswith(<span class="string">&quot;Prepare To Be Smart&quot;</span>)):</span><br><span class="line">        <span class="built_in">print</span>(line)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Prepare To Be Smart， 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="字符串内置函数与方法"><a href="#字符串内置函数与方法" class="headerlink" title="字符串内置函数与方法"></a>字符串内置函数与方法</h3><h4 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h4><ol>
+<li><p>str() 和 len()</p>
+<blockquote>
+<p>str 函数将其他类型转化为字符串</p>
+</blockquote>
+<blockquote>
+<p>len 函数获得迭代对象长度</p>
+</blockquote>
+</li>
+<li><p>chr() 和 ord()</p>
+<blockquote>
+<p>chr 函数将ascii码转化为对应字符</p>
+</blockquote>
+<blockquote>
+<p>ord 函数将字符转化为对应ascii码</p>
+</blockquote>
+</li>
+<li><p>ast.literal_eval()</p>
+<blockquote>
+<p>安全地执行字符串中的Python表达式，而不会执行任何可能存在的恶意代码。</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="字符串方法"><a href="#字符串方法" class="headerlink" title="字符串方法"></a>字符串方法</h4><ol>
+<li><p>isalnum()</p>
+</li>
+<li><p>isalpha()</p>
+</li>
+<li><p>isdigit()</p>
+</li>
+<li><p>islower()</p>
+</li>
+<li><p>isspace()</p>
+</li>
+<li><p>isupper()</p>
+</li>
+<li><p>strip()</p>
+<blockquote>
+<p>可以将字符串首尾的空格删除</p>
+</blockquote>
+</li>
+<li><p>count()</p>
+</li>
+<li><p>startwith()</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.startswith(<span class="string">&quot;Do&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.startswith(<span class="string">&quot;Don&#x27;t&quot;</span>))</span><br><span class="line"><span class="comment">#True False</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>endwith()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;!&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;rats!&quot;</span>))</span><br><span class="line"><span class="comment">#True False</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>find()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;!&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;rats!&quot;</span>))</span><br><span class="line"><span class="comment"># 5 -1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>index()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.index(<span class="string">&quot;and&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.index(<span class="string">&quot;or&quot;</span>))</span><br><span class="line"><span class="comment"># 5</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>with语句</p>
+</li>
+</ol>
+
+                    
+                        
+
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2025/04/30/p2s-learning-notes-4/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Commenter et partager
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    <div class="pagination-bar">
+    <ul class="pagination">
+        
+        
+        <li class="pagination-number">page 1 sur 1</li>
+    </ul>
+</div>
+
+</section>
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2026 GOD. All Rights Reserved.
     </span>
-    <span class="author" itemprop="copyrightHolder">GOD</span>
-  </div>
+</footer>
 
+            </div>
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/please-run.jpg" alt="Photo de l&#39;auteur"/>
+        
+            <h4 id="about-card-name">GOD</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                China
+            </div>
+        
     </div>
-  </footer>
+</div>
 
-  
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
-  <div class="back-to-top" role="button" aria-label="返回顶部">
-    <i class="fa fa-arrow-up fa-lg"></i>
-    <span>0%</span>
-  </div>
-  <div class="reading-progress-bar"></div>
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
 
-  <a href="https://github.com/your-username" class="github-corner" title="在 GitHub 上关注我" aria-label="在 GitHub 上关注我" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+<script src="/assets/js/script-6yu5w4pfz4aqanvhrjcwld22ilanwb1tmjt8vttlswsuc7y6omw9oxqp9prz.min.js"></script>
 
-<noscript>
-  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
-</noscript>
+<!--SCRIPTS END-->
 
+
+
+
+
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
