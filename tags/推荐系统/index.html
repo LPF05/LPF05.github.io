@@ -260,7 +260,7 @@
     <section class="postShorten-group main-content-wrap">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -292,391 +292,17 @@
 
             </div>
             
-                <div class="postShorten-content">
-                    <h1 id="商品推荐学习-天池极客挑赛安泰杯改"><a href="#商品推荐学习-天池极客挑赛安泰杯改" class="headerlink" title="商品推荐学习-天池极客挑赛安泰杯改"></a>商品推荐学习-天池极客挑赛安泰杯改</h1><h2 id="1-项目介绍"><a href="#1-项目介绍" class="headerlink" title="1. 项目介绍"></a>1. 项目介绍</h2><p>本次比赛基于某国家在若干日内的用户购买数据，数据集分为A、B两部分，A为训练数据，B为预测数据（去除其最后一条购买数据）。要求参赛选手预测B部分用户被移除的最后一条行为数据。</p>
-<h2 id="2-商品推荐类别学习"><a href="#2-商品推荐类别学习" class="headerlink" title="2. 商品推荐类别学习"></a>2. 商品推荐类别学习</h2><ol>
-<li><p>推荐系统到底在做什么：核心目标<br> 推荐系统的本质是「连接用户和物品」，解决“信息过载”问题：</p>
-<ul>
-<li>对用户：推荐你可能喜欢的商品&#x2F;内容（比如淘宝首页的“猜你喜欢”）；</li>
-<li>对平台：提升用户留存、转化（比如速卖通让用户买到想买的，多下单）。</li>
-</ul>
-<p> 对应到本次赛题：就是“根据用户历史购买记录，猜他下一个（最后一个）会买什么商品”。</p>
-</li>
-<li><p>推荐算法有很多，但核心可分为3类：协同过滤（Collaborative Filtering）、内容推荐（Content-Based）、混合推荐（Hybrid）。</p>
-<ul>
-<li>协同过滤（Collaborative Filtering）：不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”），</li>
-<li>内容推荐（Content-Based）：基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）。</li>
-<li>混合推荐（Hybrid）：结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）。</li>
-</ul>
-</li>
-</ol>
-<h3 id="协同过滤"><a href="#协同过滤" class="headerlink" title="协同过滤"></a>协同过滤</h3><ol>
-<li>协同过滤（CF）是推荐系统的核心算法家族，核心思想是<strong>利用用户或物品的“行为相似性”做推荐，不依赖物品&#x2F;用户的具体属性</strong>。根据“相似性计算的对象”和“实现方式”，协同过滤主要分为两大核心分支，再加上衍生的混合&#x2F;改进类型，整体分类如下：</li>
-</ol>
-<h4 id="核心分支：基于记忆的协同过滤（Memory-Based）"><a href="#核心分支：基于记忆的协同过滤（Memory-Based）" class="headerlink" title="核心分支：基于记忆的协同过滤（Memory-Based）"></a>核心分支：基于记忆的协同过滤（Memory-Based）</h4><ol>
-<li>最经典、最易实现的协同过滤类型，直接“记忆”用户&#x2F;物品的历史行为，通过统计方法计算相似度，不需要训练复杂模型。</li>
-</ol>
-<h5 id="1-用户协同过滤（User-Based-CF）"><a href="#1-用户协同过滤（User-Based-CF）" class="headerlink" title="1. 用户协同过滤（User-Based CF）"></a>1. 用户协同过滤（User-Based CF）</h5><blockquote>
-<p>“找和你兴趣相似的人，把他们买过的商品推荐给你”</p>
-</blockquote>
-<ol>
-<li><p>步骤：</p>
-<ol>
-<li>计算<strong>用户与用户之间的相似度</strong>（比如杰卡德相似度）；</li>
-<li>给目标用户找Top N个最相似的“邻居用户”；</li>
-<li>收集邻居用户买过但目标用户没买过的商品，按相似度加权打分，排序推荐。</li>
-</ol>
-</li>
-<li><p>赛题中的对应</p>
-<ul>
-<li>目标用户：测试集用户；</li>
-<li>邻居用户：训练集用户；</li>
-<li>优点：逻辑简单、易落地，适合用户数不算特别多的场景；</li>
-<li>缺点：用户数多的时候（如千万级），计算用户相似度会很慢，且有缺点是“用户冷启动”，即新用户没有行为，无法推荐。</li>
-</ul>
-</li>
-</ol>
-<h5 id="2-物品协同过滤（Item-Based-CF）——-电商常用"><a href="#2-物品协同过滤（Item-Based-CF）——-电商常用" class="headerlink" title="2. 物品协同过滤（Item-Based CF）—— 电商常用"></a>2. 物品协同过滤（Item-Based CF）—— 电商常用</h5><blockquote>
-<p>“你买过A商品，推荐和A相似的其他商品”</p>
-</blockquote>
-<ol>
-<li><p>步骤：</p>
-<ol>
-<li>计算<strong>物品与物品之间的相似度</strong>（比如两个商品被多少共同用户购买过）；</li>
-<li>找出目标用户买过的所有商品的“相似商品”；</li>
-<li>对这些相似商品加权打分（买过的商品相似度越高，得分越高），排序推荐。</li>
-</ol>
-</li>
-<li><p>举例：你买了“无线耳机”，系统推荐“耳机保护套”“蓝牙音箱”——因为这两个商品和“无线耳机”的购买用户重合度高（买耳机的人常买保护套&#x2F;音箱）。</p>
-</li>
-<li><p>优缺点</p>
-<ul>
-<li>优点：物品相似度相对稳定（比如耳机和保护套的关联性不会轻易变），可以提前预计算，推荐速度快；可解释性强（“基于你购买的X推荐”）；</li>
-<li>缺点：物品数特别多的时候（比如上亿商品），预计算物品相似度会占用大量内存（“物品冷启动”：新商品没有行为，无法推荐）。</li>
-</ul>
-</li>
-</ol>
-<h4 id="和用户协同过滤的核心区别"><a href="#和用户协同过滤的核心区别" class="headerlink" title="和用户协同过滤的核心区别"></a>和用户协同过滤的核心区别</h4><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>用户协同过滤（Baseline用）</th>
-<th>物品协同过滤（电商常用）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>相似性计算对象</td>
-<td>用户 vs 用户</td>
-<td>物品 vs 物品</td>
-</tr>
-<tr>
-<td>核心逻辑</td>
-<td>人以群分，推荐“群友”的商品</td>
-<td>物以类聚，推荐“同类”商品</td>
-</tr>
-<tr>
-<td>计算复杂度</td>
-<td>随用户数增加而上升</td>
-<td>随物品数增加而上升</td>
-</tr>
-<tr>
-<td>适合场景</td>
-<td>用户少、物品多（如赛题）</td>
-<td>用户多、物品少（如淘宝）</td>
-</tr>
-<tr>
-<td>冷启动问题</td>
-<td>新用户难推荐</td>
-<td>新商品难推荐</td>
-</tr>
-</tbody></table>
-<h2 id="二、核心分支：基于模型的协同过滤（Model-Based）"><a href="#二、核心分支：基于模型的协同过滤（Model-Based）" class="headerlink" title="二、核心分支：基于模型的协同过滤（Model-Based）"></a>二、核心分支：基于模型的协同过滤（Model-Based）</h2><p>当数据量很大（比如千万级用户&#x2F;亿级商品），或数据稀疏（大部分用户只买过少数商品）时，基于记忆的CF效果会下降——这时候需要用“模型”来挖掘隐藏的用户偏好，核心是<strong>把推荐问题转化为机器学习&#x2F;深度学习问题</strong>。</p>
-<h3 id="1-矩阵分解（Matrix-Factorization-MF）——-最经典的模型CF"><a href="#1-矩阵分解（Matrix-Factorization-MF）——-最经典的模型CF" class="headerlink" title="1. 矩阵分解（Matrix Factorization, MF）—— 最经典的模型CF"></a>1. 矩阵分解（Matrix Factorization, MF）—— 最经典的模型CF</h3><h4 id="核心逻辑"><a href="#核心逻辑" class="headerlink" title="核心逻辑"></a>核心逻辑</h4><ul>
-<li>问题：用户-商品的购买行为可以表示为一个“稀疏矩阵”（行&#x3D;用户，列&#x3D;商品，值&#x3D;是否购买&#x2F;购买次数），但大部分值都是空的（用户没买过该商品）；</li>
-<li>解决方案：把这个稀疏矩阵分解为两个稠密矩阵——<strong>用户特征矩阵</strong>（行&#x3D;用户，列&#x3D;隐因子，比如“喜欢运动”“偏好低价”）和<strong>商品特征矩阵</strong>（行&#x3D;商品，列&#x3D;隐因子）；</li>
-<li>推荐：用户对商品的偏好得分 &#x3D; 用户特征向量 × 商品特征向量（点积），按得分排序推荐。</li>
-</ul>
-<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><ul>
-<li>用户A的特征向量：[0.9（喜欢运动）, 0.2（偏好高价）]；</li>
-<li>商品B的特征向量：[0.8（运动类）, 0.3（高价）]；</li>
-<li>偏好得分：0.9×0.8 + 0.2×0.3 &#x3D; 0.78（得分高，推荐）。</li>
-</ul>
-<h4 id="常见变种"><a href="#常见变种" class="headerlink" title="常见变种"></a>常见变种</h4><ul>
-<li>SVD（奇异值分解）：最早用于推荐系统的矩阵分解算法；</li>
-<li>FFM（场感知因子分解机）：考虑商品属性的“场”（比如类目、店铺），效果更好；</li>
-<li>NCF（神经协同过滤）：用神经网络替代传统矩阵分解的点积运算，拟合能力更强（结合了深度学习）。</li>
-</ul>
-<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
-<li>优点：能挖掘用户&#x2F;商品的“隐藏偏好”，解决数据稀疏问题；推荐效果比基于记忆的CF更好；</li>
-<li>缺点：需要训练模型，实现比基于记忆的CF复杂；可解释性差（不知道隐因子具体代表什么）。</li>
-</ul>
-<h3 id="2-其他模型类CF"><a href="#2-其他模型类CF" class="headerlink" title="2. 其他模型类CF"></a>2. 其他模型类CF</h3><ul>
-<li><strong>概率模型</strong>：比如贝叶斯网络、LDA（隐含狄利克雷分配），把用户偏好建模为概率分布，适合处理“多类别偏好”场景；</li>
-<li><strong>基于邻居的模型</strong>：比如KNN的改进版（K近邻协同过滤），结合了基于记忆的“邻居思想”和模型的“泛化能力”，解决稀疏数据下的邻居查找问题；</li>
-<li><strong>深度学习模型</strong>：除了NCF，还有CNN（捕捉商品的局部特征）、RNN&#x2F;LSTM（捕捉用户行为的时序特征）、Transformer（捕捉长序列行为依赖），适合复杂场景（比如你的赛题需要预测“最后一条购买商品”，时序模型特别适配）。</li>
-</ul>
-<h2 id="三、混合-改进型协同过滤"><a href="#三、混合-改进型协同过滤" class="headerlink" title="三、混合&#x2F;改进型协同过滤"></a>三、混合&#x2F;改进型协同过滤</h2><p>纯粹的协同过滤（无论是基于记忆还是模型）都有局限（比如冷启动、可解释性差），所以实际应用中大多用“混合&#x2F;改进型”，核心是<strong>结合多种CF的优点，或融入其他类型的特征</strong>。</p>
-<h3 id="1-用户-物品混合CF"><a href="#1-用户-物品混合CF" class="headerlink" title="1. 用户-物品混合CF"></a>1. 用户-物品混合CF</h3><ul>
-<li>逻辑：同时计算“用户相似度”和“物品相似度”，把两个相似度加权融合，得到最终的推荐得分；</li>
-<li>举例：推荐得分 &#x3D; 0.4×用户协同过滤得分 + 0.6×物品协同过滤得分；</li>
-<li>优点：兼顾“用户兴趣”和“商品关联”，效果更稳定。</li>
-</ul>
-<h3 id="2-结合内容特征的CF（CF-Content）"><a href="#2-结合内容特征的CF（CF-Content）" class="headerlink" title="2. 结合内容特征的CF（CF+Content）"></a>2. 结合内容特征的CF（CF+Content）</h3><ul>
-<li>逻辑：把商品属性（类目、店铺、价格）、用户属性（年龄、性别，赛题没给）融入协同过滤；</li>
-<li>举例：计算物品相似度时，不仅看“共同购买用户数”，还看“是否同类目”“价格区间是否接近”；</li>
-<li>优点：解决冷启动问题（新商品有属性就能计算相似度）；推荐更精准（结合了属性偏好）。</li>
-</ul>
-<h3 id="3-时序协同过滤（Temporal-CF）"><a href="#3-时序协同过滤（Temporal-CF）" class="headerlink" title="3. 时序协同过滤（Temporal CF）"></a>3. 时序协同过滤（Temporal CF）</h3><ul>
-<li>逻辑：考虑用户行为的“时间顺序”（比如近期购买的商品比半年前的更能反映当前偏好）；</li>
-<li>举例：计算用户相似度时，近期购买的商品权重更高；用LSTM&#x2F;Transformer模型捕捉“购买序列”的依赖关系（比如买了手机→买手机壳→买耳机）；</li>
-<li>适用场景：你的赛题！因为要预测“最后一条购买商品”，时序特征是核心，时序CF比普通CF效果好得多。</li>
-</ul>
-<h2 id="四、总结：协同过滤分类速查表"><a href="#四、总结：协同过滤分类速查表" class="headerlink" title="四、总结：协同过滤分类速查表"></a>四、总结：协同过滤分类速查表</h2><table>
-<thead>
-<tr>
-<th>大类</th>
-<th>子类</th>
-<th>核心特点</th>
-<th>适用场景</th>
-<th>实现难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>基于记忆的CF</td>
-<td>用户协同过滤</td>
-<td>找相似用户，推荐其商品</td>
-<td>用户少、物品多（如赛题）</td>
-<td>低</td>
-</tr>
-<tr>
-<td></td>
-<td>物品协同过滤</td>
-<td>找相似商品，推荐给买过该商品的用户</td>
-<td>用户多、物品少（如淘宝）</td>
-<td>低-中</td>
-</tr>
-<tr>
-<td>基于模型的CF</td>
-<td>矩阵分解（MF&#x2F;NCF）</td>
-<td>挖掘隐因子，解决数据稀疏</td>
-<td>数据量大、稀疏（如千万级用户）</td>
-<td>中-高</td>
-</tr>
-<tr>
-<td></td>
-<td>概率模型（贝叶斯&#x2F;LDA）</td>
-<td>建模偏好分布，适合多类别偏好</td>
-<td>内容类推荐（新闻、视频）</td>
-<td>中-高</td>
-</tr>
-<tr>
-<td></td>
-<td>深度学习模型（LSTM&#x2F;Transformer）</td>
-<td>捕捉时序&#x2F;长依赖特征</td>
-<td>序列推荐（预测下一个购买&#x2F;观看）</td>
-<td>高</td>
-</tr>
-<tr>
-<td>混合&#x2F;改进型CF</td>
-<td>CF+内容特征</td>
-<td>结合属性，解决冷启动</td>
-<td>新商品&#x2F;新用户多的场景</td>
-<td>中</td>
-</tr>
-<tr>
-<td></td>
-<td>时序CF</td>
-<td>考虑时间顺序，适合序列预测</td>
-<td>赛题（预测最后一条购买）</td>
-<td>中-高</td>
-</tr>
-</tbody></table>
-<h2 id="对你的赛题的启发"><a href="#对你的赛题的启发" class="headerlink" title="对你的赛题的启发"></a>对你的赛题的启发</h2><ol>
-<li>你的Baseline是“基于记忆的用户协同过滤”，属于入门级实现；</li>
-<li>要提升效果，优先尝试“时序CF”（结合购买顺序）或“CF+商品属性”（融入类目&#x2F;店铺），实现难度不高，效果提升明显；</li>
-<li>如果你想利用深度学习背景，直接上“神经协同过滤（NCF）”或“Transformer序列推荐模型”，大概率能超越大部分基于传统CF的方案。</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>算法类别</th>
-<th>核心思想</th>
-<th>优点</th>
-<th>缺点</th>
-<th>典型应用场景</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>协同过滤（Collaborative Filtering）</td>
-<td>不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”）</td>
-<td>无需领域知识、冷启动时（无属性）可用</td>
-<td>可解释性差、稀疏数据下效果不好</td>
-<td>电商推荐、视频推荐</td>
-</tr>
-<tr>
-<td>内容推荐（Content-Based）</td>
-<td>基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）</td>
-<td>可解释性强、无冷启动问题（有属性就好）</td>
-<td>推荐多样性差（只会推同类）、依赖属性质量</td>
-<td>新闻推荐、商品详情页推荐</td>
-</tr>
-<tr>
-<td>混合推荐（Hybrid）</td>
-<td>结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）</td>
-<td>兼顾准确性和多样性、鲁棒性强</td>
-<td>实现复杂</td>
-<td>成熟电商平台（淘宝&#x2F;京东）、短视频平台</td>
-</tr>
-</tbody></table>
-<h3 id="3-赛题为什么用协同过滤做Baseline？"><a href="#3-赛题为什么用协同过滤做Baseline？" class="headerlink" title="3. 赛题为什么用协同过滤做Baseline？"></a>3. 赛题为什么用协同过滤做Baseline？</h3><ul>
-<li>数据适配：赛题给了大量“用户-商品”购买行为数据，刚好满足协同过滤的输入需求；</li>
-<li>实现简单：无需复杂的特征工程（比如不用深度挖掘商品属性），零基础也能快速落地；</li>
-<li>效果有保障：协同过滤是推荐系统的“基石算法”，在购买行为数据充足时，基础效果不会差。</li>
-</ul>
-<h2 id="二、Baseline核心：用户协同过滤（User-Based-CF）深度解析"><a href="#二、Baseline核心：用户协同过滤（User-Based-CF）深度解析" class="headerlink" title="二、Baseline核心：用户协同过滤（User-Based CF）深度解析"></a>二、Baseline核心：用户协同过滤（User-Based CF）深度解析</h2><p>我们的Baseline用的是「用户协同过滤」，属于协同过滤的两大分支之一（另一分支是「物品协同过滤」，后面会讲区别）。</p>
-<h3 id="1-用户协同过滤的核心逻辑（3步走）"><a href="#1-用户协同过滤的核心逻辑（3步走）" class="headerlink" title="1. 用户协同过滤的核心逻辑（3步走）"></a>1. 用户协同过滤的核心逻辑（3步走）</h3><p>一句话总结：<strong>找和你“兴趣相似”的人，把他们买过但你没买过的商品推荐给你</strong>。</p>
-<p>对应到赛题的具体步骤（和Baseline代码完全对应）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[步骤1：找相似用户] --&gt; B[步骤2：收集候选商品] --&gt; C[步骤3：排序推荐]</span><br></pre></td></tr></table></figure>
-
-<h4 id="步骤1：找相似用户（Baseline的核心耗时步骤）"><a href="#步骤1：找相似用户（Baseline的核心耗时步骤）" class="headerlink" title="步骤1：找相似用户（Baseline的核心耗时步骤）"></a>步骤1：找相似用户（Baseline的核心耗时步骤）</h4><ul>
-<li>问题：怎么判断“两个用户兴趣相似”？</li>
-<li>答案：看他们的购买行为重合度——买的商品越像，兴趣越相似。</li>
-<li>Baseline的实现：<ul>
-<li>候选用户筛选：先找“和测试用户买过至少一个相同商品”的训练用户（减少计算量）；</li>
-<li>相似度计算：用「改进的杰卡德相似度」（带热门惩罚）量化相似程度。</li>
-</ul>
-</li>
-</ul>
-<h4 id="步骤2：收集候选商品"><a href="#步骤2：收集候选商品" class="headerlink" title="步骤2：收集候选商品"></a>步骤2：收集候选商品</h4><ul>
-<li>候选池 &#x3D; 测试用户自己买过的商品 + 所有相似用户买过的商品；</li>
-<li>去重：避免重复推荐同一商品（但Baseline后续补全时可能重复，不影响）。</li>
-</ul>
-<h4 id="步骤3：排序推荐"><a href="#步骤3：排序推荐" class="headerlink" title="步骤3：排序推荐"></a>步骤3：排序推荐</h4><ul>
-<li>打分规则：商品在“相似用户”中出现次数越多、相似用户的相似度越高，得分越高；</li>
-<li>排序：按得分降序取前30个，不足则用用户自己买过的商品补全。</li>
-</ul>
-<h3 id="2-关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）"><a href="#2-关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）" class="headerlink" title="2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）"></a>2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）</h3><p>相似度是用户协同过滤的“灵魂”——它决定了“相似用户”找得准不准，进而影响推荐效果。</p>
-<h4 id="（1）基础杰卡德相似度（Jaccard-Similarity）"><a href="#（1）基础杰卡德相似度（Jaccard-Similarity）" class="headerlink" title="（1）基础杰卡德相似度（Jaccard Similarity）"></a>（1）基础杰卡德相似度（Jaccard Similarity）</h4><p>最经典的集合相似度计算方法，公式：<br>$$
-\text{Jaccard}(A,B) = \frac{|A \cap B|}{|A \cup B|}
-$$</p>
-<ul>
-<li>解释：A是用户A的购买商品集合，B是用户B的购买商品集合；</li>
-<li>分子：两个用户都买过的商品数（交集）；</li>
-<li>分母：两个用户总共买过的商品数（并集）；</li>
-<li>范围：0~1，值越大越相似。</li>
-</ul>
-<h4 id="（2）Baseline为什么不用基础杰卡德，而用改进版？"><a href="#（2）Baseline为什么不用基础杰卡德，而用改进版？" class="headerlink" title="（2）Baseline为什么不用基础杰卡德，而用改进版？"></a>（2）Baseline为什么不用基础杰卡德，而用改进版？</h4><ul>
-<li>问题：基础杰卡德有个漏洞——“热门商品干扰”。<ul>
-<li>举例：商品X是爆款，10000个用户都买过；用户A和用户B都买了X，但其他商品完全不同。</li>
-<li>基础杰卡德会认为A和B相似（因为交集有X），但实际他们兴趣完全不同。</li>
-</ul>
-</li>
-<li>解决方案：加「热门惩罚」——热门商品（买的人多）对相似度的贡献降低。<ul>
-<li>Baseline的改进公式：<br>$$
-    \text{改进杰卡德}(A,B) = \frac{\sum_{x \in A \cap B} \frac{1}{\log(1+\text{买过}x\text{的用户数})}}{\sqrt{|A| \times |B|}}
-    $$</li>
-<li>核心变化：<ul>
-<li>分子：不再是“交集商品数”，而是“交集商品的加权和”——热门商品的权重低（比如爆款X的权重接近0）；</li>
-<li>分母：用“两个用户商品数的平方根乘积”替代“并集”，计算更简单，效果相近。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="3-用户协同过滤-vs-物品协同过滤（补充知识，帮你拓展）"><a href="#3-用户协同过滤-vs-物品协同过滤（补充知识，帮你拓展）" class="headerlink" title="3. 用户协同过滤 vs 物品协同过滤（补充知识，帮你拓展）"></a>3. 用户协同过滤 vs 物品协同过滤（补充知识，帮你拓展）</h3><p>很多人会混淆这两个分支，用表格清晰区分：</p>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>用户协同过滤（Baseline用的）</th>
-<th>物品协同过滤（Item-Based CF）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>核心逻辑</td>
-<td>找相似用户，推荐相似用户的商品</td>
-<td>找相似商品，推荐给买过该商品的用户</td>
-</tr>
-<tr>
-<td>相似度计算对象</td>
-<td>用户 vs 用户</td>
-<td>物品 vs 物品</td>
-</tr>
-<tr>
-<td>适合场景</td>
-<td>用户少、物品多（比如赛题：48万用户，187万商品）</td>
-<td>用户多、物品少（比如短视频平台：亿级用户，百万级视频）</td>
-</tr>
-<tr>
-<td>计算复杂度</td>
-<td>随用户数增加而增加</td>
-<td>随物品数增加而增加</td>
-</tr>
-<tr>
-<td>可解释性</td>
-<td>差（“和你相似的人买了这个”）</td>
-<td>强（“买过A的人还买了B”）</td>
-</tr>
-</tbody></table>
-<ul>
-<li>赛题为什么不用物品协同过滤？<ul>
-<li>物品数（187万）远大于用户数（48万），计算“物品相似度”（187万×187万）会内存爆炸，而用户协同过滤计算量可控。</li>
-</ul>
-</li>
-</ul>
-<h2 id="三、Baseline算法的局限性（为什么需要优化？）"><a href="#三、Baseline算法的局限性（为什么需要优化？）" class="headerlink" title="三、Baseline算法的局限性（为什么需要优化？）"></a>三、Baseline算法的局限性（为什么需要优化？）</h2><p>虽然Baseline能跑通，但作为零基础入门的实现，它做了很多“简化假设”，导致推荐精准度（尤其是MRR指标需要的“前10位命中率”）不够高：</p>
-<h3 id="1-简化假设1：忽略“复购”和“时序”"><a href="#1-简化假设1：忽略“复购”和“时序”" class="headerlink" title="1. 简化假设1：忽略“复购”和“时序”"></a>1. 简化假设1：忽略“复购”和“时序”</h3><ul>
-<li>Baseline认为“用户买过1次和买过10次某商品”对偏好的表达是一样的（商品去重）；</li>
-<li>但实际：复购次数越多，用户对该商品&#x2F;类目越偏好；近期购买的商品（irank&#x3D;1）比半年前买的（irank&#x3D;7）更能反映当前兴趣。</li>
-</ul>
-<h3 id="2-简化假设2：忽略“商品属性”"><a href="#2-简化假设2：忽略“商品属性”" class="headerlink" title="2. 简化假设2：忽略“商品属性”"></a>2. 简化假设2：忽略“商品属性”</h3><ul>
-<li>Baseline只看商品ID，不看商品的类目、店铺、价格；</li>
-<li>但实际：用户可能忠于“类目”（比如只买运动鞋）或“店铺”（比如只买某品牌店），哪怕没买过该店铺的某款具体商品，也大概率会买。</li>
-</ul>
-<h3 id="3-简化假设3：打分逻辑粗糙"><a href="#3-简化假设3：打分逻辑粗糙" class="headerlink" title="3. 简化假设3：打分逻辑粗糙"></a>3. 简化假设3：打分逻辑粗糙</h3><ul>
-<li>Baseline只累加相似用户的权重，没有突出“用户自身的核心偏好”；</li>
-<li>比如：用户自己买过8次类目X的商品，相似用户推荐类目Y的商品，Baseline可能把Y排在前面，但实际X的优先级应该更高。</li>
-</ul>
-<h2 id="四、从零基础到进阶：后续优化方向（结合你的深度学习背景）"><a href="#四、从零基础到进阶：后续优化方向（结合你的深度学习背景）" class="headerlink" title="四、从零基础到进阶：后续优化方向（结合你的深度学习背景）"></a>四、从零基础到进阶：后续优化方向（结合你的深度学习背景）</h2><p>了解了Baseline的核心逻辑后，你可以基于自己的深度学习基础，逐步提升效果：</p>
-<h3 id="1-先做“简单优化”（无需深度学习，纯工程改进）"><a href="#1-先做“简单优化”（无需深度学习，纯工程改进）" class="headerlink" title="1. 先做“简单优化”（无需深度学习，纯工程改进）"></a>1. 先做“简单优化”（无需深度学习，纯工程改进）</h3><ul>
-<li>优化1：加入复购权重——用户复购的商品，在相似度计算和推荐打分时加权；</li>
-<li>优化2：加入时序权重——近期购买的商品（irank小）权重更高；</li>
-<li>优化3：融合商品属性——加入“类目相似度”“店铺相似度”，多维度计算用户相似度。</li>
-</ul>
-<h3 id="2-再做“进阶优化”（结合机器学习-深度学习）"><a href="#2-再做“进阶优化”（结合机器学习-深度学习）" class="headerlink" title="2. 再做“进阶优化”（结合机器学习&#x2F;深度学习）"></a>2. 再做“进阶优化”（结合机器学习&#x2F;深度学习）</h3><ul>
-<li>方向1：矩阵分解（MF）——将“用户-商品”购买矩阵分解为用户向量和商品向量，用向量相似度替代杰卡德相似度（解决稀疏数据问题）；</li>
-<li>方向2：序列推荐模型——用深度学习捕捉用户购买的“时序关联”（比如LSTM、Transformer），因为赛题要预测“最后一条购买商品”，时序特征至关重要；</li>
-<li>方向3：混合推荐——先用水准分解得到用户&#x2F;商品向量，再结合商品属性和协同过滤得分，做加权融合（兼顾准确性和多样性）。</li>
-</ul>
-<h2 id="五、总结：零基础入门推荐系统的关键"><a href="#五、总结：零基础入门推荐系统的关键" class="headerlink" title="五、总结：零基础入门推荐系统的关键"></a>五、总结：零基础入门推荐系统的关键</h2><ol>
-<li>先理解“协同过滤”的核心思想（行为相似性），这是推荐系统的基石；</li>
-<li>搞懂Baseline的每一步实现：数据加载→字典构建→相似度计算→相似用户查找→推荐生成，每一步都对应“用户协同过滤”的核心逻辑；</li>
-<li>结合赛题指标（MRR）优化：MRR要求“正确商品排得越前越好”，所以后续优化要重点提升“前10位命中率”（比如强化用户近期&#x2F;复购偏好、引入时序关联）；</li>
-<li>利用你的深度学习背景：序列推荐模型（如GRU4Rec、Transformer4Rec）在赛题中大概率能大幅超越Baseline，这是你的核心优势。</li>
-</ol>
-<p>如果后续想深入某一块（比如矩阵分解的实现、序列推荐模型的搭建），可以随时告诉我，我会结合赛题数据帮你拆解！</p>
-<ol>
-<li>基于用户的协同过滤</li>
-<li>基于物品的协同过滤</li>
-<li>基于矩阵分解的协同过滤</li>
-<li>基于深度学习的协同过滤</li>
-</ol>
-
+                <div class="postShorten-excerpt">
+                    <p>本文记录了天池极客挑战赛安泰杯商品推荐项目的完整学习过程，包括推荐系统核心概念、协同过滤算法及比赛实践。</p>
                     
+                        <a
+                            href="/2025/05/15/product-recommendation-tianchi/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 商品推荐学习-天池极客挑赛安泰杯"
+                        >
+                            阅读全文
+                        </a>
                         
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2025/05/15/product-recommendation-tianchi/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             
@@ -778,7 +404,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -801,7 +427,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Linux 系统中常用的 Shell 命令，涵盖基础知识、通配符、用户权限等内容。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -824,7 +450,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文记录了学习廖雪峰 Python 教程过程中的新知识点和易错点总结。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -847,7 +473,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第零、一章的学习笔记，涵盖 Python 环境安装配置与变量、表达式等基础语法。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -870,7 +496,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第二、三章的学习笔记，主要涵盖 Python 数据类型（整型、浮点型、布尔值、字符串）及基本操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>

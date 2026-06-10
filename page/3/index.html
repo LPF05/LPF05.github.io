@@ -259,7 +259,7 @@
                 <section class="postShorten-group main-content-wrap">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -291,64 +291,17 @@
 
             </div>
             
-                <div class="postShorten-content">
-                    <h2 id="NLP基础学习-NLP鱼书"><a href="#NLP基础学习-NLP鱼书" class="headerlink" title="NLP基础学习(NLP鱼书)"></a>NLP基础学习(NLP鱼书)</h2><h3 id="基于同义词词典、计数的方法"><a href="#基于同义词词典、计数的方法" class="headerlink" title="基于同义词词典、计数的方法"></a>基于同义词词典、计数的方法</h3><ol>
-<li>最基础的方法即<strong>同义词词典</strong>，建立词间上下级关系，构造WordNet，需要大量人工标记。</li>
-<li>优于同义词词典的方法即<strong>基于计数</strong>，即用共现矩阵统计<strong>语料库corpus</strong>中单词的单位距离（窗口大小）内共现次数；共现矩阵为对称矩阵，对应的行则为词的向量，可用<strong>余弦相似度</strong>判断词向量之间的相似度，越接近1表示越相似。</li>
-<li><strong>分布式假设</strong>是指某个单词的含义由它周围的单词形成，是向量表示单词的想法基础。</li>
-<li>原始次数并不是一个好的信息指标，例如常用词(the...)会与部分名词达到很强的相关性，可以用PPMI（正的点互信息）表示其相关性，PPMI矩阵可以很好的表示词向量，但是维度与语料库中词数成正比，即词汇量大时单词向量维数也大；可以用奇异值分解降维PPMI矩阵，将稀疏向量转换为密集向量。</li>
-<li><strong>PMI点互信息</strong>是用来衡量两个事件发生的概率与它们分别发生的概率的乘积的差异，即$PMI(x,y)=P(x,y)-P(x)P(y)$，其中$P(x,y)$是事件$x$和$y$同时发生的概率，$P(x)$和$P(y)$分别是事件$x$和$y$发生的概率，可以很好的减少常用词对其他词的影响。</li>
-<li>PPMI（正的点互信息）是PMI的一种变形，即$PPMI(x,y)=max(PMI(x,y),0)$，它将所有负值都设为0，使得PPMI矩阵中的元素都为非负。</li>
-<li>因为由PPMI得出的矩阵比较稀疏，稳健性差，所以需要用**奇异值分解（SVD）**降维，将稀疏向量转换为密集向量，可是其复杂度较高，可以使用Truncated SVD截去奇异值较小的部分实现高速化。</li>
-</ol>
-<h3 id="基于推理的方法（Word2vec）"><a href="#基于推理的方法（Word2vec）" class="headerlink" title="基于推理的方法（Word2vec）"></a>基于推理的方法（Word2vec）</h3><ol>
-<li>基于计数的方法是一次性处理整个语料库的统计数据获得单词分布式表示，而基于推理的方法通常是在mini-batch上进行，并且神经网络可以使用多GPU执行加速，具有优势。</li>
-<li>每个词都用一个多维向量表示，向量之间的绝对距离即词与词义的相似度。</li>
-<li>word2vec常用CBOW和Skip-gram两种模型，CBOW是用上下文预测中心词，Skip-gram是用中心词预测上下文。</li>
-<li>CBOW的输入首先要同时经过一个<strong>嵌入层</strong>（原始为输入层），将输入的上下文词转换为对应的词向量表示（因为由one-hot向量表示，所以输入层的作用是用one-hot向量矩阵乘积从词向量矩阵中获取输入的词向量表示），然后将这些向量进行平均，得到一个表示上下文的向量，最后将这个向量输入到一个<strong>全连接层</strong>（输出层），输出一个表示中心词的向量。</li>
-<li>无论是输入侧还是输出侧的权重都可以被视为单词的分布式表示，最受欢迎的是将输入侧的权重作为单词的分布式表示。</li>
-<li>Word2Vec实际就是由输入词用网络（Encode+Decode+softmax）计算共现词（上下文出现词）的得分，优化目标是在输入$\omega_I$时输出$\omega_j$的概率最高。</li>
-<li>词袋模型（BOW）即是将文本视为词的无序集合，忽略语法词序，通过统计构建特征，由这构成的词向量的负向量接近的词并非反义词而是几乎完全无关的词，但是却擅长处理除语义相似以外的类比语义（$\text{king}-\text{man}+\text{woman}=\text{queen}$或$\text{king}-\text{man}\approx\text{queen}-\text{woman}$）。</li>
-<li>Word2Vec中我们通常会建立一个外部词向量表和一个中心词向量表，但实际使用中通常只将词视为一个向量，实践中最常见是平均。</li>
-<li>skip-gram模型与CBOW模型的区别在于，skip-gram模型是用中心词预测上下文，而CBOW模型是用上下文预测中心词；我们应该用skip-gram模型，因为它的性能要优于CBOW模型在处理低频词、类推语义等方面，因为其训练的问题更难相较于CBOW。</li>
-<li>word2vec相较于基于计数的方法，编码除了单词的相似性以外，还能理解更复杂的单词之间的模式，但是就单词相似性的定量评价而言，基于推理的方法和基于计数的方法难分上下，因为两个方法论在某些条件下作用是相通的，及对整个语料库的共现矩阵进行特殊矩阵分解。</li>
-</ol>
-<h3 id="word2vec的高速化"><a href="#word2vec的高速化" class="headerlink" title="word2vec的高速化"></a>word2vec的高速化</h3><ol>
-<li><p>首先是输入层的改进，将输入层换成<strong>嵌入层(embedding)</strong>，即用直接通过单词 ID 索引权重矩阵的对应行替代one-hot向量的生成与乘积，由one-hot查表变为embedding查向量，减少输入的维度与计算量，计算量(空间)由$O(V*N)$减少为$O(1)$（K个上下文单词）。</p>
-</li>
-<li><p>其次是输出层的改进，将输出层的全量softmax替换为<strong>负采样（negative sampling）</strong>，，从而达到轻量化的计算，计算量由$O(V)$减少为$O(K)$（K个负样本），K远小于V。</p>
-</li>
-<li><p>负采样的核心思想即不计算所有单词的概率，只计算正样本和少量负样本(随机单词)的概率，用二分类代替多分类，随机单词的采样来源于概率分布，即常用词被采样的概率要大于不常用词。</p>
-</li>
-<li><p>在选择解决问题的模型时，需要关注任务类型、语料库大小、单词向量维度等因素，根据不同的场景选择不同的模型，否则会导致表现差。</p>
-</li>
-<li><p>改进版word2vec的CBOW示例：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="comment"># 1. 数据预处理（构建词汇表和训练数据）</span></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">preprocess</span>(<span class="params">text, window_size=<span class="number">2</span></span>):</span><br><span class="line">    <span class="comment"># 简单分词（示例用空格分割）</span></span><br><span class="line">    words = text.split()</span><br><span class="line">    <span class="comment"># 构建词汇表（词→ID映射）</span></span><br><span class="line">    vocab = defaultdict(<span class="built_in">int</span>)</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> words:</span><br><span class="line">        vocab[word] += <span class="number">1</span>  <span class="comment"># 统计词频</span></span><br><span class="line">    vocab = &#123;word: i <span class="keyword">for</span> i, word <span class="keyword">in</span> <span class="built_in">enumerate</span>(vocab.keys())&#125;</span><br><span class="line">    vocab_size = <span class="built_in">len</span>(vocab)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 生成训练数据：(上下文ID列表, 中心词ID)</span></span><br><span class="line">    data = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(window_size, <span class="built_in">len</span>(words) - window_size):</span><br><span class="line">        center_word = words[i]</span><br><span class="line">        context_words = [words[i - window_size + j] <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span> * window_size)]</span><br><span class="line">        <span class="comment"># 转换为ID</span></span><br><span class="line">        center_id = vocab[center_word]</span><br><span class="line">        context_ids = [vocab[w] <span class="keyword">for</span> w <span class="keyword">in</span> context_words]</span><br><span class="line">        data.append((context_ids, center_id))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> data, vocab, vocab_size</span><br><span class="line"></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="comment"># 2. 负采样工具（生成负样本）</span></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">generate_negative_samples</span>(<span class="params">positive_id, vocab_size, num_neg=<span class="number">5</span>, power=<span class="number">0.75</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;根据词频分布采样负样本（简化版：这里用均匀分布替代真实词频分布）&quot;&quot;&quot;</span></span><br><span class="line">    negatives = []</span><br><span class="line">    <span class="keyword">while</span> <span class="built_in">len</span>(negatives) &lt; num_neg:</span><br><span class="line">        <span class="comment"># 随机生成一个不等于正样本的ID</span></span><br><span class="line">        neg_id = np.random.randint(vocab_size)</span><br><span class="line">        <span class="keyword">if</span> neg_id != positive_id <span class="keyword">and</span> neg_id <span class="keyword">not</span> <span class="keyword">in</span> negatives:</span><br><span class="line">            negatives.append(neg_id)</span><br><span class="line">    <span class="keyword">return</span> negatives</span><br><span class="line"></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="comment"># 3. CBOW模型（含Embedding和负采样）</span></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CBOW</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, vocab_size, embedding_dim=<span class="number">100</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.vocab_size = vocab_size  <span class="comment"># 词汇表大小</span></span><br><span class="line">        <span class="variable language_">self</span>.embedding_dim = embedding_dim  <span class="comment"># 词向量维度</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 初始化参数（Embedding矩阵和输出权重）</span></span><br><span class="line">        <span class="comment"># 输入Embedding矩阵 W_in: [vocab_size, embedding_dim]</span></span><br><span class="line">        <span class="variable language_">self</span>.W_in = np.random.randn(vocab_size, embedding_dim) * <span class="number">0.01</span></span><br><span class="line">        <span class="comment"># 输出权重矩阵 W_out: [vocab_size, embedding_dim]（每一行对应一个词的输出权重）</span></span><br><span class="line">        <span class="variable language_">self</span>.W_out = np.random.randn(vocab_size, embedding_dim) * <span class="number">0.01</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">self, x</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;Sigmoid激活函数（替代Softmax）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1.0</span> / (<span class="number">1.0</span> + np.exp(-x))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, context_ids</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;前向传播：通过Embedding层获取上下文向量并平均&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 1. Embedding层：直接索引提取上下文词向量（高速化改进1）</span></span><br><span class="line">        context_vectors = <span class="variable language_">self</span>.W_in[context_ids]  <span class="comment"># [window_size*2, embedding_dim]</span></span><br><span class="line">        <span class="comment"># 2. 中间层：上下文向量求平均</span></span><br><span class="line">        hidden = np.mean(context_vectors, axis=<span class="number">0</span>)  <span class="comment"># [embedding_dim]</span></span><br><span class="line">        <span class="keyword">return</span> hidden</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">loss</span>(<span class="params">self, hidden, positive_id, negative_ids</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;计算负采样损失（高速化改进2）&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 正样本损失：log(sigmoid(正样本得分))</span></span><br><span class="line">        pos_score = np.dot(<span class="variable language_">self</span>.W_out[positive_id], hidden)  <span class="comment"># 内积计算得分</span></span><br><span class="line">        pos_loss = -np.log(<span class="variable language_">self</span>.sigmoid(pos_score) + <span class="number">1e-8</span>)  <span class="comment"># 防止log(0)</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 负样本损失：sum(log(sigmoid(-负样本得分)))</span></span><br><span class="line">        neg_loss = <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">for</span> neg_id <span class="keyword">in</span> negative_ids:</span><br><span class="line">            neg_score = np.dot(<span class="variable language_">self</span>.W_out[neg_id], hidden)</span><br><span class="line">            neg_loss -= np.log(<span class="variable language_">self</span>.sigmoid(-neg_score) + <span class="number">1e-8</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> pos_loss + neg_loss</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">backward</span>(<span class="params">self, hidden, context_ids, positive_id, negative_ids, lr=<span class="number">0.01</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;反向传播更新参数&quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># 1. 计算输出侧梯度（正样本+负样本）</span></span><br><span class="line">        pos_score = np.dot(<span class="variable language_">self</span>.W_out[positive_id], hidden)</span><br><span class="line">        pos_delta = <span class="variable language_">self</span>.sigmoid(pos_score) - <span class="number">1</span>  <span class="comment"># 正样本梯度</span></span><br><span class="line">        </span><br><span class="line">        neg_deltas = []</span><br><span class="line">        <span class="keyword">for</span> neg_id <span class="keyword">in</span> negative_ids:</span><br><span class="line">            neg_score = np.dot(<span class="variable language_">self</span>.W_out[neg_id], hidden)</span><br><span class="line">            neg_deltas.append(<span class="variable language_">self</span>.sigmoid(neg_score))  <span class="comment"># 负样本梯度</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 2. 更新输出权重 W_out</span></span><br><span class="line">        <span class="variable language_">self</span>.W_out[positive_id] -= lr * pos_delta * hidden</span><br><span class="line">        <span class="keyword">for</span> i, neg_id <span class="keyword">in</span> <span class="built_in">enumerate</span>(negative_ids):</span><br><span class="line">            <span class="variable language_">self</span>.W_out[neg_id] -= lr * neg_deltas[i] * hidden</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 3. 计算隐藏层梯度，反向更新输入Embedding W_in</span></span><br><span class="line">        hidden_delta = pos_delta * <span class="variable language_">self</span>.W_out[positive_id]</span><br><span class="line">        <span class="keyword">for</span> i, neg_id <span class="keyword">in</span> <span class="built_in">enumerate</span>(negative_ids):</span><br><span class="line">            hidden_delta += neg_deltas[i] * <span class="variable language_">self</span>.W_out[neg_id]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 4. 更新输入Embedding（上下文每个词的向量都要更新）</span></span><br><span class="line">        avg_delta = hidden_delta / <span class="built_in">len</span>(context_ids)  <span class="comment"># 平均到每个上下文词</span></span><br><span class="line">        <span class="keyword">for</span> ctx_id <span class="keyword">in</span> context_ids:</span><br><span class="line">            <span class="variable language_">self</span>.W_in[ctx_id] -= lr * avg_delta</span><br><span class="line"></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="comment"># 4. 训练示例</span></span><br><span class="line"><span class="comment"># --------------------------</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    <span class="comment"># 示例文本（可替换为更大语料）</span></span><br><span class="line">    text = <span class="string">&quot;i like natural language processing and i like deep learning&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 预处理数据</span></span><br><span class="line">    data, vocab, vocab_size = preprocess(text, window_size=<span class="number">2</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;词汇表大小:&quot;</span>, vocab_size)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;训练样本数:&quot;</span>, <span class="built_in">len</span>(data))</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 初始化模型</span></span><br><span class="line">    model = CBOW(vocab_size, embedding_dim=<span class="number">100</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 训练参数</span></span><br><span class="line">    epochs = <span class="number">100</span></span><br><span class="line">    lr = <span class="number">0.01</span></span><br><span class="line">    num_neg = <span class="number">5</span>  <span class="comment"># 每个正样本配5个负样本</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 开始训练</span></span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(epochs):</span><br><span class="line">        total_loss = <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">for</span> context_ids, center_id <span class="keyword">in</span> data:</span><br><span class="line">            <span class="comment"># 前向传播：获取上下文平均向量</span></span><br><span class="line">            hidden = model.forward(context_ids)</span><br><span class="line">            <span class="comment"># 生成负样本</span></span><br><span class="line">            negative_ids = generate_negative_samples(center_id, vocab_size, num_neg)</span><br><span class="line">            <span class="comment"># 计算损失</span></span><br><span class="line">            loss = model.loss(hidden, center_id, negative_ids)</span><br><span class="line">            total_loss += loss</span><br><span class="line">            <span class="comment"># 反向传播更新</span></span><br><span class="line">            model.backward(hidden, context_ids, center_id, negative_ids, lr)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 每10轮打印一次损失</span></span><br><span class="line">        <span class="keyword">if</span> (epoch + <span class="number">1</span>) % <span class="number">10</span> == <span class="number">0</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Epoch <span class="subst">&#123;epoch+<span class="number">1</span>&#125;</span>, Loss: <span class="subst">&#123;total_loss / <span class="built_in">len</span>(data):<span class="number">.4</span>f&#125;</span>&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 训练完成后，W_in即为词向量（Embedding）</span></span><br><span class="line">    word = <span class="string">&quot;like&quot;</span></span><br><span class="line">    <span class="keyword">if</span> word <span class="keyword">in</span> vocab:</span><br><span class="line">        word_id = vocab[word]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\n单词 &#x27;<span class="subst">&#123;word&#125;</span>&#x27; 的词向量（前5维）：<span class="subst">&#123;model.W_in[word_id][:<span class="number">5</span>]&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="RNN"><a href="#RNN" class="headerlink" title="RNN"></a>RNN</h3><ol>
-<li><p>word2vec是以获取单词的分布式表示为目的的方法，一般不会用于语言模型，因为语言模型需要考虑单词之间的上下文关系，而word2vec只考虑单词的独立表示，会忽略单词的顺序以及其马尔可夫性质，同时无法获得长序记忆理解。</p>
-</li>
-<li><p>RNN网络的核心是拥有一个循环的环路，可以使数据不断循环流通记住过去的数据，从而实现长序记忆理解。</p>
-</li>
-<li><p>RNN可以被表述为第t个RNN层、时刻t的RNN层等，各个时刻的RNN层接收该层的输入和前一个RNN层的输出，输入是时序数据按照事件顺序排列的向量，输出是该时刻的隐藏状态向量。</p>
-</li>
-</ol>
-
+                <div class="postShorten-excerpt">
+                    <p>本文基于《自然语言处理入门》（鱼书）整理了 NLP 的基础方法，包括同义词词典、共现矩阵、Word2vec 等核心内容。</p>
                     
+                        <a
+                            href="/2025/05/20/nlp-basic-learning/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": NLP基础学习"
+                        >
+                            阅读全文
+                        </a>
                         
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2025/05/20/nlp-basic-learning/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             
@@ -357,7 +310,7 @@
     </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -389,391 +342,17 @@
 
             </div>
             
-                <div class="postShorten-content">
-                    <h1 id="商品推荐学习-天池极客挑赛安泰杯改"><a href="#商品推荐学习-天池极客挑赛安泰杯改" class="headerlink" title="商品推荐学习-天池极客挑赛安泰杯改"></a>商品推荐学习-天池极客挑赛安泰杯改</h1><h2 id="1-项目介绍"><a href="#1-项目介绍" class="headerlink" title="1. 项目介绍"></a>1. 项目介绍</h2><p>本次比赛基于某国家在若干日内的用户购买数据，数据集分为A、B两部分，A为训练数据，B为预测数据（去除其最后一条购买数据）。要求参赛选手预测B部分用户被移除的最后一条行为数据。</p>
-<h2 id="2-商品推荐类别学习"><a href="#2-商品推荐类别学习" class="headerlink" title="2. 商品推荐类别学习"></a>2. 商品推荐类别学习</h2><ol>
-<li><p>推荐系统到底在做什么：核心目标<br> 推荐系统的本质是「连接用户和物品」，解决“信息过载”问题：</p>
-<ul>
-<li>对用户：推荐你可能喜欢的商品&#x2F;内容（比如淘宝首页的“猜你喜欢”）；</li>
-<li>对平台：提升用户留存、转化（比如速卖通让用户买到想买的，多下单）。</li>
-</ul>
-<p> 对应到本次赛题：就是“根据用户历史购买记录，猜他下一个（最后一个）会买什么商品”。</p>
-</li>
-<li><p>推荐算法有很多，但核心可分为3类：协同过滤（Collaborative Filtering）、内容推荐（Content-Based）、混合推荐（Hybrid）。</p>
-<ul>
-<li>协同过滤（Collaborative Filtering）：不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”），</li>
-<li>内容推荐（Content-Based）：基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）。</li>
-<li>混合推荐（Hybrid）：结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）。</li>
-</ul>
-</li>
-</ol>
-<h3 id="协同过滤"><a href="#协同过滤" class="headerlink" title="协同过滤"></a>协同过滤</h3><ol>
-<li>协同过滤（CF）是推荐系统的核心算法家族，核心思想是<strong>利用用户或物品的“行为相似性”做推荐，不依赖物品&#x2F;用户的具体属性</strong>。根据“相似性计算的对象”和“实现方式”，协同过滤主要分为两大核心分支，再加上衍生的混合&#x2F;改进类型，整体分类如下：</li>
-</ol>
-<h4 id="核心分支：基于记忆的协同过滤（Memory-Based）"><a href="#核心分支：基于记忆的协同过滤（Memory-Based）" class="headerlink" title="核心分支：基于记忆的协同过滤（Memory-Based）"></a>核心分支：基于记忆的协同过滤（Memory-Based）</h4><ol>
-<li>最经典、最易实现的协同过滤类型，直接“记忆”用户&#x2F;物品的历史行为，通过统计方法计算相似度，不需要训练复杂模型。</li>
-</ol>
-<h5 id="1-用户协同过滤（User-Based-CF）"><a href="#1-用户协同过滤（User-Based-CF）" class="headerlink" title="1. 用户协同过滤（User-Based CF）"></a>1. 用户协同过滤（User-Based CF）</h5><blockquote>
-<p>“找和你兴趣相似的人，把他们买过的商品推荐给你”</p>
-</blockquote>
-<ol>
-<li><p>步骤：</p>
-<ol>
-<li>计算<strong>用户与用户之间的相似度</strong>（比如杰卡德相似度）；</li>
-<li>给目标用户找Top N个最相似的“邻居用户”；</li>
-<li>收集邻居用户买过但目标用户没买过的商品，按相似度加权打分，排序推荐。</li>
-</ol>
-</li>
-<li><p>赛题中的对应</p>
-<ul>
-<li>目标用户：测试集用户；</li>
-<li>邻居用户：训练集用户；</li>
-<li>优点：逻辑简单、易落地，适合用户数不算特别多的场景；</li>
-<li>缺点：用户数多的时候（如千万级），计算用户相似度会很慢，且有缺点是“用户冷启动”，即新用户没有行为，无法推荐。</li>
-</ul>
-</li>
-</ol>
-<h5 id="2-物品协同过滤（Item-Based-CF）——-电商常用"><a href="#2-物品协同过滤（Item-Based-CF）——-电商常用" class="headerlink" title="2. 物品协同过滤（Item-Based CF）—— 电商常用"></a>2. 物品协同过滤（Item-Based CF）—— 电商常用</h5><blockquote>
-<p>“你买过A商品，推荐和A相似的其他商品”</p>
-</blockquote>
-<ol>
-<li><p>步骤：</p>
-<ol>
-<li>计算<strong>物品与物品之间的相似度</strong>（比如两个商品被多少共同用户购买过）；</li>
-<li>找出目标用户买过的所有商品的“相似商品”；</li>
-<li>对这些相似商品加权打分（买过的商品相似度越高，得分越高），排序推荐。</li>
-</ol>
-</li>
-<li><p>举例：你买了“无线耳机”，系统推荐“耳机保护套”“蓝牙音箱”——因为这两个商品和“无线耳机”的购买用户重合度高（买耳机的人常买保护套&#x2F;音箱）。</p>
-</li>
-<li><p>优缺点</p>
-<ul>
-<li>优点：物品相似度相对稳定（比如耳机和保护套的关联性不会轻易变），可以提前预计算，推荐速度快；可解释性强（“基于你购买的X推荐”）；</li>
-<li>缺点：物品数特别多的时候（比如上亿商品），预计算物品相似度会占用大量内存（“物品冷启动”：新商品没有行为，无法推荐）。</li>
-</ul>
-</li>
-</ol>
-<h4 id="和用户协同过滤的核心区别"><a href="#和用户协同过滤的核心区别" class="headerlink" title="和用户协同过滤的核心区别"></a>和用户协同过滤的核心区别</h4><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>用户协同过滤（Baseline用）</th>
-<th>物品协同过滤（电商常用）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>相似性计算对象</td>
-<td>用户 vs 用户</td>
-<td>物品 vs 物品</td>
-</tr>
-<tr>
-<td>核心逻辑</td>
-<td>人以群分，推荐“群友”的商品</td>
-<td>物以类聚，推荐“同类”商品</td>
-</tr>
-<tr>
-<td>计算复杂度</td>
-<td>随用户数增加而上升</td>
-<td>随物品数增加而上升</td>
-</tr>
-<tr>
-<td>适合场景</td>
-<td>用户少、物品多（如赛题）</td>
-<td>用户多、物品少（如淘宝）</td>
-</tr>
-<tr>
-<td>冷启动问题</td>
-<td>新用户难推荐</td>
-<td>新商品难推荐</td>
-</tr>
-</tbody></table>
-<h2 id="二、核心分支：基于模型的协同过滤（Model-Based）"><a href="#二、核心分支：基于模型的协同过滤（Model-Based）" class="headerlink" title="二、核心分支：基于模型的协同过滤（Model-Based）"></a>二、核心分支：基于模型的协同过滤（Model-Based）</h2><p>当数据量很大（比如千万级用户&#x2F;亿级商品），或数据稀疏（大部分用户只买过少数商品）时，基于记忆的CF效果会下降——这时候需要用“模型”来挖掘隐藏的用户偏好，核心是<strong>把推荐问题转化为机器学习&#x2F;深度学习问题</strong>。</p>
-<h3 id="1-矩阵分解（Matrix-Factorization-MF）——-最经典的模型CF"><a href="#1-矩阵分解（Matrix-Factorization-MF）——-最经典的模型CF" class="headerlink" title="1. 矩阵分解（Matrix Factorization, MF）—— 最经典的模型CF"></a>1. 矩阵分解（Matrix Factorization, MF）—— 最经典的模型CF</h3><h4 id="核心逻辑"><a href="#核心逻辑" class="headerlink" title="核心逻辑"></a>核心逻辑</h4><ul>
-<li>问题：用户-商品的购买行为可以表示为一个“稀疏矩阵”（行&#x3D;用户，列&#x3D;商品，值&#x3D;是否购买&#x2F;购买次数），但大部分值都是空的（用户没买过该商品）；</li>
-<li>解决方案：把这个稀疏矩阵分解为两个稠密矩阵——<strong>用户特征矩阵</strong>（行&#x3D;用户，列&#x3D;隐因子，比如“喜欢运动”“偏好低价”）和<strong>商品特征矩阵</strong>（行&#x3D;商品，列&#x3D;隐因子）；</li>
-<li>推荐：用户对商品的偏好得分 &#x3D; 用户特征向量 × 商品特征向量（点积），按得分排序推荐。</li>
-</ul>
-<h4 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h4><ul>
-<li>用户A的特征向量：[0.9（喜欢运动）, 0.2（偏好高价）]；</li>
-<li>商品B的特征向量：[0.8（运动类）, 0.3（高价）]；</li>
-<li>偏好得分：0.9×0.8 + 0.2×0.3 &#x3D; 0.78（得分高，推荐）。</li>
-</ul>
-<h4 id="常见变种"><a href="#常见变种" class="headerlink" title="常见变种"></a>常见变种</h4><ul>
-<li>SVD（奇异值分解）：最早用于推荐系统的矩阵分解算法；</li>
-<li>FFM（场感知因子分解机）：考虑商品属性的“场”（比如类目、店铺），效果更好；</li>
-<li>NCF（神经协同过滤）：用神经网络替代传统矩阵分解的点积运算，拟合能力更强（结合了深度学习）。</li>
-</ul>
-<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><ul>
-<li>优点：能挖掘用户&#x2F;商品的“隐藏偏好”，解决数据稀疏问题；推荐效果比基于记忆的CF更好；</li>
-<li>缺点：需要训练模型，实现比基于记忆的CF复杂；可解释性差（不知道隐因子具体代表什么）。</li>
-</ul>
-<h3 id="2-其他模型类CF"><a href="#2-其他模型类CF" class="headerlink" title="2. 其他模型类CF"></a>2. 其他模型类CF</h3><ul>
-<li><strong>概率模型</strong>：比如贝叶斯网络、LDA（隐含狄利克雷分配），把用户偏好建模为概率分布，适合处理“多类别偏好”场景；</li>
-<li><strong>基于邻居的模型</strong>：比如KNN的改进版（K近邻协同过滤），结合了基于记忆的“邻居思想”和模型的“泛化能力”，解决稀疏数据下的邻居查找问题；</li>
-<li><strong>深度学习模型</strong>：除了NCF，还有CNN（捕捉商品的局部特征）、RNN&#x2F;LSTM（捕捉用户行为的时序特征）、Transformer（捕捉长序列行为依赖），适合复杂场景（比如你的赛题需要预测“最后一条购买商品”，时序模型特别适配）。</li>
-</ul>
-<h2 id="三、混合-改进型协同过滤"><a href="#三、混合-改进型协同过滤" class="headerlink" title="三、混合&#x2F;改进型协同过滤"></a>三、混合&#x2F;改进型协同过滤</h2><p>纯粹的协同过滤（无论是基于记忆还是模型）都有局限（比如冷启动、可解释性差），所以实际应用中大多用“混合&#x2F;改进型”，核心是<strong>结合多种CF的优点，或融入其他类型的特征</strong>。</p>
-<h3 id="1-用户-物品混合CF"><a href="#1-用户-物品混合CF" class="headerlink" title="1. 用户-物品混合CF"></a>1. 用户-物品混合CF</h3><ul>
-<li>逻辑：同时计算“用户相似度”和“物品相似度”，把两个相似度加权融合，得到最终的推荐得分；</li>
-<li>举例：推荐得分 &#x3D; 0.4×用户协同过滤得分 + 0.6×物品协同过滤得分；</li>
-<li>优点：兼顾“用户兴趣”和“商品关联”，效果更稳定。</li>
-</ul>
-<h3 id="2-结合内容特征的CF（CF-Content）"><a href="#2-结合内容特征的CF（CF-Content）" class="headerlink" title="2. 结合内容特征的CF（CF+Content）"></a>2. 结合内容特征的CF（CF+Content）</h3><ul>
-<li>逻辑：把商品属性（类目、店铺、价格）、用户属性（年龄、性别，赛题没给）融入协同过滤；</li>
-<li>举例：计算物品相似度时，不仅看“共同购买用户数”，还看“是否同类目”“价格区间是否接近”；</li>
-<li>优点：解决冷启动问题（新商品有属性就能计算相似度）；推荐更精准（结合了属性偏好）。</li>
-</ul>
-<h3 id="3-时序协同过滤（Temporal-CF）"><a href="#3-时序协同过滤（Temporal-CF）" class="headerlink" title="3. 时序协同过滤（Temporal CF）"></a>3. 时序协同过滤（Temporal CF）</h3><ul>
-<li>逻辑：考虑用户行为的“时间顺序”（比如近期购买的商品比半年前的更能反映当前偏好）；</li>
-<li>举例：计算用户相似度时，近期购买的商品权重更高；用LSTM&#x2F;Transformer模型捕捉“购买序列”的依赖关系（比如买了手机→买手机壳→买耳机）；</li>
-<li>适用场景：你的赛题！因为要预测“最后一条购买商品”，时序特征是核心，时序CF比普通CF效果好得多。</li>
-</ul>
-<h2 id="四、总结：协同过滤分类速查表"><a href="#四、总结：协同过滤分类速查表" class="headerlink" title="四、总结：协同过滤分类速查表"></a>四、总结：协同过滤分类速查表</h2><table>
-<thead>
-<tr>
-<th>大类</th>
-<th>子类</th>
-<th>核心特点</th>
-<th>适用场景</th>
-<th>实现难度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>基于记忆的CF</td>
-<td>用户协同过滤</td>
-<td>找相似用户，推荐其商品</td>
-<td>用户少、物品多（如赛题）</td>
-<td>低</td>
-</tr>
-<tr>
-<td></td>
-<td>物品协同过滤</td>
-<td>找相似商品，推荐给买过该商品的用户</td>
-<td>用户多、物品少（如淘宝）</td>
-<td>低-中</td>
-</tr>
-<tr>
-<td>基于模型的CF</td>
-<td>矩阵分解（MF&#x2F;NCF）</td>
-<td>挖掘隐因子，解决数据稀疏</td>
-<td>数据量大、稀疏（如千万级用户）</td>
-<td>中-高</td>
-</tr>
-<tr>
-<td></td>
-<td>概率模型（贝叶斯&#x2F;LDA）</td>
-<td>建模偏好分布，适合多类别偏好</td>
-<td>内容类推荐（新闻、视频）</td>
-<td>中-高</td>
-</tr>
-<tr>
-<td></td>
-<td>深度学习模型（LSTM&#x2F;Transformer）</td>
-<td>捕捉时序&#x2F;长依赖特征</td>
-<td>序列推荐（预测下一个购买&#x2F;观看）</td>
-<td>高</td>
-</tr>
-<tr>
-<td>混合&#x2F;改进型CF</td>
-<td>CF+内容特征</td>
-<td>结合属性，解决冷启动</td>
-<td>新商品&#x2F;新用户多的场景</td>
-<td>中</td>
-</tr>
-<tr>
-<td></td>
-<td>时序CF</td>
-<td>考虑时间顺序，适合序列预测</td>
-<td>赛题（预测最后一条购买）</td>
-<td>中-高</td>
-</tr>
-</tbody></table>
-<h2 id="对你的赛题的启发"><a href="#对你的赛题的启发" class="headerlink" title="对你的赛题的启发"></a>对你的赛题的启发</h2><ol>
-<li>你的Baseline是“基于记忆的用户协同过滤”，属于入门级实现；</li>
-<li>要提升效果，优先尝试“时序CF”（结合购买顺序）或“CF+商品属性”（融入类目&#x2F;店铺），实现难度不高，效果提升明显；</li>
-<li>如果你想利用深度学习背景，直接上“神经协同过滤（NCF）”或“Transformer序列推荐模型”，大概率能超越大部分基于传统CF的方案。</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th>算法类别</th>
-<th>核心思想</th>
-<th>优点</th>
-<th>缺点</th>
-<th>典型应用场景</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>协同过滤（Collaborative Filtering）</td>
-<td>不依赖物品&#x2F;用户的具体属性，只看“行为相似性”（比如“你和他买过很多一样的，他买的你也可能买”）</td>
-<td>无需领域知识、冷启动时（无属性）可用</td>
-<td>可解释性差、稀疏数据下效果不好</td>
-<td>电商推荐、视频推荐</td>
-</tr>
-<tr>
-<td>内容推荐（Content-Based）</td>
-<td>基于“物品属性”和“用户偏好”匹配（比如“你喜欢买‘红色连衣裙’，就给你推其他红色连衣裙”）</td>
-<td>可解释性强、无冷启动问题（有属性就好）</td>
-<td>推荐多样性差（只会推同类）、依赖属性质量</td>
-<td>新闻推荐、商品详情页推荐</td>
-</tr>
-<tr>
-<td>混合推荐（Hybrid）</td>
-<td>结合协同过滤+内容推荐（比如“先按行为找相似用户，再按属性筛选同类商品”）</td>
-<td>兼顾准确性和多样性、鲁棒性强</td>
-<td>实现复杂</td>
-<td>成熟电商平台（淘宝&#x2F;京东）、短视频平台</td>
-</tr>
-</tbody></table>
-<h3 id="3-赛题为什么用协同过滤做Baseline？"><a href="#3-赛题为什么用协同过滤做Baseline？" class="headerlink" title="3. 赛题为什么用协同过滤做Baseline？"></a>3. 赛题为什么用协同过滤做Baseline？</h3><ul>
-<li>数据适配：赛题给了大量“用户-商品”购买行为数据，刚好满足协同过滤的输入需求；</li>
-<li>实现简单：无需复杂的特征工程（比如不用深度挖掘商品属性），零基础也能快速落地；</li>
-<li>效果有保障：协同过滤是推荐系统的“基石算法”，在购买行为数据充足时，基础效果不会差。</li>
-</ul>
-<h2 id="二、Baseline核心：用户协同过滤（User-Based-CF）深度解析"><a href="#二、Baseline核心：用户协同过滤（User-Based-CF）深度解析" class="headerlink" title="二、Baseline核心：用户协同过滤（User-Based CF）深度解析"></a>二、Baseline核心：用户协同过滤（User-Based CF）深度解析</h2><p>我们的Baseline用的是「用户协同过滤」，属于协同过滤的两大分支之一（另一分支是「物品协同过滤」，后面会讲区别）。</p>
-<h3 id="1-用户协同过滤的核心逻辑（3步走）"><a href="#1-用户协同过滤的核心逻辑（3步走）" class="headerlink" title="1. 用户协同过滤的核心逻辑（3步走）"></a>1. 用户协同过滤的核心逻辑（3步走）</h3><p>一句话总结：<strong>找和你“兴趣相似”的人，把他们买过但你没买过的商品推荐给你</strong>。</p>
-<p>对应到赛题的具体步骤（和Baseline代码完全对应）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A[步骤1：找相似用户] --&gt; B[步骤2：收集候选商品] --&gt; C[步骤3：排序推荐]</span><br></pre></td></tr></table></figure>
-
-<h4 id="步骤1：找相似用户（Baseline的核心耗时步骤）"><a href="#步骤1：找相似用户（Baseline的核心耗时步骤）" class="headerlink" title="步骤1：找相似用户（Baseline的核心耗时步骤）"></a>步骤1：找相似用户（Baseline的核心耗时步骤）</h4><ul>
-<li>问题：怎么判断“两个用户兴趣相似”？</li>
-<li>答案：看他们的购买行为重合度——买的商品越像，兴趣越相似。</li>
-<li>Baseline的实现：<ul>
-<li>候选用户筛选：先找“和测试用户买过至少一个相同商品”的训练用户（减少计算量）；</li>
-<li>相似度计算：用「改进的杰卡德相似度」（带热门惩罚）量化相似程度。</li>
-</ul>
-</li>
-</ul>
-<h4 id="步骤2：收集候选商品"><a href="#步骤2：收集候选商品" class="headerlink" title="步骤2：收集候选商品"></a>步骤2：收集候选商品</h4><ul>
-<li>候选池 &#x3D; 测试用户自己买过的商品 + 所有相似用户买过的商品；</li>
-<li>去重：避免重复推荐同一商品（但Baseline后续补全时可能重复，不影响）。</li>
-</ul>
-<h4 id="步骤3：排序推荐"><a href="#步骤3：排序推荐" class="headerlink" title="步骤3：排序推荐"></a>步骤3：排序推荐</h4><ul>
-<li>打分规则：商品在“相似用户”中出现次数越多、相似用户的相似度越高，得分越高；</li>
-<li>排序：按得分降序取前30个，不足则用用户自己买过的商品补全。</li>
-</ul>
-<h3 id="2-关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）"><a href="#2-关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）" class="headerlink" title="2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）"></a>2. 关键概念：相似度计算（为什么用杰卡德，还加热门惩罚？）</h3><p>相似度是用户协同过滤的“灵魂”——它决定了“相似用户”找得准不准，进而影响推荐效果。</p>
-<h4 id="（1）基础杰卡德相似度（Jaccard-Similarity）"><a href="#（1）基础杰卡德相似度（Jaccard-Similarity）" class="headerlink" title="（1）基础杰卡德相似度（Jaccard Similarity）"></a>（1）基础杰卡德相似度（Jaccard Similarity）</h4><p>最经典的集合相似度计算方法，公式：<br>$$
-\text{Jaccard}(A,B) = \frac{|A \cap B|}{|A \cup B|}
-$$</p>
-<ul>
-<li>解释：A是用户A的购买商品集合，B是用户B的购买商品集合；</li>
-<li>分子：两个用户都买过的商品数（交集）；</li>
-<li>分母：两个用户总共买过的商品数（并集）；</li>
-<li>范围：0~1，值越大越相似。</li>
-</ul>
-<h4 id="（2）Baseline为什么不用基础杰卡德，而用改进版？"><a href="#（2）Baseline为什么不用基础杰卡德，而用改进版？" class="headerlink" title="（2）Baseline为什么不用基础杰卡德，而用改进版？"></a>（2）Baseline为什么不用基础杰卡德，而用改进版？</h4><ul>
-<li>问题：基础杰卡德有个漏洞——“热门商品干扰”。<ul>
-<li>举例：商品X是爆款，10000个用户都买过；用户A和用户B都买了X，但其他商品完全不同。</li>
-<li>基础杰卡德会认为A和B相似（因为交集有X），但实际他们兴趣完全不同。</li>
-</ul>
-</li>
-<li>解决方案：加「热门惩罚」——热门商品（买的人多）对相似度的贡献降低。<ul>
-<li>Baseline的改进公式：<br>$$
-    \text{改进杰卡德}(A,B) = \frac{\sum_{x \in A \cap B} \frac{1}{\log(1+\text{买过}x\text{的用户数})}}{\sqrt{|A| \times |B|}}
-    $$</li>
-<li>核心变化：<ul>
-<li>分子：不再是“交集商品数”，而是“交集商品的加权和”——热门商品的权重低（比如爆款X的权重接近0）；</li>
-<li>分母：用“两个用户商品数的平方根乘积”替代“并集”，计算更简单，效果相近。</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="3-用户协同过滤-vs-物品协同过滤（补充知识，帮你拓展）"><a href="#3-用户协同过滤-vs-物品协同过滤（补充知识，帮你拓展）" class="headerlink" title="3. 用户协同过滤 vs 物品协同过滤（补充知识，帮你拓展）"></a>3. 用户协同过滤 vs 物品协同过滤（补充知识，帮你拓展）</h3><p>很多人会混淆这两个分支，用表格清晰区分：</p>
-<table>
-<thead>
-<tr>
-<th>维度</th>
-<th>用户协同过滤（Baseline用的）</th>
-<th>物品协同过滤（Item-Based CF）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>核心逻辑</td>
-<td>找相似用户，推荐相似用户的商品</td>
-<td>找相似商品，推荐给买过该商品的用户</td>
-</tr>
-<tr>
-<td>相似度计算对象</td>
-<td>用户 vs 用户</td>
-<td>物品 vs 物品</td>
-</tr>
-<tr>
-<td>适合场景</td>
-<td>用户少、物品多（比如赛题：48万用户，187万商品）</td>
-<td>用户多、物品少（比如短视频平台：亿级用户，百万级视频）</td>
-</tr>
-<tr>
-<td>计算复杂度</td>
-<td>随用户数增加而增加</td>
-<td>随物品数增加而增加</td>
-</tr>
-<tr>
-<td>可解释性</td>
-<td>差（“和你相似的人买了这个”）</td>
-<td>强（“买过A的人还买了B”）</td>
-</tr>
-</tbody></table>
-<ul>
-<li>赛题为什么不用物品协同过滤？<ul>
-<li>物品数（187万）远大于用户数（48万），计算“物品相似度”（187万×187万）会内存爆炸，而用户协同过滤计算量可控。</li>
-</ul>
-</li>
-</ul>
-<h2 id="三、Baseline算法的局限性（为什么需要优化？）"><a href="#三、Baseline算法的局限性（为什么需要优化？）" class="headerlink" title="三、Baseline算法的局限性（为什么需要优化？）"></a>三、Baseline算法的局限性（为什么需要优化？）</h2><p>虽然Baseline能跑通，但作为零基础入门的实现，它做了很多“简化假设”，导致推荐精准度（尤其是MRR指标需要的“前10位命中率”）不够高：</p>
-<h3 id="1-简化假设1：忽略“复购”和“时序”"><a href="#1-简化假设1：忽略“复购”和“时序”" class="headerlink" title="1. 简化假设1：忽略“复购”和“时序”"></a>1. 简化假设1：忽略“复购”和“时序”</h3><ul>
-<li>Baseline认为“用户买过1次和买过10次某商品”对偏好的表达是一样的（商品去重）；</li>
-<li>但实际：复购次数越多，用户对该商品&#x2F;类目越偏好；近期购买的商品（irank&#x3D;1）比半年前买的（irank&#x3D;7）更能反映当前兴趣。</li>
-</ul>
-<h3 id="2-简化假设2：忽略“商品属性”"><a href="#2-简化假设2：忽略“商品属性”" class="headerlink" title="2. 简化假设2：忽略“商品属性”"></a>2. 简化假设2：忽略“商品属性”</h3><ul>
-<li>Baseline只看商品ID，不看商品的类目、店铺、价格；</li>
-<li>但实际：用户可能忠于“类目”（比如只买运动鞋）或“店铺”（比如只买某品牌店），哪怕没买过该店铺的某款具体商品，也大概率会买。</li>
-</ul>
-<h3 id="3-简化假设3：打分逻辑粗糙"><a href="#3-简化假设3：打分逻辑粗糙" class="headerlink" title="3. 简化假设3：打分逻辑粗糙"></a>3. 简化假设3：打分逻辑粗糙</h3><ul>
-<li>Baseline只累加相似用户的权重，没有突出“用户自身的核心偏好”；</li>
-<li>比如：用户自己买过8次类目X的商品，相似用户推荐类目Y的商品，Baseline可能把Y排在前面，但实际X的优先级应该更高。</li>
-</ul>
-<h2 id="四、从零基础到进阶：后续优化方向（结合你的深度学习背景）"><a href="#四、从零基础到进阶：后续优化方向（结合你的深度学习背景）" class="headerlink" title="四、从零基础到进阶：后续优化方向（结合你的深度学习背景）"></a>四、从零基础到进阶：后续优化方向（结合你的深度学习背景）</h2><p>了解了Baseline的核心逻辑后，你可以基于自己的深度学习基础，逐步提升效果：</p>
-<h3 id="1-先做“简单优化”（无需深度学习，纯工程改进）"><a href="#1-先做“简单优化”（无需深度学习，纯工程改进）" class="headerlink" title="1. 先做“简单优化”（无需深度学习，纯工程改进）"></a>1. 先做“简单优化”（无需深度学习，纯工程改进）</h3><ul>
-<li>优化1：加入复购权重——用户复购的商品，在相似度计算和推荐打分时加权；</li>
-<li>优化2：加入时序权重——近期购买的商品（irank小）权重更高；</li>
-<li>优化3：融合商品属性——加入“类目相似度”“店铺相似度”，多维度计算用户相似度。</li>
-</ul>
-<h3 id="2-再做“进阶优化”（结合机器学习-深度学习）"><a href="#2-再做“进阶优化”（结合机器学习-深度学习）" class="headerlink" title="2. 再做“进阶优化”（结合机器学习&#x2F;深度学习）"></a>2. 再做“进阶优化”（结合机器学习&#x2F;深度学习）</h3><ul>
-<li>方向1：矩阵分解（MF）——将“用户-商品”购买矩阵分解为用户向量和商品向量，用向量相似度替代杰卡德相似度（解决稀疏数据问题）；</li>
-<li>方向2：序列推荐模型——用深度学习捕捉用户购买的“时序关联”（比如LSTM、Transformer），因为赛题要预测“最后一条购买商品”，时序特征至关重要；</li>
-<li>方向3：混合推荐——先用水准分解得到用户&#x2F;商品向量，再结合商品属性和协同过滤得分，做加权融合（兼顾准确性和多样性）。</li>
-</ul>
-<h2 id="五、总结：零基础入门推荐系统的关键"><a href="#五、总结：零基础入门推荐系统的关键" class="headerlink" title="五、总结：零基础入门推荐系统的关键"></a>五、总结：零基础入门推荐系统的关键</h2><ol>
-<li>先理解“协同过滤”的核心思想（行为相似性），这是推荐系统的基石；</li>
-<li>搞懂Baseline的每一步实现：数据加载→字典构建→相似度计算→相似用户查找→推荐生成，每一步都对应“用户协同过滤”的核心逻辑；</li>
-<li>结合赛题指标（MRR）优化：MRR要求“正确商品排得越前越好”，所以后续优化要重点提升“前10位命中率”（比如强化用户近期&#x2F;复购偏好、引入时序关联）；</li>
-<li>利用你的深度学习背景：序列推荐模型（如GRU4Rec、Transformer4Rec）在赛题中大概率能大幅超越Baseline，这是你的核心优势。</li>
-</ol>
-<p>如果后续想深入某一块（比如矩阵分解的实现、序列推荐模型的搭建），可以随时告诉我，我会结合赛题数据帮你拆解！</p>
-<ol>
-<li>基于用户的协同过滤</li>
-<li>基于物品的协同过滤</li>
-<li>基于矩阵分解的协同过滤</li>
-<li>基于深度学习的协同过滤</li>
-</ol>
-
+                <div class="postShorten-excerpt">
+                    <p>本文记录了天池极客挑战赛安泰杯商品推荐项目的完整学习过程，包括推荐系统核心概念、协同过滤算法及比赛实践。</p>
                     
+                        <a
+                            href="/2025/05/15/product-recommendation-tianchi/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 商品推荐学习-天池极客挑赛安泰杯"
+                        >
+                            阅读全文
+                        </a>
                         
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2025/05/15/product-recommendation-tianchi/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             
@@ -782,7 +361,7 @@ $$</p>
     </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -814,45 +393,17 @@ $$</p>
 
             </div>
             
-                <div class="postShorten-content">
-                    <h1 id="python类的实现中有关-settar-原理问题"><a href="#python类的实现中有关-settar-原理问题" class="headerlink" title="python类的实现中有关__settar__原理问题"></a>python类的实现中有关__settar__原理问题</h1><h2 id="具体解决思路"><a href="#具体解决思路" class="headerlink" title="具体解决思路"></a>具体解决思路</h2><p>问题代码段:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CustomAttributes</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._attributes = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setattr__</span>(<span class="params">self, name, value</span>):</span><br><span class="line">        <span class="comment"># 允许设置名为 &#x27;_attributes&#x27; 的属性，这是实现所必需的  </span></span><br><span class="line">        <span class="keyword">if</span> name == <span class="string">&#x27;_attributes&#x27;</span>:</span><br><span class="line">            <span class="built_in">super</span>().__setattr__(name, value)</span><br><span class="line">            <span class="comment"># 对于其他属性，添加它们到 _attributes 字典中</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="variable language_">self</span>._attributes[name] = value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="comment"># 尝试从 _attributes 字典中获取属性  </span></span><br><span class="line">        <span class="keyword">if</span> name <span class="keyword">in</span> <span class="variable language_">self</span>._attributes:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._attributes[name]</span><br><span class="line">            <span class="comment"># 如果属性不存在，则调用默认的 __getattr__ 实现</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;<span class="subst">&#123;name&#125;</span>&#x27;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建一个 CustomAttributes 实例</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">obj = CustomAttributes()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置属性  </span></span><br><span class="line">obj.name = <span class="string">&#x27;Alice&#x27;</span></span><br><span class="line">obj.age = <span class="number">35</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问属性  </span></span><br><span class="line"><span class="built_in">print</span>(obj.name)  <span class="comment"># 输出: Alice  </span></span><br><span class="line"><span class="built_in">print</span>(obj.age)  <span class="comment"># 输出: 35</span></span><br></pre></td></tr></table></figure>
-
-<p>在这段代码中，我发现特殊方法__setattr__中有段未知代码 <code>super().__setattr__(name, value)</code>，我要对其功能进行一个测试。</p>
-<ol>
-<li><p>在代码测试中加入_attributes的value。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> CustomAttributes</span><br><span class="line"></span><br><span class="line">obj = CustomAttributes()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置属性  </span></span><br><span class="line">obj.name = <span class="string">&#x27;Alice&#x27;</span></span><br><span class="line">obj.age = <span class="number">35</span></span><br><span class="line">obj._attrubites = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问属性  </span></span><br><span class="line"><span class="built_in">print</span>(obj.name)  </span><br><span class="line"><span class="built_in">print</span>(obj.age)</span><br><span class="line"><span class="built_in">print</span>(obj._attributes)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">输出:</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 32, in &lt;module&gt;</span></span><br><span class="line"><span class="string">        print(obj.name)</span></span><br><span class="line"><span class="string">            ^^^^^^^^</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 15, in __getattr__</span></span><br><span class="line"><span class="string">        if name in self._attributes:</span></span><br><span class="line"><span class="string">        ^^^^^^^^^^^^^^^^^^^^^^^^</span></span><br><span class="line"><span class="string">    TypeError: argument of type &#x27;int&#x27; is not iterable</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> CustomAttributes</span><br><span class="line"></span><br><span class="line">obj = CustomAttributes()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置属性  </span></span><br><span class="line">obj.name = <span class="string">&#x27;Alice&#x27;</span></span><br><span class="line">obj.age = <span class="number">35</span></span><br><span class="line">obj._attributes = <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问属性  </span></span><br><span class="line"><span class="built_in">print</span>(obj._attributes)  <span class="comment"># 输出:10</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>由此得知，<code>super().__setattr__(name, value)</code>这段代码的功能是使 <code>_attributes</code>的key可以覆盖原属性dict。</p>
-</li>
-<li><p>删掉这段代码，测试其是否为重要组成部分。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">CustomAttributes</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="variable language_">self</span>._attributes = &#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__setattr__</span>(<span class="params">self, name, value</span>):</span><br><span class="line">        <span class="variable language_">self</span>._attributes[name] = value</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getattr__</span>(<span class="params">self, name</span>):</span><br><span class="line">        <span class="comment"># 尝试从 _attributes 字典中获取属性</span></span><br><span class="line">        <span class="keyword">if</span> name <span class="keyword">in</span> <span class="variable language_">self</span>._attributes:</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">self</span>._attributes[name]</span><br><span class="line">            <span class="comment"># 如果属性不存在，则调用默认的 __getattr__ 实现</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">f&quot;&#x27;CustomAttributes&#x27; object has no attribute &#x27;<span class="subst">&#123;name&#125;</span>&#x27;&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 创建一个 CustomAttributes 实例</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">obj = CustomAttributes()</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">输出:</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 19, in &lt;module&gt;</span></span><br><span class="line"><span class="string">        obj = CustomAttributes()</span></span><br><span class="line"><span class="string">            ^^^^^^^^^^^^^^^^^^</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 3, in __init__</span></span><br><span class="line"><span class="string">        self._attributes = &#123;&#125;</span></span><br><span class="line"><span class="string">        ^^^^^^^^^^^^^^^^</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 6, in __setattr__</span></span><br><span class="line"><span class="string">        self._attributes[name] = value</span></span><br><span class="line"><span class="string">        ^^^^^^^^^^^^^^^^</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 10, in __getattr__</span></span><br><span class="line"><span class="string">        if name in self._attributes:</span></span><br><span class="line"><span class="string">                ^^^^^^^^^^^^^^^^</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 10, in __getattr__</span></span><br><span class="line"><span class="string">        if name in self._attributes:</span></span><br><span class="line"><span class="string">                ^^^^^^^^^^^^^^^^</span></span><br><span class="line"><span class="string">    File &quot;C:\Users\GOD\Desktop\301.py&quot;, line 10, in __getattr__</span></span><br><span class="line"><span class="string">        if name in self._attributes:</span></span><br><span class="line"><span class="string">                ^^^^^^^^^^^^^^^^</span></span><br><span class="line"><span class="string">    [Previous line repeated 743 more times]</span></span><br><span class="line"><span class="string">RecursionError: maximum recursion depth exceeded</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>由此得知，去除掉这段代码会导致触发无限递归，<br>当 <code>__init__</code> 方法在创建 <code>CustomAttributes</code> 实例时被调用时，它尝试设置 <code>_attributes</code> 字典。这触发了 <code>__setattr__</code> 方法的调用。<br>在 <code>__setattr__</code> 方法内部，当尝试访问 <code>self._attributes</code> 时，由于 <code>_attributes</code> 字典尚未完全初始化，Python 会调用 <code>__getattr__</code> 方法来获取该属性。<br>然后，<code>__getattr__</code> 方法又尝试检查 <code>name</code> 是否在 <code>self._attributes</code> 中，这再次触发了 <code>__getattr__</code> 的调用，从而形成了无限递归。</p>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
-<li>由两个实验得之:<br><code>uper().__setattr__(name, value)</code>允许你绕过当前类中的 <code>__setattr__</code>方法，并直接调用其父类的 <code>__setattr__</code>方法。</li>
-<li>在 <code>__init__</code>方法创建实例时被调用时，会调用 <code>__setattr__</code>方法去设置实例的属性，当在 <code>__setattr__</code>方法内部尝试访问，由于 <code>_attributes</code> 字典尚未完全初始化，Python 会调用 <code>__getattr__</code> 方法来获取该属性，从而造成递归循环。</li>
-</ol>
-
+                <div class="postShorten-excerpt">
+                    <p>本文探讨 Python 类中 <code>__setattr__</code> 和 <code>__getattr__</code> 的实现原理及常见问题。</p>
                     
+                        <a
+                            href="/2025/05/10/python-setattr-principle/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Python类的实现中有关__setattr__原理问题"
+                        >
+                            阅读全文
+                        </a>
                         
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2025/05/10/python-setattr-principle/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             
@@ -861,7 +412,7 @@ $$</p>
     </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -893,196 +444,17 @@ $$</p>
 
             </div>
             
-                <div class="postShorten-content">
-                    <h1 id="datawhale-p2s-学习chapter-5与chapter-6"><a href="#datawhale-p2s-学习chapter-5与chapter-6" class="headerlink" title="datawhale p2s 学习chapter_5与chapter_6"></a>datawhale p2s 学习chapter_5与chapter_6</h1><h2 id="chapter-5：循环"><a href="#chapter-5：循环" class="headerlink" title="chapter_5：循环"></a>chapter_5：循环</h2><h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><h4 id="for循环和循环范围"><a href="#for循环和循环范围" class="headerlink" title="for循环和循环范围"></a>for循环和循环范围</h4><ol>
-<li><p>特点</p>
-<p> 基于提供的范围，重复执行特定次数的操作</p>
-</li>
-<li><p>range默认参数</p>
-<blockquote>
-<p>range(a,b,c)</p>
-</blockquote>
-<ul>
-<li>a为起始值，b为终值+1，c为步长</li>
-<li>a如果不写，默认为0</li>
-<li>c不写默认为1</li>
-</ul>
-</li>
-</ol>
-<h4 id="for循环嵌套"><a href="#for循环嵌套" class="headerlink" title="for循环嵌套"></a>for循环嵌套</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">5</span></span><br><span class="line">b = <span class="number">5</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(a):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(b):</span><br><span class="line">        <span class="built_in">print</span>(a,b)</span><br></pre></td></tr></table></figure>
-
-<h3 id="while循环"><a href="#while循环" class="headerlink" title="while循环"></a>while循环</h3><ol>
-<li><p>特点</p>
-<p> 未知执行次数，依靠条件判断是否继续执行</p>
-</li>
-<li><p>在范围已知与未知时都可用while循环</p>
-</li>
-</ol>
-<h3 id="break-与-continue-语句"><a href="#break-与-continue-语句" class="headerlink" title="break 与 continue 语句"></a>break 与 continue 语句</h3><h4 id="假死循环"><a href="#假死循环" class="headerlink" title="假死循环"></a>假死循环</h4><ol>
-<li><p>特点</p>
-<p> 与环境交互后，在特定条件下终止的循环</p>
-</li>
-<li><p>简单示例</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">readUntilDone</span>():</span><br><span class="line">linesEntered = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    response = <span class="built_in">input</span>(<span class="string">&quot;输入一个字符串（输入 done 则退出）: &quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> response == <span class="string">&quot;done&quot;</span>:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;你输入了: &quot;</span>, response)</span><br><span class="line">    linesEntered += <span class="number">1</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Bye!&quot;</span>)</span><br><span class="line"><span class="keyword">return</span> linesEntered</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="chapter-6：字符串"><a href="#chapter-6：字符串" class="headerlink" title="chapter_6：字符串"></a>chapter_6：字符串</h2><h3 id="字符串文字"><a href="#字符串文字" class="headerlink" title="字符串文字"></a>字符串文字</h3><ol>
-<li><p>引号</p>
-<ul>
-<li>单引号</li>
-<li>双引号</li>
-<li>三引号</li>
-</ul>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot; &quot;</span></span><br><span class="line"><span class="string">&#x27; &#x27;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27; &#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot; &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>转义序列</p>
-<ul>
-<li>\n    换行符</li>
-<li>\t    制表符</li>
-<li>&quot;    双引号</li>
-<li>\\   反斜线</li>
-</ul>
-</li>
-<li><p>在多行文本中可用<code>\</code>来排除换行</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&quot;&quot;你可以在字符串后面使用 反斜杠 `\`  来排除后面的换行。\</span></span><br><span class="line"><span class="string">比如这里是第二行文字，但是你会看到它会紧跟在上一行句号后面。\</span></span><br><span class="line"><span class="string">这种做法在 CIL 里面经常使用（多个 Flag 并排保持美观），\</span></span><br><span class="line"><span class="string">但是在编程中的应用比较少。\</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>多行字符串作为注释</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Python 本身是没有多行注释的，</span></span><br><span class="line"><span class="string">但是你可以用多行字符串实现同样的操作，</span></span><br><span class="line"><span class="string">还记得我们之前学过的“表达式“吗？</span></span><br><span class="line"><span class="string">它的原理就是 Python 会运行它，</span></span><br><span class="line"><span class="string">但是马上扔掉！（垃圾回收机制）</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>repr()函数</p>
-<blockquote>
-<p>转义字符显示</p>
-</blockquote>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">str</span> = data\nwhale</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(<span class="built_in">str</span>))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">有repr()显示</span></span><br><span class="line"><span class="string">data\nwhale</span></span><br><span class="line"><span class="string">#无repr()显示</span></span><br><span class="line"><span class="string">data</span></span><br><span class="line"><span class="string">whale</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="字符串常量"><a href="#字符串常量" class="headerlink" title="字符串常量"></a>字符串常量</h3><ol>
-<li><p>字母</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> string</span><br><span class="line"><span class="built_in">print</span>(string.ascii_letters)</span><br><span class="line"><span class="comment">#abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>小写字母</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.ascii_lowercase)</span><br><span class="line"><span class="comment">#abcdefghijklmnopqrstuvwxyz</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>大写字母</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.ascii_uppercase) </span><br><span class="line"><span class="comment">#ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>数字</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.digits)</span><br><span class="line"><span class="comment">#0123456789</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>特殊字符</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.punctuation)</span><br><span class="line"><span class="comment">#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\]^_`&#123;|&#125;~</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>可打印字符</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.printable)</span><br><span class="line"><span class="comment">#0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br><span class="line"><span class="comment">#!&quot;#$%&amp;&#x27;()*+,-./:;&lt;=&gt;?@[\]^_`&#123;|&#125;~ </span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>空白字符</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(string.whitespace)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>空白字符不转义</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">repr</span>(string.whitespace))</span><br><span class="line"><span class="comment">#\t\n\r\x0b\x0c</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="字符串运算"><a href="#字符串运算" class="headerlink" title="字符串运算"></a>字符串运算</h3><ol>
-<li><p>简单运算</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;abc&quot;</span> + <span class="string">&quot;def&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;abc&quot;</span> * <span class="number">3</span>)</span><br><span class="line"><span class="comment">#abcdef</span></span><br><span class="line"><span class="comment">#abcabcabc</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>in运算</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;ring&quot;</span> <span class="keyword">in</span> <span class="string">&quot;strings&quot;</span>) <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;wow&quot;</span> <span class="keyword">in</span> <span class="string">&quot;amazing!&quot;</span>) <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Yes&quot;</span> <span class="keyword">in</span> <span class="string">&quot;yes!&quot;</span>) <span class="comment"># False</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;&quot;</span> <span class="keyword">in</span> <span class="string">&quot;No way!&quot;</span>) <span class="comment"># True</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;聪明&quot;</span> <span class="keyword">in</span> <span class="string">&quot;聪明办法学 Python&quot;</span>) <span class="comment"># True</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>字符串索引和切片</p>
-<blockquote>
-<p>字符串可作为迭代对象</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="字符串循环"><a href="#字符串循环" class="headerlink" title="字符串循环"></a>字符串循环</h3><ol>
-<li><p>in循环</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line"><span class="built_in">print</span>(c)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>enumerate函数</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> idx, c <span class="keyword">in</span> <span class="built_in">enumerate</span>(s):</span><br><span class="line"><span class="built_in">print</span>(idx, c)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0 D</span></span><br><span class="line"><span class="string">1 a</span></span><br><span class="line"><span class="string">2 t</span></span><br><span class="line"><span class="string">3 a</span></span><br><span class="line"><span class="string">4 w</span></span><br><span class="line"><span class="string">5 h</span></span><br><span class="line"><span class="string">6 a</span></span><br><span class="line"><span class="string">7 l</span></span><br><span class="line"><span class="string">8 e</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>zip函数</p>
-<p> zip(a,b)可以在一次循环中，分别从 a 和 b 里同时取出一个元素</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>(s, reverseString(s)):</span><br><span class="line"><span class="built_in">print</span>(a, b)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">D e</span></span><br><span class="line"><span class="string">a l</span></span><br><span class="line"><span class="string">t a</span></span><br><span class="line"><span class="string">a h</span></span><br><span class="line"><span class="string">w w</span></span><br><span class="line"><span class="string">h a</span></span><br><span class="line"><span class="string">a t</span></span><br><span class="line"><span class="string">l a</span></span><br><span class="line"><span class="string">e D</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>split函数来循环</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class_name.split() 本身会产生一个新的叫做“列表”的东西，但是它不存储任何内容</span></span><br><span class="line"></span><br><span class="line">class_name = <span class="string">&quot;learn python the smart way 2nd edition&quot;</span></span><br><span class="line"><span class="keyword">for</span> word <span class="keyword">in</span> class_name.split():</span><br><span class="line">    <span class="built_in">print</span>(word)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">learn</span></span><br><span class="line"><span class="string">python</span></span><br><span class="line"><span class="string">the</span></span><br><span class="line"><span class="string">smart</span></span><br><span class="line"><span class="string">way</span></span><br><span class="line"><span class="string">2nd</span></span><br><span class="line"><span class="string">edition</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>splitlines函数来循环</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># class_info.splitlines() 也会产生一个列表，但不存储任何内容</span></span><br><span class="line"></span><br><span class="line">class_info = <span class="string">&quot;&quot;&quot;\</span></span><br><span class="line"><span class="string">聪明办法学 Python 第二版是 Datawhale 基于第一版教程的一次大幅更新。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">我们的课程简称为 P2S，有两个含义：</span></span><br><span class="line"><span class="string">Learn Python The Smart Way V2.</span></span><br><span class="line"><span class="string">Prepare To Be Smart. 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> class_info.splitlines():</span><br><span class="line">    <span class="keyword">if</span> (line.startswith(<span class="string">&quot;Prepare To Be Smart&quot;</span>)):</span><br><span class="line">        <span class="built_in">print</span>(line)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Prepare To Be Smart， 我们希望同学们学习这个教程后能学习到聪明的办法，从容的迈入人工智能的后续学习。</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="字符串内置函数与方法"><a href="#字符串内置函数与方法" class="headerlink" title="字符串内置函数与方法"></a>字符串内置函数与方法</h3><h4 id="字符串函数"><a href="#字符串函数" class="headerlink" title="字符串函数"></a>字符串函数</h4><ol>
-<li><p>str() 和 len()</p>
-<blockquote>
-<p>str 函数将其他类型转化为字符串</p>
-</blockquote>
-<blockquote>
-<p>len 函数获得迭代对象长度</p>
-</blockquote>
-</li>
-<li><p>chr() 和 ord()</p>
-<blockquote>
-<p>chr 函数将ascii码转化为对应字符</p>
-</blockquote>
-<blockquote>
-<p>ord 函数将字符转化为对应ascii码</p>
-</blockquote>
-</li>
-<li><p>ast.literal_eval()</p>
-<blockquote>
-<p>安全地执行字符串中的Python表达式，而不会执行任何可能存在的恶意代码。</p>
-</blockquote>
-</li>
-</ol>
-<h4 id="字符串方法"><a href="#字符串方法" class="headerlink" title="字符串方法"></a>字符串方法</h4><ol>
-<li><p>isalnum()</p>
-</li>
-<li><p>isalpha()</p>
-</li>
-<li><p>isdigit()</p>
-</li>
-<li><p>islower()</p>
-</li>
-<li><p>isspace()</p>
-</li>
-<li><p>isupper()</p>
-</li>
-<li><p>strip()</p>
-<blockquote>
-<p>可以将字符串首尾的空格删除</p>
-</blockquote>
-</li>
-<li><p>count()</p>
-</li>
-<li><p>startwith()</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.startswith(<span class="string">&quot;Do&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.startswith(<span class="string">&quot;Don&#x27;t&quot;</span>))</span><br><span class="line"><span class="comment">#True False</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>endwith()</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;!&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;rats!&quot;</span>))</span><br><span class="line"><span class="comment">#True False</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>find()</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;!&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.endswith(<span class="string">&quot;rats!&quot;</span>))</span><br><span class="line"><span class="comment"># 5 -1</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>index()</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.index(<span class="string">&quot;and&quot;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Dogs and cats!&quot;</span>.index(<span class="string">&quot;or&quot;</span>))</span><br><span class="line"><span class="comment"># 5</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>with语句</p>
-</li>
-</ol>
-
+                <div class="postShorten-excerpt">
+                    <p>本文是 Datawhale Python 入门教程（Python for Second）第五、六章的学习笔记，主要涵盖 for&#x2F;while 循环、字符串操作等基础知识。</p>
                     
+                        <a
+                            href="/2025/04/30/p2s-learning-notes-4/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": p2s学习笔记（四）：chapter 5与chapter 6"
+                        >
+                            阅读全文
+                        </a>
                         
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2025/04/30/p2s-learning-notes-4/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             
@@ -1091,7 +463,7 @@ $$</p>
     </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -1123,112 +495,17 @@ $$</p>
 
             </div>
             
-                <div class="postShorten-content">
-                    <h1 id="datawhale-p2s-学习chapter-4与选学01"><a href="#datawhale-p2s-学习chapter-4与选学01" class="headerlink" title="datawhale p2s 学习chapter_4与选学01"></a>datawhale p2s 学习chapter_4与选学01</h1><h2 id="chapter-4：条件"><a href="#chapter-4：条件" class="headerlink" title="chapter_4：条件"></a>chapter_4：条件</h2><h3 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h3><ol>
-<li><p>if语句</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>if-else 语句</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> x == <span class="number">0</span>: </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;B&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;D&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>abs转换示例</p>
-</blockquote>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">abs</span>(<span class="params">n</span>):</span><br><span class="line">    <span class="keyword">if</span> n &gt;= <span class="number">0</span>:</span><br><span class="line">        sign = +<span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sign = -<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> sign * n</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>if-elif-else 语句</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;A&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;B&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">elif</span> x == <span class="number">1</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;D&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;E&quot;</span>, end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>一元二次方程示例</p>
-<blockquote>
-<p>求一元二次方程实数根数</p>
-</blockquote>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">numberOfRoots</span>(<span class="params">a, b, c</span>):</span><br><span class="line"><span class="comment"># 返回 y 的实数根（零点）数量： y = a*x**2 + b*x + c</span></span><br><span class="line">d = b**<span class="number">2</span> - <span class="number">4</span>*a*c</span><br><span class="line"><span class="keyword">if</span> d &gt; <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">elif</span> d == <span class="number">0</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>if-else 推导式</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(n <span class="keyword">if</span> (n &gt;= <span class="number">0</span>) <span class="keyword">else</span> -n)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="match-case语句"><a href="#match-case语句" class="headerlink" title="match-case语句"></a>match-case语句</h3><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status">Http响应状态码</a></p>
-<ol>
-<li><p>Http响应码示例</p>
-<blockquote>
-<p>match 后的对象会依次与 case 后的内容进行匹配，如果匹配成功，则执行匹配到的表达式，否则直接跳过，_ 可以匹配一切。</p>
-</blockquote>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">http_error</span>(<span class="params">status</span>):</span><br><span class="line">    <span class="keyword">match</span> status:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">400</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Bad request&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">404</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Not found&quot;</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">418</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;I&#x27;m a teapot&quot;</span></span><br><span class="line">        <span class="keyword">case</span> _:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Something&#x27;s wrong with the internet&quot;</span></span><br><span class="line"></span><br><span class="line">mystatus=<span class="number">400</span></span><br><span class="line"><span class="built_in">print</span>(http_error(mystatus))</span><br><span class="line"><span class="comment">#输出 Bad request</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>一个 case 也可以设置多个匹配条件，条件使用 ｜ 隔开</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">case</span> <span class="number">401</span>|<span class="number">403</span>|<span class="number">404</span>:</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;Not allowed&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="选学01：代码style"><a href="#选学01：代码style" class="headerlink" title="选学01：代码style"></a>选学01：代码style</h2><h3 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h3><p>   修饰的前提时能跑通</p>
-<h3 id="代码布局"><a href="#代码布局" class="headerlink" title="代码布局"></a>代码布局</h3><ol>
-<li><p>缩进</p>
-<ul>
-<li>如果开局有定界符，其余缩进需与开始定界符(例如括号)对齐</li>
-</ul>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = function(accd,</span><br><span class="line">             eeef)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>需要一个4个空格(长度等于1个制表符)，以区分传入参数和其他内容</li>
-</ul>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">function</span>(<span class="params"></span></span><br><span class="line"><span class="params">        accd,eeef,</span></span><br><span class="line"><span class="params">        hijk</span>)</span><br><span class="line">    <span class="built_in">print</span>(accd)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (function(accd,eeef,hijk)</span><br><span class="line">        <span class="keyword">and</span> a==<span class="number">0</span>):</span><br><span class="line">    <span class="built_in">print</span>(accd)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>空格一般用于添加以上缩进，tab键一般保持行与行间的一致。</li>
-<li>多行if语句衔接，需要一个额外的缩进区分。</li>
-</ul>
-</li>
-<li><p>换行</p>
-<ul>
-<li>所有行限制最多79个字</li>
-<li>一般语句接受&quot;隐式&quot;显示，with语句不支持，需要用 \ 来衔接</li>
-</ul>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(                          ) <span class="keyword">as</span> file_1, \</span><br><span class="line"><span class="built_in">open</span>(                          ) <span class="keyword">as</span> file_2: </span><br><span class="line">    file_2.write(file_1.read())</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>如果一项参数需要单独成行时，符号跟在参数前</li>
-</ul>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">income = (gross_wages</span><br><span class="line">          + taxable_interest</span><br><span class="line">          +(dividends - qualified_dividends)</span><br><span class="line">          - ira_deduction</span><br><span class="line">          - student_loan_interest)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="导入规范"><a href="#导入规范" class="headerlink" title="导入规范"></a>导入规范</h3><ol>
-<li><p>导入本地同目录下封装好的模块或者文件，直接导入即可</p>
-</li>
-<li><p>导入子目录下封装好的模块或者文件，需声明子目录名</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">form branch <span class="keyword">import</span> m3</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h3 id="空格"><a href="#空格" class="headerlink" title="空格"></a>空格</h3><ol>
-<li>紧接在括号内，不需要多余空格</li>
-<li>在逗号，分号或冒号之前，尾随逗号之后均不需要多余空格</li>
-<li>在切片中，两个冒号必须应用相同的间距</li>
-<li>紧接在开始函数调用的参数列表在左括号之前，不需要多余空格</li>
-<li>赋值或其他运算符周围需要多个空格以使其与另一个运算符对齐，在同时拥有不同级别运算符时，在优先级较低的符号加空格</li>
-</ol>
-<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ol>
-<li>在有处理逻辑代码中，源程序有效注释量必须在20%以上。</li>
-<li>写注释文档时用&#96;&#96;&#96;</li>
-</ol>
-<h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><ol>
-<li>不要将关键字和函数名用作变量名。</li>
-<li>变量名和函数名应既简短又具有描述性</li>
-<li>分号可以做隔断，换行自动添加分号</li>
-</ol>
-
+                <div class="postShorten-excerpt">
+                    <p>本文是 Datawhale Python 入门教程（Python for Second）第四章与选学部分的学习笔记，主要涵盖 if&#x2F;else 条件语句与异常处理机制。</p>
                     
+                        <a
+                            href="/2025/04/20/p2s-learning-notes-3/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": p2s学习笔记（三）：chapter 4与选学01"
+                        >
+                            阅读全文
+                        </a>
                         
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2025/04/20/p2s-learning-notes-3/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             
@@ -1352,7 +629,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1375,7 +652,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Linux 系统中常用的 Shell 命令，涵盖基础知识、通配符、用户权限等内容。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1398,7 +675,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文记录了学习廖雪峰 Python 教程过程中的新知识点和易错点总结。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1421,7 +698,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第零、一章的学习笔记，涵盖 Python 环境安装配置与变量、表达式等基础语法。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -1444,7 +721,7 @@ $$</p>
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第二、三章的学习笔记，主要涵盖 Python 数据类型（整型、浮点型、布尔值、字符串）及基本操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>

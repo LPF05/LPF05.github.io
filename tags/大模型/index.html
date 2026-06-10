@@ -260,7 +260,7 @@
     <section class="postShorten-group main-content-wrap">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -292,47 +292,17 @@
 
             </div>
             
-                <div class="postShorten-content">
-                    <h1 id="Wow-RAG"><a href="#Wow-RAG" class="headerlink" title="Wow-RAG"></a>Wow-RAG</h1><h2 id="手搓一个土的RAG"><a href="#手搓一个土的RAG" class="headerlink" title="手搓一个土的RAG"></a>手搓一个土的RAG</h2><ol>
-<li><p>安装相关库：faiss-gpu、scikit-learn、scipy、openai、python-dotenv；配置api_key、base_url、chat_model、emb_model。</p>
-</li>
-<li><p>加载APIkey，配置环境：  </p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> dotenv <span class="keyword">import</span> load_dotenv</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载环境变量</span></span><br><span class="line">load_dotenv()</span><br><span class="line"><span class="comment"># 从环境变量中读取api_key</span></span><br><span class="line">api_key = os.getenv(...)</span><br><span class="line">base_url = ...</span><br><span class="line">chat_model = ...</span><br><span class="line">emb_model = ...</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>构造client：  </p>
- <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from openai import OpenAI</span><br><span class="line">client = OpenAI(</span><br><span class="line">    api_key = api_key,</span><br><span class="line">    base_url = base_url</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>构造文档，并将文档向量化：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> normalize</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> faiss</span><br><span class="line">embedding_text = <span class="string">&quot;...&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置每个文本块的大小为 150 个字符</span></span><br><span class="line">chunk_size = <span class="number">150</span></span><br><span class="line"><span class="comment"># 使用列表推导式将长文本分割成多个块，每个块的大小为 chunk_size （将文本分段，是因为API输入有长度限制）</span></span><br><span class="line">chunks = [embedding_text[i:i + chunk_size] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(embedding_text), chunk_size)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化一个空列表来存储每个文本块的嵌入向量</span></span><br><span class="line">embeddings = []</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历每个文本块</span></span><br><span class="line"><span class="keyword">for</span> chunk <span class="keyword">in</span> chunks:</span><br><span class="line">    <span class="comment"># 使用 OpenAI API 为当前文本块创建嵌入向量</span></span><br><span class="line">    response = client.embeddings.create(</span><br><span class="line">        model=emb_model,</span><br><span class="line">        <span class="built_in">input</span>=chunk,</span><br><span class="line">    )</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将嵌入向量添加到列表中</span></span><br><span class="line">    embeddings.append(response.data[<span class="number">0</span>].embedding)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 sklearn 的 normalize 函数对嵌入向量进行归一化处理</span></span><br><span class="line">normalized_embeddings = normalize(np.array(embeddings).astype(<span class="string">&#x27;float32&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取嵌入向量的维度</span></span><br><span class="line">d = <span class="built_in">len</span>(embeddings[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个 Faiss 索引，用于存储和检索嵌入向量（使用faiss创建向量索引，可以降低向量匹配检索的时间复杂度，且无需训练、是精确检索、无近似误差，在更大规模数据的检索中可以使用更高效的索引类型代替）</span></span><br><span class="line">index = faiss.IndexFlatIP(d)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将归一化后的嵌入向量添加到索引中</span></span><br><span class="line">index.add(normalized_embeddings)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取索引中的向量总数</span></span><br><span class="line">n_vectors = index.ntotal</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(n_vectors)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>定义input_text向量化并匹配相似文本：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> normalize</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">match_text</span>(<span class="params">input_text, index, chunks, k=<span class="number">2</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    在给定的文本块集合中，找到与输入文本最相似的前k个文本块。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        input_text (str): 要匹配的输入文本。</span></span><br><span class="line"><span class="string">        index (faiss.Index): 用于搜索的Faiss索引。</span></span><br><span class="line"><span class="string">        chunks (list of str): 文本块的列表。</span></span><br><span class="line"><span class="string">        k (int, optional): 要返回的最相似文本块的数量。默认值为2。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    返回:</span></span><br><span class="line"><span class="string">        str: 格式化的字符串，包含最相似的文本块及其相似度。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 确保k不超过文本块的总数</span></span><br><span class="line">    k = <span class="built_in">min</span>(k, <span class="built_in">len</span>(chunks))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 使用OpenAI API为输入文本创建嵌入向量</span></span><br><span class="line">    response = client.embeddings.create(</span><br><span class="line">        model=emb_model,</span><br><span class="line">        <span class="built_in">input</span>=input_text,</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 获取输入文本的嵌入向量</span></span><br><span class="line">    input_embedding = response.data[<span class="number">0</span>].embedding</span><br><span class="line">    <span class="comment"># 对输入嵌入向量进行归一化处理</span></span><br><span class="line">    input_embedding = normalize(np.array([input_embedding]).astype(<span class="string">&#x27;float32&#x27;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 在索引中搜索与输入嵌入向量最相似的k个向量</span></span><br><span class="line">    distances, indices = index.search(input_embedding, k)</span><br><span class="line">    <span class="comment"># 初始化一个字符串来存储匹配的文本</span></span><br><span class="line">    matching_texts = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 遍历搜索结果</span></span><br><span class="line">    <span class="keyword">for</span> i, idx <span class="keyword">in</span> <span class="built_in">enumerate</span>(indices[<span class="number">0</span>]):</span><br><span class="line">        <span class="comment"># 打印每个匹配文本块的相似度和文本内容</span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;similarity: <span class="subst">&#123;distances[<span class="number">0</span>][i]:<span class="number">.4</span>f&#125;</span>\nmatching text: \n<span class="subst">&#123;chunks[idx]&#125;</span>\n&quot;</span>)</span><br><span class="line">        <span class="comment"># 将相似度和文本内容添加到匹配文本字符串中</span></span><br><span class="line">        matching_texts += <span class="string">f&quot;similarity: <span class="subst">&#123;distances[<span class="number">0</span>][i]:<span class="number">.4</span>f&#125;</span>\nmatching text: \n<span class="subst">&#123;chunks[idx]&#125;</span>\n&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 返回包含匹配文本块及其相似度的字符串</span></span><br><span class="line">    <span class="keyword">return</span> matching_texts</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>获得匹配文块并构造prompt：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">input_text = <span class="string">&quot;What are the applications of Agent AI systems ?&quot;</span></span><br><span class="line"></span><br><span class="line">matched_texts = match_text(input_text=input_text, index=index, chunks=chunks, k=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">prompt = <span class="string">f&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">根据找到的文档</span></span><br><span class="line"><span class="string"><span class="subst">&#123;matched_texts&#125;</span></span></span><br><span class="line"><span class="string">生成</span></span><br><span class="line"><span class="string"><span class="subst">&#123;input_text&#125;</span></span></span><br><span class="line"><span class="string">的答案，尽可能使用文档语句的原文回答。不要复述问题，直接开始回答。</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>构建prompt：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_completion_stream</span>(<span class="params">prompt</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用 OpenAI 的 Chat Completions API 生成流式的文本回复。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数:</span></span><br><span class="line"><span class="string">        prompt (str): 要生成回复的提示文本。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    返回:</span></span><br><span class="line"><span class="string">        None: 该函数直接打印生成的回复内容。</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 使用 OpenAI 的 Chat Completions API 创建一个聊天完成请求</span></span><br><span class="line">    response = client.chat.completions.create(</span><br><span class="line">        model=chat_model,  <span class="comment"># 填写需要调用的模型名称</span></span><br><span class="line">        messages=[</span><br><span class="line">            <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">            常用的role值分为&quot;system&quot;、&quot;user&quot;、&quot;assistant&quot;；</span></span><br><span class="line"><span class="string">            其中system是系统消息，一般用于设置模型的行为和角色，一般作为对话的第一条消息，会影响模型的整体回复风格；</span></span><br><span class="line"><span class="string">            user是用户消息，代表用户输入的内容；</span></span><br><span class="line"><span class="string">            assistant是助手消息，即模型生成的回复，一般在多轮会话中需要加历史中的assistant加入，保持上下文连贯性。</span></span><br><span class="line"><span class="string">            &#x27;&#x27;&#x27;</span></span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: prompt&#125;,</span><br><span class="line">        ],</span><br><span class="line">        stream=<span class="literal">True</span>,</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># 如果响应存在</span></span><br><span class="line">    <span class="keyword">if</span> response:</span><br><span class="line">        <span class="comment"># 遍历响应中的每个块</span></span><br><span class="line">        <span class="keyword">for</span> chunk <span class="keyword">in</span> response:</span><br><span class="line">            <span class="comment"># 获取当前块的内容</span></span><br><span class="line">            content = chunk.choices[<span class="number">0</span>].delta.content</span><br><span class="line">            <span class="comment"># 如果内容存在</span></span><br><span class="line">            <span class="keyword">if</span> content:</span><br><span class="line">                <span class="comment"># 打印内容，并刷新输出缓冲区</span></span><br><span class="line">                <span class="built_in">print</span>(content, end=<span class="string">&#x27;&#x27;</span>, flush=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用prompt</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get_completion_stream(prompt)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h2 id="感谢datawhale的wow-RAG教程支持"><a href="#感谢datawhale的wow-RAG教程支持" class="headerlink" title="感谢datawhale的wow-RAG教程支持"></a>感谢datawhale的wow-RAG教程支持</h2>
+                <div class="postShorten-excerpt">
+                    <p>本文记录了从零实现一个 RAG（检索增强生成）系统的完整过程，包括环境配置、向量库构建、检索与生成等核心步骤。</p>
                     
+                        <a
+                            href="/2025/06/15/wow-rag/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": WoW-RAG：检索增强生成"
+                        >
+                            阅读全文
+                        </a>
                         
-
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2025/06/15/wow-rag/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             
@@ -434,7 +404,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -457,7 +427,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Linux 系统中常用的 Shell 命令，涵盖基础知识、通配符、用户权限等内容。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -480,7 +450,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文记录了学习廖雪峰 Python 教程过程中的新知识点和易错点总结。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -503,7 +473,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第零、一章的学习笔记，涵盖 Python 环境安装配置与变量、表达式等基础语法。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -526,7 +496,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第二、三章的学习笔记，主要涵盖 Python 数据类型（整型、浮点型、布尔值、字符串）及基本操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>

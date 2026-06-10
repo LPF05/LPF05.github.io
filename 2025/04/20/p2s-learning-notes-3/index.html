@@ -20,16 +20,16 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"datawhale p2s 学习chapter_4与选学01chapter_4：条件if语句\nif语句\n 12if x == 0:    print(a)\n\nif-else 语句\n 1234if x == 0:     print(&quot;B&quot;, end=&quot;&quot;)else:    print(&quot;D&quot;, end=&quot;&quot;)\n\n\nabs转换示例\n\n 123456def abs(n):    if n &gt;= 0:        sign = +1    else:        sign = -1    return sign * n\n\nif-elif-else 语句\n 1234567print(&quot;A&quot;, end=&quot;&quot;)if x == 0:    print(&quot;B&quot;, end=&quot;&quot;)elif x == 1:    print(&quot;D&quot;, end=&quot;&quot;)else:    print(&quot;E&quot;, end=&quot;&quot;)\n\n一元二次方程示例\n\n求一元二次方程实数根数\n\n 123456789def numberOfRoots(a, b, c):# 返回 y 的实数根（零点）数量： y = a*x**2 + b*x + cd = b**2 - 4*a*cif d &gt; 0:    return 2elif d == 0:    return 1else:    return 0\n\nif-else 推导式\n 1print(n if (n &gt;= 0) else -n)\n\nmatch-case语句Http响应状态码\n\nHttp响应码示例\n\nmatch 后的对象会依次与 case 后的内容进行匹配，如果匹配成功，则执行匹配到的表达式，否则直接跳过，_ 可以匹配一切。\n\n 1234567891011121314def http_error(status):    match status:        case 400:            return &quot;Bad request&quot;        case 404:            return &quot;Not found&quot;        case 418:            return &quot;I&#x27;m a teapot&quot;        case _:            return &quot;Something&#x27;s wrong with the internet&quot;mystatus=400print(http_error(mystatus))#输出 Bad request\n\n一个 case 也可以设置多个匹配条件，条件使用 ｜ 隔开\n 123...case 401|403|404:    return &quot;Not allowed&quot;\n\n选学01：代码style代码风格   修饰的前提时能跑通\n代码布局\n缩进\n\n如果开局有定界符，其余缩进需与开始定界符(例如括号)对齐\n\n 12a = function(accd,             eeef)\n\n\n需要一个4个空格(长度等于1个制表符)，以区分传入参数和其他内容\n\n 12345def function(        accd,eeef,        hijk)    print(accd)\n\n 123if (function(accd,eeef,hijk)        and a==0):    print(accd)\n\n\n空格一般用于添加以上缩进，tab键一般保持行与行间的一致。\n多行if语句衔接，需要一个额外的缩进区分。\n\n\n换行\n\n所有行限制最多79个字\n一般语句接受&quot;隐式&quot;显示，with语句不支持，需要用 \\ 来衔接\n\n 123with open(                          ) as file_1, \\open(                          ) as file_2:     file_2.write(file_1.read())\n\n\n如果一项参数需要单独成行时，符号跟在参数前\n\n 12345income = (gross_wages          + taxable_interest          +(dividends - qualified_dividends)          - ira_deduction          - student_loan_interest)\n\n导入规范\n导入本地同目录下封装好的模块或者文件，直接导入即可\n\n导入子目录下封装好的模块或者文件，需声明子目录名\n 1form branch import m3\n\n空格\n紧接在括号内，不需要多余空格\n在逗号，分号或冒号之前，尾随逗号之后均不需要多余空格\n在切片中，两个冒号必须应用相同的间距\n紧接在开始函数调用的参数列表在左括号之前，不需要多余空格\n赋值或其他运算符周围需要多个空格以使其与另一个运算符对齐，在同时拥有不同级别运算符时，在优先级较低的符号加空格\n\n注释\n在有处理逻辑代码中，源程序有效注释量必须在20%以上。\n写注释文档时用&#96;&#96;&#96;\n\n命名规范\n不要将关键字和函数名用作变量名。\n变量名和函数名应既简短又具有描述性\n分号可以做隔断，换行自动添加分号\n\n","dateCreated":"2025-04-20T00:00:00+08:00","dateModified":"2026-06-10T20:49:35+08:00","datePublished":"2025-04-20T00:00:00+08:00","description":"","headline":"p2s学习笔记（三）：chapter 4与选学01","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/","keywords":"Datawhale, Python, 编程基础"}</script>
-    <meta name="description" content="datawhale p2s 学习chapter_4与选学01chapter_4：条件if语句 if语句  12if x &#x3D;&#x3D; 0:    print(a)  if-else 语句  1234if x &#x3D;&#x3D; 0:     print(&quot;B&quot;, end&#x3D;&quot;&quot;)else:    print(&quot;D&quot;, end&#x3D;&quot;&quot;)   ab">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"本文是 Datawhale Python 入门教程（Python for Second）第四章与选学部分的学习笔记，主要涵盖 if&#x2F;else 条件语句与异常处理机制。\n\n\nchapter_4：条件if语句\nif语句\n 12if x == 0:    print(a)\n\nif-else 语句\n 1234if x == 0:     print(&quot;B&quot;, end=&quot;&quot;)else:    print(&quot;D&quot;, end=&quot;&quot;)\n\n\nabs转换示例\n\n 123456def abs(n):    if n &gt;= 0:        sign = +1    else:        sign = -1    return sign * n\n\nif-elif-else 语句\n 1234567print(&quot;A&quot;, end=&quot;&quot;)if x == 0:    print(&quot;B&quot;, end=&quot;&quot;)elif x == 1:    print(&quot;D&quot;, end=&quot;&quot;)else:    print(&quot;E&quot;, end=&quot;&quot;)\n\n一元二次方程示例\n\n求一元二次方程实数根数\n\n 123456789def numberOfRoots(a, b, c):# 返回 y 的实数根（零点）数量： y = a*x**2 + b*x + cd = b**2 - 4*a*cif d &gt; 0:    return 2elif d == 0:    return 1else:    return 0\n\nif-else 推导式\n 1print(n if (n &gt;= 0) else -n)\n\nmatch-case语句Http响应状态码\n\nHttp响应码示例\n\nmatch 后的对象会依次与 case 后的内容进行匹配，如果匹配成功，则执行匹配到的表达式，否则直接跳过，_ 可以匹配一切。\n\n 1234567891011121314def http_error(status):    match status:        case 400:            return &quot;Bad request&quot;        case 404:            return &quot;Not found&quot;        case 418:            return &quot;I&#x27;m a teapot&quot;        case _:            return &quot;Something&#x27;s wrong with the internet&quot;mystatus=400print(http_error(mystatus))#输出 Bad request\n\n一个 case 也可以设置多个匹配条件，条件使用 ｜ 隔开\n 123...case 401|403|404:    return &quot;Not allowed&quot;\n\n选学01：代码style代码风格   修饰的前提时能跑通\n代码布局\n缩进\n\n如果开局有定界符，其余缩进需与开始定界符(例如括号)对齐\n\n 12a = function(accd,             eeef)\n\n\n需要一个4个空格(长度等于1个制表符)，以区分传入参数和其他内容\n\n 12345def function(        accd,eeef,        hijk)    print(accd)\n\n 123if (function(accd,eeef,hijk)        and a==0):    print(accd)\n\n\n空格一般用于添加以上缩进，tab键一般保持行与行间的一致。\n多行if语句衔接，需要一个额外的缩进区分。\n\n\n换行\n\n所有行限制最多79个字\n一般语句接受&quot;隐式&quot;显示，with语句不支持，需要用 \\ 来衔接\n\n 123with open(                          ) as file_1, \\open(                          ) as file_2:     file_2.write(file_1.read())\n\n\n如果一项参数需要单独成行时，符号跟在参数前\n\n 12345income = (gross_wages          + taxable_interest          +(dividends - qualified_dividends)          - ira_deduction          - student_loan_interest)\n\n导入规范\n导入本地同目录下封装好的模块或者文件，直接导入即可\n\n导入子目录下封装好的模块或者文件，需声明子目录名\n 1form branch import m3\n\n空格\n紧接在括号内，不需要多余空格\n在逗号，分号或冒号之前，尾随逗号之后均不需要多余空格\n在切片中，两个冒号必须应用相同的间距\n紧接在开始函数调用的参数列表在左括号之前，不需要多余空格\n赋值或其他运算符周围需要多个空格以使其与另一个运算符对齐，在同时拥有不同级别运算符时，在优先级较低的符号加空格\n\n注释\n在有处理逻辑代码中，源程序有效注释量必须在20%以上。\n写注释文档时用&#96;&#96;&#96;\n\n命名规范\n不要将关键字和函数名用作变量名。\n变量名和函数名应既简短又具有描述性\n分号可以做隔断，换行自动添加分号\n\n","dateCreated":"2025-04-20T00:00:00+08:00","dateModified":"2026-06-11T00:25:17+08:00","datePublished":"2025-04-20T00:00:00+08:00","description":"本文是 Datawhale Python 入门教程（Python for Second）第四章与选学部分的学习笔记，主要涵盖 if&#x2F;else 条件语句与异常处理机制。","headline":"p2s学习笔记（三）：chapter 4与选学01","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/","keywords":"Datawhale, Python, 编程基础"}</script>
+    <meta name="description" content="本文是 Datawhale Python 入门教程（Python for Second）第四章与选学部分的学习笔记，主要涵盖 if&#x2F;else 条件语句与异常处理机制。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="p2s学习笔记（三）：chapter 4与选学01">
 <meta property="og:url" content="https://lpf05.github.io/2025/04/20/p2s-learning-notes-3/index.html">
 <meta property="og:site_name" content="LPF05&#39; s Blog">
-<meta property="og:description" content="datawhale p2s 学习chapter_4与选学01chapter_4：条件if语句 if语句  12if x &#x3D;&#x3D; 0:    print(a)  if-else 语句  1234if x &#x3D;&#x3D; 0:     print(&quot;B&quot;, end&#x3D;&quot;&quot;)else:    print(&quot;D&quot;, end&#x3D;&quot;&quot;)   ab">
+<meta property="og:description" content="本文是 Datawhale Python 入门教程（Python for Second）第四章与选学部分的学习笔记，主要涵盖 if&#x2F;else 条件语句与异常处理机制。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-19T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-10T12:49:35.119Z">
+<meta property="article:modified_time" content="2026-06-10T16:25:17.595Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="Datawhale">
 <meta property="article:tag" content="Python">
@@ -287,7 +287,10 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h1 id="datawhale-p2s-学习chapter-4与选学01"><a href="#datawhale-p2s-学习chapter-4与选学01" class="headerlink" title="datawhale p2s 学习chapter_4与选学01"></a>datawhale p2s 学习chapter_4与选学01</h1><h2 id="chapter-4：条件"><a href="#chapter-4：条件" class="headerlink" title="chapter_4：条件"></a>chapter_4：条件</h2><h3 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h3><ol>
+            <p>本文是 Datawhale Python 入门教程（Python for Second）第四章与选学部分的学习笔记，主要涵盖 if&#x2F;else 条件语句与异常处理机制。</p>
+<span id="more"></span>
+
+<h2 id="chapter-4：条件"><a href="#chapter-4：条件" class="headerlink" title="chapter_4：条件"></a>chapter_4：条件</h2><h3 id="if语句"><a href="#if语句" class="headerlink" title="if语句"></a>if语句</h3><ol>
 <li><p>if语句</p>
  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> x == <span class="number">0</span>:</span><br><span class="line">    <span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
 </li>
@@ -729,7 +732,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -752,7 +755,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Linux 系统中常用的 Shell 命令，涵盖基础知识、通配符、用户权限等内容。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -775,7 +778,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文记录了学习廖雪峰 Python 教程过程中的新知识点和易错点总结。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -798,7 +801,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第零、一章的学习笔记，涵盖 Python 环境安装配置与变量、表达式等基础语法。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -821,7 +824,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第二、三章的学习笔记，主要涵盖 Python 数据类型（整型、浮点型、布尔值、字符串）及基本操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>

@@ -20,16 +20,16 @@
             <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
         
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"\nmkdir\n\n创建目录\n\n\ncd &lt;目录名&gt;\n\n进入目录\n\n\npwd\n\n显示工作目录\n\n\ngit commit -m&quot;&quot;\n\n查看修改内容\n\n\ngit add &lt;文件名&#x2F;目录名&gt;\n\n添加至暂存区\n\n\ngit status\n\n查看状态\n\n\ngit reset --hard Head()\n\n版本回退\n\nHead后加^为上个\n^^为上上个\n~n为上n个\n\n\ngit reset --hard ()\n\n版本回退\n\n   hard 后加版本号\n\ncat &lt;文件名&gt;\n\n查看文件内容\n\n\ngit reflog\n\n看版本log\n\n\ngit log\n\n查看提交历史\n\n\ngit log --pretty&#x3D;online\n\n查看美化版提交历史\n\n\ngit checkout -- &lt;文件名&gt;\n\n丢弃工作区修改（恢复删除）\n\n\ngit reset HEAD &lt;文件名&gt;\n\n撤销暂存区修改，放回工作区\n\n\ngit diff\n\n\n\n查看修改内容\n\n\nrm &lt;文件名&gt;（rm -r 可删除目录）\n\n\n删除文件\n\n\ngit branch -m &lt;旧名字&gt; &lt;新名字&gt;\n\n\n分支改名\n\n\ngit branch\n\n\n查看分支\n\n\ngit push origin &lt;仓库名&gt;\n\n\n推送&lt;仓库名&gt;仓库到网络\n\n红色字体部分已经落后于版本，推荐使用switch。\n\ngit checkout &lt;目录名&gt;\n\n\n切换到&lt;目录名&gt;目录\n\n\ngit checkout -b &lt;分支名&gt;\n\n\n创建并且换到名为&lt;分支名&gt;的分支\n\n\ngit checkout -\n\n\n切换到资金使用的分支\n\n\ngit checkout &lt;分支名&gt; &amp;&amp; git commit -m &quot;内容&quot;\n\n\n切换到&lt;分支名&gt;，同时提交当前目录的修改\n\n\ngit merge &lt;分支名&gt;\n\n\n合并&lt;分支名&gt;分支到当前分支\n\n\ngit branch -d &lt;分支名&gt;\n\n\n删除&lt;分支名&gt;分支\n\n\ngit switch &lt;分支名&gt;\n\n\n切换到&lt;分支名&gt;分支（新版）\n\n\ngit switch -c &lt;分支名&gt;\n\n\n在该分支下创建并切换到&lt;分支名&gt;分支\n\n\n两个分支都更改下无法合并，需手动修改后提交，在一个分支中合并分支不会同化另一个分支内容，而是使suo&#39;zai&#39;fensuozaifen\n\ngit log --graph\n\n\n\ngit merge --no-ff -m&quot;&quot; &lt;&gt;\n\n\n\ngit add -f\n\n\n\ngit check-ignore -v\n\n\n\ngit diff\n\n\n\n\n","dateCreated":"2025-03-01T00:00:00+08:00","dateModified":"2026-06-10T20:50:03+08:00","datePublished":"2025-03-01T00:00:00+08:00","description":"","headline":"Git指令集","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/03/01/git-commands/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/03/01/git-commands/","keywords":"Git, 工具"}</script>
-    <meta name="description" content="mkdir  创建目录   cd &lt;目录名&gt;  进入目录   pwd  显示工作目录   git commit -m&quot;&quot;  查看修改内容   git add &lt;文件名&#x2F;目录名&gt;  添加至暂存区   git status  查看状态   git reset --hard Head()  版本回退  Head后加^为上个 ^^为上上个 ~n为上n">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg"},"articleBody":"本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。\n\n\n\nmkdir\n\n创建目录\n\n\ncd &lt;目录名&gt;\n\n进入目录\n\n\npwd\n\n显示工作目录\n\n\ngit commit -m&quot;&quot;\n\n查看修改内容\n\n\ngit add &lt;文件名&#x2F;目录名&gt;\n\n添加至暂存区\n\n\ngit status\n\n查看状态\n\n\ngit reset --hard Head()\n\n版本回退\n\nHead后加^为上个\n^^为上上个\n~n为上n个\n\n\ngit reset --hard ()\n\n版本回退\n\n   hard 后加版本号\n\ncat &lt;文件名&gt;\n\n查看文件内容\n\n\ngit reflog\n\n看版本log\n\n\ngit log\n\n查看提交历史\n\n\ngit log --pretty&#x3D;online\n\n查看美化版提交历史\n\n\ngit checkout -- &lt;文件名&gt;\n\n丢弃工作区修改（恢复删除）\n\n\ngit reset HEAD &lt;文件名&gt;\n\n撤销暂存区修改，放回工作区\n\n\ngit diff\n\n\n\n查看修改内容\n\n\nrm &lt;文件名&gt;（rm -r 可删除目录）\n\n\n删除文件\n\n\ngit branch -m &lt;旧名字&gt; &lt;新名字&gt;\n\n\n分支改名\n\n\ngit branch\n\n\n查看分支\n\n\ngit push origin &lt;仓库名&gt;\n\n\n推送&lt;仓库名&gt;仓库到网络\n\n红色字体部分已经落后于版本，推荐使用switch。\n\ngit checkout &lt;目录名&gt;\n\n\n切换到&lt;目录名&gt;目录\n\n\ngit checkout -b &lt;分支名&gt;\n\n\n创建并且换到名为&lt;分支名&gt;的分支\n\n\ngit checkout -\n\n\n切换到资金使用的分支\n\n\ngit checkout &lt;分支名&gt; &amp;&amp; git commit -m &quot;内容&quot;\n\n\n切换到&lt;分支名&gt;，同时提交当前目录的修改\n\n\ngit merge &lt;分支名&gt;\n\n\n合并&lt;分支名&gt;分支到当前分支\n\n\ngit branch -d &lt;分支名&gt;\n\n\n删除&lt;分支名&gt;分支\n\n\ngit switch &lt;分支名&gt;\n\n\n切换到&lt;分支名&gt;分支（新版）\n\n\ngit switch -c &lt;分支名&gt;\n\n\n在该分支下创建并切换到&lt;分支名&gt;分支\n\n\n两个分支都更改下无法合并，需手动修改后提交，在一个分支中合并分支不会同化另一个分支内容，而是使suo&#39;zai&#39;fensuozaifen\n\ngit log --graph\n\n\n\ngit merge --no-ff -m&quot;&quot; &lt;&gt;\n\n\n\ngit add -f\n\n\n\ngit check-ignore -v\n\n\n\ngit diff\n\n\n\n\n","dateCreated":"2025-03-01T00:00:00+08:00","dateModified":"2026-06-11T00:25:53+08:00","datePublished":"2025-03-01T00:00:00+08:00","description":"本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。","headline":"Git指令集","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://lpf05.github.io/2025/03/01/git-commands/"},"publisher":{"@type":"Organization","name":"LPF05","sameAs":[],"image":"the_night_of_dream.jpg","logo":{"@type":"ImageObject","url":"the_night_of_dream.jpg"}},"url":"https://lpf05.github.io/2025/03/01/git-commands/","keywords":"Git, 工具"}</script>
+    <meta name="description" content="本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Git指令集">
 <meta property="og:url" content="https://lpf05.github.io/2025/03/01/git-commands/index.html">
 <meta property="og:site_name" content="LPF05&#39; s Blog">
-<meta property="og:description" content="mkdir  创建目录   cd &lt;目录名&gt;  进入目录   pwd  显示工作目录   git commit -m&quot;&quot;  查看修改内容   git add &lt;文件名&#x2F;目录名&gt;  添加至暂存区   git status  查看状态   git reset --hard Head()  版本回退  Head后加^为上个 ^^为上上个 ~n为上n">
+<meta property="og:description" content="本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-02-28T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-06-10T12:50:03.369Z">
+<meta property="article:modified_time" content="2026-06-10T16:25:53.076Z">
 <meta property="article:author" content="LPF05">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="工具">
@@ -286,7 +286,10 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <ol>
+            <p>本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。</p>
+<span id="more"></span>
+
+<ol>
 <li><p>mkdir</p>
 <blockquote>
 <p>创建目录</p>
@@ -812,7 +815,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Git 版本控制中常用的基础指令，包括仓库初始化、文件管理、版本回退等操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -835,7 +838,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文整理了 Linux 系统中常用的 Shell 命令，涵盖基础知识、通配符、用户权限等内容。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -858,7 +861,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文记录了学习廖雪峰 Python 教程过程中的新知识点和易错点总结。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -881,7 +884,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第零、一章的学习笔记，涵盖 Python 环境安装配置与变量、表达式等基础语法。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
@@ -904,7 +907,7 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"></div>
+                        <div class="media-content hide-xs font-merryweather"><p>本文是 Datawhale Python 入门教程（Python for Second）第二、三章的学习笔记，主要涵盖 Python 数据类型（整型、浮点型、布尔值、字符串）及基本操作。</p></div>
                     </div>
                     <div style="clear:both;"></div>
                     <hr>
